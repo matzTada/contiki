@@ -192,9 +192,6 @@ int
 tsch_packet_create_eb(uint8_t *buf, int buf_size, uint8_t seqno,
     uint8_t *hdr_len, uint8_t *tsch_sync_ie_offset)
 {
-//modified by TadaMatz 2016/May/10
-//printf(" seqno: %u", seqno);
-
   int ret = 0;
   uint8_t curr_len = 0;
   uint8_t mlme_ie_offset;
