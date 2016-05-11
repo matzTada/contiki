@@ -1,0 +1,88 @@
+    1  ls
+    2  cd vmware/
+    3  ls
+    4  sudo bash VMware-Player-12.1.1-3770994.x86_64.bundle 
+    5  ls
+    6  cd
+    7  ;s
+    8  ls
+    9  vmware
+   10  uname -a
+   11  sudo shutdown now
+   12  sudo shutdown -r now
+   13  cd contiki/tools/
+   14  ls mspsim/
+   15  rm -rf mspsim/
+   16  git clone git://mspsim.git.sourceforge.net/gitroot/mspsim/mspsim
+   17  rm -rf mspsim/
+   18  git clone git://mspsim.git.sourceforge.net/gitroot/mspsim/mspsim
+   19  ls mspsim/
+   20  make
+   21  ant jaar
+   22  ant jar
+   23  cd mspsim/
+   24  ant jar
+   25  cd ../
+   26  rm -rf mspsim/
+   27  git clone https://github.com/contiki-os/mspsim.git
+   28  cd mspsim/
+   29  ls -lrt
+   30  sudo apt-get install gcc-msp430
+   31  cd ../../examples/
+   32  pwd
+   33  cd hello-world/
+   34  vi hello-world.c 
+   35  cd ../
+   36  ls
+   37  mkdir blink
+   38  cp hello-world/ blink/
+   39  cd blink/
+   40  ls
+   41  cd ../
+   42  ls
+   43  ls hello-world/*
+   44  cp hello-world/hello-world.c blink/
+   45  cp hello-world/Makefile blink/
+   46  cd blink/
+   47  ls
+   48  mv hello-world.c blink.c
+   49  vi Makefile 
+   50  vi blink.c 
+   51  cd ././
+   52  cd ../
+   53  ls
+   54  cd udp-ipv6
+   55  ls -lrt
+   56  vi udp-server.c
+   57  cd ../
+   58  cd core/net/mac/
+   59  ls
+   60  cd tsch
+   61  ls
+   62  vi README.md 
+   63  cd ../../
+   64  cd ../
+   65  locate project.conf
+   66  cd apps/
+   67  ls
+   68  cd ping6/
+   69  ls
+   70  vi Makefile.ping6 
+   71  cd ../../platform/
+   72  ls
+   73  cd sky/
+   74  ls
+   75  vi contiki-conf.h 
+   76  cd ../../examples/udp-ipv6/
+   77  ls
+   78  vi Makefile
+   79  vi Makefile.target 
+   80  vi Makefile
+   81  vi $(CONTIKI)/Makefile.include
+   82  make TARGET=sky
+   83  make TARGET=sky > ~/Documents/compile.log
+   84  make clean TARGET=sky
+   85  make TARGET=sky > ~/Documents/compile.log
+   86  vi ../../platform/sky/./contiki-conf.h
+   87  history
+   88  history  > ~/Documents/history1.log

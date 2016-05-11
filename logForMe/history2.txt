@@ -1,0 +1,25 @@
+    1  ls
+    2  cd vmware/
+    3  ls
+    4  sudo bash VMware-Player-12.1.1-3770994.x86_64.bundle 
+    5  ls
+    6  cd
+    7  ;s
+    8  ls
+    9  vmware
+   10  uname -a
+   11  sudo shutdown now
+   12  sudo shutdown -r now
+   13  git clone https://github.com/contiki-os/contiki.git
+   14  sudo apt-get install git
+   15  git clone https://github.com/contiki-os/contiki.git
+   16  cd contiki/tools/
+   17  ls
+   18  cd cooja/
+   19  ant
+   20  sudo apt-get install ant
+   21  ant
+   22  sudo apt-get install openjdk-7-jdk
+   23  ant
+   24  history
+   25  history > ~/Documents/history2.log
