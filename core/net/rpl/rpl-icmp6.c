@@ -82,15 +82,15 @@ static void dao_output_target_seq(rpl_parent_t *parent, uip_ipaddr_t *prefix,
 
 /* some debug callbacks useful when debugging RPL networks */
 //added by TadaMatz 2016/May/12. enable debug message
-#define RPL_DEBUG_DIO_INPUT
-#define RPL_DEBUG_DAO_OUTPUT
+//#define RPL_DEBUG_DIO_INPUT
+//#define RPL_DEBUG_DAO_OUTPUT
 
 #ifdef RPL_DEBUG_DIO_INPUT
-void RPL_DEBUG_DIO_INPUT(uip_ipaddr_t *, rpl_dio_t *);
+void RPL_DEBUG_DIO_INPUT(uip_ipaddr_t*, rpl_dio_t*);
 #endif
 
 #ifdef RPL_DEBUG_DAO_OUTPUT
-void RPL_DEBUG_DAO_OUTPUT(rpl_parent_t *);
+void RPL_DEBUG_DAO_OUTPUT(rpl_parent_t*);
 #endif
 
 static uint8_t dao_sequence = RPL_LOLLIPOP_INIT;
