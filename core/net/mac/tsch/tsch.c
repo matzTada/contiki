@@ -267,7 +267,8 @@ tsch_schedule_keepalive()
 static void
 eb_input(struct input_packet *current_input)
 {
-  /* PRINTF("TSCH: EB received\n"); */
+//modified by TadaMatz 2016/May/5 remove comment out of PRINTF("TSCH: EB received\n);"
+  PRINTF("TSCH: EB received\n");
   frame802154_t frame;
   /* Verify incoming EB (does its ASN match our Rx time?),
    * and update our join priority. */
