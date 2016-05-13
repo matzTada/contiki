@@ -1,0 +1,148 @@
+//^(?=.*asn)(?=.*tx)(?=.*ID:2)|(?=.*ID:2)(?=.*EB)(?=.*enqueue)|(?=.*ID:2)(?=.*send)|dao|add_link|dio_output|(?=.*ID:2)(?=.*receive)
+00:06.133	ID:2	TSCH-schedule: add_link 0 1 2 2 0 255
+00:06.141	ID:2	TSCH-schedule: add_link 1 2 0 2 1 255
+00:06.149	ID:2	TSCH-schedule: add_link 2 7 0 0 2 255
+00:06.287	ID:1	TSCH-schedule: add_link 0 1 2 1 0 255
+00:06.296	ID:1	TSCH-schedule: add_link 1 2 0 1 1 255
+00:06.303	ID:1	TSCH-schedule: add_link 2 7 0 0 2 255
+00:06.797	ID:3	TSCH-schedule: add_link 0 1 2 3 0 255
+00:06.804	ID:3	TSCH-schedule: add_link 1 2 0 3 1 255
+00:06.812	ID:3	TSCH-schedule: add_link 2 7 0 0 2 255
+00:10.110	ID:1	RPL: DIO dio_output() called in handle_dio_timer()
+00:17.501	ID:1	RPL: DIO dio_output() called in handle_dio_timer()
+00:24.186	ID:2	TSCH: association: received packet (36 bytes) on channel 15
+00:24.194	ID:2	TSCH-schedule: add_link 0 2 2 1 0 0
+00:24.197	ID:2	TSCH-schedule: add_link 1 5 0 1 1 255
+00:30.143	ID:2	TSCH: EB received
+00:34.626	ID:1	RPL: DIO dio_output() called in handle_dio_timer()
+00:34.681	ID:2	TSCH: received from 1 with seqno 8
+00:36.104	ID:2	TSCH: EB received
+00:37.019	ID:2	RPL: DIO dio_output() called in handle_dio_timer()
+00:37.025	ID:2	TSCH: send packet to 255 with seqno 1, queue 0 1, len 15 95
+00:37.371	ID:2	RPL: handle_dao_timer - sending DAO
+00:37.378	ID:2	TSCH: send packet to 1 with seqno 2, queue 0 1, len 21 74
+00:37.451	ID:1	TSCH-schedule: add_link 1 5 0 2 1 255
+00:37.454	ID:2	TSCH: {asn-0.81b link-1-17-1-1 ch-15} uc-1-0 74 tx 1, st 0-1, dr 7
+00:37.476	ID:2	TSCH: {asn-0.81d link-2-31-0-2 ch-20} bc-1-0 95 tx 0, st 0-1
+00:38.294	ID:2	TSCH: enqueue EB packet 36 17 3
+00:42.065	ID:2	TSCH: EB received
+00:42.083	ID:2	TSCH: {asn-0.950 link-0-397-2-0 ch-15} bc-0-0 36 tx 0, st 0-1
+00:44.815	ID:2	RPL: DIO dio_output() called in handle_dio_timer()
+00:44.821	ID:2	TSCH: send packet to 255 with seqno 4, queue 0 1, len 15 95
+00:44.923	ID:2	TSCH: {asn-0.a0d link-2-31-0-2 ch-20} bc-1-0 95 tx 0, st 0-1
+00:45.028	ID:2	TSCH: enqueue EB packet 36 17 5
+00:48.026	ID:2	TSCH: EB received
+00:48.044	ID:2	TSCH: {asn-0.add link-0-397-2-0 ch-25} bc-0-0 36 tx 0, st 0-1
+00:48.053	ID:3	TSCH-schedule: add_link 0 2 2 2 0 0
+00:48.056	ID:3	TSCH-schedule: add_link 1 5 0 2 1 255
+00:48.747	ID:2	TSCH: enqueue EB packet 36 17 6
+00:53.986	ID:2	TSCH: EB received
+00:54.005	ID:2	TSCH: {asn-0.c6a link-0-397-2-0 ch-26} bc-0-0 36 tx 0, st 0-1
+00:56.146	ID:2	TSCH: enqueue EB packet 36 17 7
+00:58.714	ID:2	RPL: DIO dio_output() called in handle_dio_timer()
+00:58.720	ID:2	TSCH: send packet to 255 with seqno 8, queue 0 1, len 15 95
+00:58.887	ID:2	TSCH: {asn-0.daf link-2-31-0-2 ch-25} bc-1-0 95 tx 0, st 0-1
+00:59.947	ID:2	TSCH: EB received
+00:59.966	ID:2	TSCH: {asn-0.df7 link-0-397-2-0 ch-20} bc-0-0 36 tx 0, st 0-1
+01:01.363	ID:3	RPL: handle_dao_timer - sending DAO
+01:01.455	ID:2	TSCH: received from 3 with seqno 2
+01:01.460	ID:2	TSCH-schedule: add_link 1 5 0 3 1 255
+01:01.466	ID:2	TSCH: send packet to 1 with seqno 9, queue 0 1, len 21 74
+01:01.703	ID:2	TSCH: {asn-0.e6a link-1-17-1-1 ch-20} uc-1-0 74 tx 1, st 0-1, dr 7
+01:01.751	ID:1	RPL: DIO dio_output() called in handle_dio_timer()
+01:01.791	ID:3	RPL: DIO dio_output() called in handle_dio_timer()
+01:02.747	ID:2	TSCH: enqueue EB packet 36 17 10
+01:05.908	ID:2	TSCH: EB received
+01:05.927	ID:2	TSCH: {asn-0.f84 link-0-397-2-0 ch-15} bc-0-0 36 tx 0, st 0-1
+01:08.900	ID:3	RPL: DIO dio_output() called in handle_dio_timer()
+01:09.125	ID:2	TSCH: received from 3 with seqno 6
+01:09.638	ID:2	TSCH: enqueue EB packet 36 17 11
+01:11.869	ID:2	TSCH: EB received
+01:11.888	ID:2	TSCH: {asn-0.1111 link-0-397-2-0 ch-25} bc-0-0 36 tx 0, st 0-1
+01:13.372	ID:2	TSCH: enqueue EB packet 36 17 12
+01:17.830	ID:2	TSCH: EB received
+01:17.848	ID:2	TSCH: {asn-0.129e link-0-397-2-0 ch-26} bc-0-0 36 tx 0, st 0-1
+01:20.130	ID:2	TSCH: enqueue EB packet 36 17 13
+01:23.790	ID:2	TSCH: EB received
+01:23.809	ID:2	TSCH: {asn-0.142b link-0-397-2-0 ch-20} bc-0-0 36 tx 0, st 0-1
+01:23.841	ID:2	TSCH: enqueue EB packet 36 17 14
+01:25.745	ID:2	RPL: DIO dio_output() called in handle_dio_timer()
+01:25.751	ID:2	TSCH: send packet to 255 with seqno 15, queue 0 1, len 15 95
+01:25.883	ID:2	TSCH: {asn-0.14b5 link-2-31-0-2 ch-20} bc-1-0 95 tx 0, st 0-1
+01:26.822	ID:3	RPL: DIO dio_output() called in handle_dio_timer()
+01:27.277	ID:2	TSCH: received from 3 with seqno 10
+01:29.751	ID:2	TSCH: EB received
+01:29.770	ID:2	TSCH: {asn-0.15b8 link-0-397-2-0 ch-15} bc-0-0 36 tx 0, st 0-1
+01:30.895	ID:2	TSCH: enqueue EB packet 36 17 16
+01:35.712	ID:2	TSCH: EB received
+01:35.731	ID:2	TSCH: {asn-0.1745 link-0-397-2-0 ch-25} bc-0-0 36 tx 0, st 0-1
+01:37.278	ID:2	TSCH: enqueue EB packet 36 17 17
+01:41.259	ID:1	RPL: DIO dio_output() called in handle_dio_timer()
+01:41.673	ID:2	TSCH: EB received
+01:41.692	ID:2	TSCH: {asn-0.18d2 link-0-397-2-0 ch-26} bc-0-0 36 tx 0, st 0-1
+01:41.707	ID:2	TSCH: received from 1 with seqno 21
+01:43.474	ID:2	TSCH: enqueue EB packet 36 17 18
+01:47.634	ID:2	TSCH: EB received
+01:47.653	ID:2	TSCH: {asn-0.1a5f link-0-397-2-0 ch-20} bc-0-0 36 tx 0, st 0-1
+01:50.481	ID:2	TSCH: enqueue EB packet 36 17 19
+01:53.595	ID:2	TSCH: EB received
+01:53.613	ID:2	TSCH: {asn-0.1bec link-0-397-2-0 ch-15} bc-0-0 36 tx 0, st 0-1
+01:54.067	ID:2	TSCH: enqueue EB packet 36 17 20
+01:58.307	ID:3	RPL: DIO dio_output() called in handle_dio_timer()
+01:58.463	ID:2	TSCH: received from 3 with seqno 16
+01:59.555	ID:2	TSCH: EB received
+01:59.574	ID:2	TSCH: {asn-0.1d79 link-0-397-2-0 ch-25} bc-0-0 36 tx 0, st 0-1
+02:01.372	ID:2	TSCH: enqueue EB packet 36 17 21
+02:05.516	ID:2	TSCH: EB received
+02:05.535	ID:2	TSCH: {asn-0.1f06 link-0-397-2-0 ch-26} bc-0-0 36 tx 0, st 0-1
+02:09.005	ID:2	TSCH: enqueue EB packet 36 17 22
+02:11.477	ID:2	TSCH: EB received
+02:11.496	ID:2	TSCH: {asn-0.2093 link-0-397-2-0 ch-20} bc-0-0 36 tx 0, st 0-1
+02:12.528	ID:2	TSCH: enqueue EB packet 36 17 23
+02:17.007	ID:2	TSCH: received from 3 with seqno 20
+02:17.438	ID:2	TSCH: EB received
+02:17.457	ID:2	TSCH: {asn-0.2220 link-0-397-2-0 ch-15} bc-0-0 36 tx 0, st 0-1
+02:17.785	ID:2	RPL: DIO dio_output() called in handle_dio_timer()
+02:17.791	ID:2	TSCH: send packet to 255 with seqno 24, queue 0 1, len 15 95
+02:18.014	ID:2	TSCH: {asn-0.2245 link-2-31-0-2 ch-20} bc-1-0 95 tx 0, st 0-1
+02:19.958	ID:2	TSCH: enqueue EB packet 36 17 25
+02:23.399	ID:2	TSCH: EB received
+02:23.417	ID:2	TSCH: {asn-0.23ad link-0-397-2-0 ch-25} bc-0-0 36 tx 0, st 0-1
+02:23.802	ID:2	TSCH: enqueue EB packet 36 17 26
+02:29.359	ID:2	TSCH: EB received
+02:29.378	ID:2	TSCH: {asn-0.253a link-0-397-2-0 ch-26} bc-0-0 36 tx 0, st 0-1
+02:30.841	ID:2	TSCH: enqueue EB packet 36 17 27
+02:35.320	ID:2	TSCH: EB received
+02:35.339	ID:2	TSCH: {asn-0.26c7 link-0-397-2-0 ch-20} bc-0-0 36 tx 0, st 0-1
+02:37.396	ID:2	TSCH: enqueue EB packet 36 17 28
+02:41.300	ID:2	TSCH: {asn-0.2854 link-0-397-2-0 ch-15} bc-0-0 36 tx 0, st 0-1
+02:44.278	ID:2	TSCH: enqueue EB packet 36 17 29
+02:46.718	ID:2	TSCH: send packet to 1 with seqno 30, queue 0 1, len 21 21
+02:46.719	ID:2	TSCH: sending KA to 1
+02:46.866	ID:2	TSCH: {asn-0.29c6 link-1-17-1-1 ch-20} uc-1-0 21 tx 1, st 0-1, dr 7
+02:47.242	ID:2	TSCH: EB received
+02:47.261	ID:2	TSCH: {asn-0.29e1 link-0-397-2-0 ch-25} bc-0-0 36 tx 0, st 0-1
+02:47.677	ID:2	TSCH: enqueue EB packet 36 17 31
+02:53.203	ID:2	TSCH: EB received
+02:53.221	ID:2	TSCH: {asn-0.2b6e link-0-397-2-0 ch-26} bc-0-0 36 tx 0, st 0-1
+02:54.014	ID:2	TSCH: enqueue EB packet 36 17 32
+02:59.163	ID:2	TSCH: EB received
+02:59.182	ID:2	TSCH: {asn-0.2cfb link-0-397-2-0 ch-20} bc-0-0 36 tx 0, st 0-1
+02:59.619	ID:3	RPL: DIO dio_output() called in handle_dio_timer()
+02:59.903	ID:2	TSCH: received from 3 with seqno 28
+03:01.302	ID:2	TSCH: enqueue EB packet 36 17 33
+03:05.124	ID:2	TSCH: EB received
+03:05.143	ID:2	TSCH: {asn-0.2e88 link-0-397-2-0 ch-15} bc-0-0 36 tx 0, st 0-1
+03:08.106	ID:2	TSCH: enqueue EB packet 36 17 34
+03:11.085	ID:2	TSCH: EB received
+03:11.104	ID:2	TSCH: {asn-0.3015 link-0-397-2-0 ch-25} bc-0-0 36 tx 0, st 0-1
+03:11.513	ID:2	TSCH: enqueue EB packet 36 17 35
+03:17.046	ID:2	TSCH: EB received
+03:17.065	ID:2	TSCH: {asn-0.31a2 link-0-397-2-0 ch-26} bc-0-0 36 tx 0, st 0-1
+03:18.427	ID:2	TSCH: enqueue EB packet 36 17 36
+03:23.007	ID:2	TSCH: EB received
+03:23.026	ID:2	TSCH: {asn-0.332f link-0-397-2-0 ch-20} bc-0-0 36 tx 0, st 0-1
+03:25.356	ID:2	TSCH: enqueue EB packet 36 17 37
+03:28.968	ID:2	TSCH: EB received
+03:28.986	ID:2	TSCH: {asn-0.34bc link-0-397-2-0 ch-15} bc-0-0 36 tx 0, st 0-1
+
