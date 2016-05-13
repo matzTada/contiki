@@ -155,12 +155,17 @@ handle_dio_timer(void *ptr)
     }
   }
 
+//added by TadaMatz 2016/May/13
+  PRINTF("RPL: handle_dio_timer called _s=%d _c=%d _u=%d", instance->dio_send, instance->dio_counter, instance->dio_redundancy);
+
   if(instance->dio_send) {
     /* send DIO if counter is less than desired redundancy */
     if(instance->dio_redundancy != 0 && instance->dio_counter < instance->dio_redundancy) {
 #if RPL_CONF_STATS
       instance->dio_totsend++;
 #endif /* RPL_CONF_STATS */
+      //added by TadaMatz 2016/May/13
+      PRINTF("RPL: dio_output() called in handle_dio_timer()\n");
       dio_output(instance, NULL);
     } else {
       PRINTF("RPL: Suppressing DIO transmission (%d >= %d)\n",
