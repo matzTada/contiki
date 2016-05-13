@@ -156,7 +156,7 @@ handle_dio_timer(void *ptr)
   }
 
 //added by TadaMatz 2016/May/13
-  PRINTF("RPL: handle_dio_timer called _s=%d _c=%d _u=%d", instance->dio_send, instance->dio_counter, instance->dio_redundancy);
+  PRINTF("RPL: handle_dio_timer called _s=%d _c=%d _u=%d\n", instance->dio_send, instance->dio_counter, instance->dio_redundancy);
 
   if(instance->dio_send) {
     /* send DIO if counter is less than desired redundancy */
