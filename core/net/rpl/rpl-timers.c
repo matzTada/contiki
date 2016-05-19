@@ -48,8 +48,8 @@
 #include "sys/ctimer.h"
 
 //modified by TadaMatz 2016/May/12 enable debug
-//#define DEBUG DEBUG_NONE
-#define DEBUG DEBUG_PRINT
+#define DEBUG DEBUG_NONE
+//#define DEBUG DEBUG_PRINT
 #include "net/ip/uip-debug.h"
 
 /* A configurable function called after update of the RPL DIO interval */

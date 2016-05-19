@@ -202,6 +202,8 @@ PROCESS_THREAD(node_process, ev, data)
   //etimer_set(&et, CLOCK_SECOND * 10);
   while(1) {      
     print_network_status();
+    /*Print tsch schedule*/
+    tsch_schedule_print();
     PROCESS_YIELD_UNTIL(etimer_expired(&et));
     etimer_reset(&et);
   }
