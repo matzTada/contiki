@@ -384,6 +384,9 @@ PT_THREAD(tsch_tx_slot(struct pt *pt, struct rtimer *t))
    * 7. Schedule mac_call_sent_callback
    **/
 
+  //added by TadaMatz 19/May/2016 print out called or not
+  //PRINTF("PT_THREAD(tsch_tx_slot) called %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
+
   /* tx status */
   static uint8_t mac_tx_status;
   /* is the packet in its neighbor's queue? */
@@ -632,6 +635,9 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
    * 4. Prepare and send ACK if needed
    * 5. Drift calculated in the ACK callback registered with the radio driver. Use it if receiving from a time source neighbor.
    **/
+
+  //added by TadaMatz 19/May/2016 print out called or not
+  //PRINTF("PT_THREAD(tsch_rx_slot) called %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
 
   struct tsch_neighbor *n;
   static linkaddr_t source_address;
@@ -882,12 +888,17 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
          **/
         static struct pt slot_tx_pt;
         PT_SPAWN(&slot_operation_pt, &slot_tx_pt, tsch_tx_slot(&slot_tx_pt, t));
+	//added by TadaMatz 19/May/2016 to see packet sent or not
+	//PRINTF("so TS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
       } else if((current_link->link_options & LINK_OPTION_RX)) {
         /* Listen */
         static struct pt slot_rx_pt;
         PT_SPAWN(&slot_operation_pt, &slot_rx_pt, tsch_rx_slot(&slot_rx_pt, t));
+	//added by TadaMatz 19/May/2016 to see packet sent or not
+	//PRINTF("so RS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
       }
       TSCH_DEBUG_SLOT_END();
+
     }
 
     /* End of slot operation, schedule next slot or resynchronize */

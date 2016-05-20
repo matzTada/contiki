@@ -198,11 +198,12 @@ PROCESS_THREAD(node_process, ev, data)
 #endif /* WITH_ORCHESTRA */
   
   /* Print out routing tables every minute */
-//modified by TadaMatz 2016/May/10
-  //etimer_set(&et, CLOCK_SECOND * 60);
-  etimer_set(&et, CLOCK_SECOND * 15);
+  //modified by TadaMatz 2016/May/10
+  etimer_set(&et, CLOCK_SECOND * 60);
+  //etimer_set(&et, CLOCK_SECOND * 15);
   while(1) {      
     print_network_status();
+    tsch_schedule_print();
     PROCESS_YIELD_UNTIL(etimer_expired(&et));
     etimer_reset(&et);
   }

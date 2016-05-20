@@ -94,24 +94,6 @@
       </interface_config>
       <motetype_identifier>z11</motetype_identifier>
     </mote>
-    <mote>
-      <breakpoints />
-      <interface_config>
-        org.contikios.cooja.interfaces.Position
-        <x>131.3903497787625</x>
-        <y>147.73366967216737</y>
-        <z>0.0</z>
-      </interface_config>
-      <interface_config>
-        org.contikios.cooja.mspmote.interfaces.MspClock
-        <deviation>1.0</deviation>
-      </interface_config>
-      <interface_config>
-        org.contikios.cooja.mspmote.interfaces.MspMoteID
-        <id>4</id>
-      </interface_config>
-      <motetype_identifier>z11</motetype_identifier>
-    </mote>
   </simulation>
   <plugin>
     org.contikios.cooja.plugins.SimControl
@@ -133,7 +115,7 @@
       <viewport>1.633492604349853 0.0 0.0 1.633492604349853 78.11943631396153 -71.00942696885303</viewport>
     </plugin_config>
     <width>497</width>
-    <z>2</z>
+    <z>1</z>
     <height>242</height>
     <location_x>29</location_x>
     <location_y>886</location_y>
@@ -146,7 +128,7 @@
       <coloring />
     </plugin_config>
     <width>795</width>
-    <z>1</z>
+    <z>2</z>
     <height>1129</height>
     <location_x>540</location_x>
     <location_y>6</location_y>
@@ -157,7 +139,6 @@
       <mote>0</mote>
       <mote>1</mote>
       <mote>2</mote>
-      <mote>3</mote>
       <showRadioRXTX />
       <showRadioHW />
       <showLEDs />
