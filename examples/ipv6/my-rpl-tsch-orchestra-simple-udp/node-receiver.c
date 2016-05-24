@@ -273,7 +273,7 @@ PROCESS_THREAD(unicast_receiver_process, ev, data)
   servreg_hack_init();
 
   // ipaddr = set_global_address();
-  ipaddr = &uip_ds6_if.addr_list[i].ipaddr; //oh... should be nice
+  ipaddr = &uip_ds6_if.addr_list[0].ipaddr; //oh... should be nice
 
   // create_rpl_dag(ipaddr);
 
