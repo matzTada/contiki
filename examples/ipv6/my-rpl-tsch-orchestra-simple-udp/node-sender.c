@@ -34,6 +34,11 @@
  *         Press use button at startup to configure.
  *
  * \author Simon Duquennoy <simonduq@sics.se>
+ * 
+ * \file sender
+ * \modify enable application packet on RPL-TSCH by combining
+ *  the rpl-tsch example and the simple-udp-rpl example
+ * \author Tada Matz
  */
 
 #include "contiki.h"
@@ -53,8 +58,37 @@
 #include "button-sensor.h"
 #endif /* CONFIG_VIA_BUTTON */
 
+/* ----------------- simple-udp-rpl include and declaration start----------------- */
+#include "lib/random.h"
+#include "sys/ctimer.h"
+#include "sys/etimer.h"
+#include "net/ip/uip.h"
+#include "net/ipv6/uip-ds6.h"
+// #include "net/ip/uip-debug.h"
+
+#include "simple-udp.h"
+#include "servreg-hack.h"
+
+// #include "net/rpl/rpl.h"
+
+#include <stdio.h>
+#include <string.h>
+
+#define UDP_PORT 1234
+#define SERVICE_ID 190
+
+#define SEND_INTERVAL   (10 * CLOCK_SECOND)
+#define SEND_TIME   (random_rand() % (SEND_INTERVAL))
+
+static struct simple_udp_connection unicast_connection;
+
+PROCESS(unicast_sender_process, "Unicast sender example process");
+AUTOSTART_PROCESSES(&unicast_sender_process);
+/* ----------------- simple-udp-rpl include and declaration end ----------------- */
+
+
 /*---------------------------------------------------------------------------*/
-PROCESS(node_process, "RPL Node");
+PROCESS(node_process, "RPL Node sender");
 #if CONFIG_VIA_BUTTON
 AUTOSTART_PROCESSES(&node_process, &sensors_process);
 #else /* CONFIG_VIA_BUTTON */
@@ -127,6 +161,22 @@ net_init(uip_ipaddr_t *br_prefix)
 
   NETSTACK_MAC.on();
 }
+/* ----------------- simple-udp-rpl functions start----------------- */
+/*simple-udp-rpl---------------------------------------------------------------------------*/
+static void
+receiver(struct simple_udp_connection *c,
+         const uip_ipaddr_t *sender_addr,
+         uint16_t sender_port,
+         const uip_ipaddr_t *receiver_addr,
+         uint16_t receiver_port,
+         const uint8_t *data,
+         uint16_t datalen)
+{
+  printf("Data received on port %d from port %d with length %d\n",
+         receiver_port, sender_port, datalen);
+}
+/* ----------------- simple-udp-rpl functions end ----------------- */
+/*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(node_process, ev, data)
 {
@@ -199,8 +249,11 @@ PROCESS_THREAD(node_process, ev, data)
   
   /* Print out routing tables every minute */
   etimer_set(&et, CLOCK_SECOND * 60);
+  //etimer_set(&et, CLOCK_SECOND * 10);
   while(1) {      
     print_network_status();
+    /*Print tsch schedule*/
+    tsch_schedule_print();
     PROCESS_YIELD_UNTIL(etimer_expired(&et));
     etimer_reset(&et);
   }
@@ -208,3 +261,47 @@ PROCESS_THREAD(node_process, ev, data)
   PROCESS_END();
 }
 /*---------------------------------------------------------------------------*/
+/* ----------------- simple-udp-rpl process start----------------- */
+/*simple-udp-rpl---------------------------------------------------------------------------*/
+PROCESS_THREAD(unicast_sender_process, ev, data)
+{
+  static struct etimer periodic_timer;
+  static struct etimer send_timer;
+  uip_ipaddr_t *addr;
+
+  PROCESS_BEGIN();
+
+  servreg_hack_init();
+
+  // set_global_address();
+
+  simple_udp_register(&unicast_connection, UDP_PORT,
+                      NULL, UDP_PORT, receiver);
+
+  etimer_set(&periodic_timer, SEND_INTERVAL);
+  while(1) {
+
+    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
+    etimer_reset(&periodic_timer);
+    etimer_set(&send_timer, SEND_TIME);
+
+    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
+    addr = servreg_hack_lookup(SERVICE_ID);
+    if(addr != NULL) {
+      static unsigned int message_number;
+      char buf[20];
+
+      printf("Sending unicast to ");
+      uip_debug_ipaddr_print(addr);
+      printf("\n");
+      sprintf(buf, "Message %d", message_number);
+      message_number++;
+      simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
+    } else {
+      printf("Service %d not found\n", SERVICE_ID);
+    }
+  }
+
+  PROCESS_END();
+}
+/* ----------------- simple-udp-rpl process end ----------------- */
