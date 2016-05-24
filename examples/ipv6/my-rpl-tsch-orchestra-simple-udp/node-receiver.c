@@ -83,15 +83,15 @@
 static struct simple_udp_connection unicast_connection;
 
 PROCESS(unicast_receiver_process, "Unicast receiver example process");
-AUTOSTART_PROCESSES(&unicast_receiver_process);
+// AUTOSTART_PROCESSES(&unicast_receiver_process);
 /* ----------------- simple-udp-rpl include and declaration end ----------------- */
 
 /*---------------------------------------------------------------------------*/
 PROCESS(node_process, "RPL Node receiver");
 #if CONFIG_VIA_BUTTON
-AUTOSTART_PROCESSES(&node_process, &sensors_process);
+AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_receiver_process);
 #else /* CONFIG_VIA_BUTTON */
-AUTOSTART_PROCESSES(&node_process);
+AUTOSTART_PROCESSES(&node_process, &unicast_receiver_process);
 #endif /* CONFIG_VIA_BUTTON */
 
 /*---------------------------------------------------------------------------*/
