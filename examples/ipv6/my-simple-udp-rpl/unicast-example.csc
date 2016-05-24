@@ -7,13 +7,13 @@
   <project EXPORT="discard">[APPS_DIR]/collect-view</project>
   <project EXPORT="discard">[APPS_DIR]/powertracker</project>
   <simulation>
-    <title>Data collection network using IPv6 and RPL</title>
-    <randomseed>generated</randomseed>
-    <motedelay_us>5000000</motedelay_us>
+    <title>Simple UDP unicast example</title>
+    <randomseed>123456</randomseed>
+    <motedelay_us>1000000</motedelay_us>
     <radiomedium>
       org.contikios.cooja.radiomediums.UDGM
       <transmitting_range>50.0</transmitting_range>
-      <interference_range>50.0</interference_range>
+      <interference_range>100.0</interference_range>
       <success_ratio_tx>1.0</success_ratio_tx>
       <success_ratio_rx>1.0</success_ratio_rx>
     </radiomedium>
@@ -23,10 +23,10 @@
     <motetype>
       org.contikios.cooja.mspmote.SkyMoteType
       <identifier>sky1</identifier>
-      <description>Sky Mote Type #sky1</description>
-      <source EXPORT="discard">[CONTIKI_DIR]/examples/ipv6/my-rpl-udp/udp-server.c</source>
-      <commands EXPORT="discard">make udp-server.sky TARGET=sky</commands>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-rpl-udp/udp-server.sky</firmware>
+      <description>UDP receiver</description>
+      <source EXPORT="discard">[CONTIKI_DIR]/examples/ipv6/my-simple-udp-rpl/unicast-receiver.c</source>
+      <commands EXPORT="discard">make unicast-receiver.sky TARGET=sky</commands>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-simple-udp-rpl/unicast-receiver.sky</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -46,10 +46,10 @@
     <motetype>
       org.contikios.cooja.mspmote.SkyMoteType
       <identifier>sky2</identifier>
-      <description>Sky Mote Type #sky2</description>
-      <source EXPORT="discard">[CONTIKI_DIR]/examples/ipv6/my-rpl-udp/udp-client.c</source>
-      <commands EXPORT="discard">make udp-client.sky TARGET=sky</commands>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-rpl-udp/udp-client.sky</firmware>
+      <description>UDP sender</description>
+      <source EXPORT="discard">[CONTIKI_DIR]/examples/ipv6/my-simple-udp-rpl/unicast-sender.c</source>
+      <commands EXPORT="discard">make unicast-sender.sky TARGET=sky</commands>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-simple-udp-rpl/unicast-sender.sky</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -70,8 +70,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>-11.568650808772297</x>
-        <y>7.032092722541279</y>
+        <x>20.93897804437629</x>
+        <y>61.872918173979464</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -88,8 +88,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>31.93235677345495</x>
-        <y>6.348710948340312</y>
+        <x>56.491911650996705</x>
+        <y>63.35124236243285</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -106,8 +106,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>66.3472013083383</x>
-        <y>7.116571441949445</y>
+        <x>94.75424837128688</x>
+        <y>63.44204404429459</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -123,27 +123,26 @@
   </simulation>
   <plugin>
     org.contikios.cooja.plugins.SimControl
-    <width>259</width>
-    <z>0</z>
-    <height>184</height>
-    <location_x>3</location_x>
-    <location_y>15</location_y>
+    <width>318</width>
+    <z>3</z>
+    <height>192</height>
+    <location_x>25</location_x>
+    <location_y>774</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Visualizer
     <plugin_config>
       <skin>org.contikios.cooja.plugins.skins.IDVisualizerSkin</skin>
+      <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
+      <skin>org.contikios.cooja.plugins.skins.MoteTypeVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
-      <skin>org.contikios.cooja.plugins.skins.AttributeVisualizerSkin</skin>
-      <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
-      <skin>org.contikios.cooja.plugins.skins.LogVisualizerSkin</skin>
-      <viewport>2.349818846983307 0.0 0.0 2.349818846983307 157.4777352653334 221.4327561358694</viewport>
+      <viewport>2.3409990660057263 0.0 0.0 2.3409990660057263 26.752487588138735 -9.30519920075769</viewport>
     </plugin_config>
-    <width>520</width>
-    <z>2</z>
-    <height>523</height>
-    <location_x>14</location_x>
-    <location_y>210</location_y>
+    <width>300</width>
+    <z>0</z>
+    <height>300</height>
+    <location_x>285</location_x>
+    <location_y>826</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.LogListener
@@ -152,11 +151,27 @@
       <formatted_time />
       <coloring />
     </plugin_config>
-    <width>781</width>
+    <width>738</width>
     <z>1</z>
-    <height>981</height>
-    <location_x>554</location_x>
-    <location_y>11</location_y>
+    <height>1152</height>
+    <location_x>595</location_x>
+    <location_y>1</location_y>
+  </plugin>
+  <plugin>
+    org.contikios.cooja.plugins.TimeLine
+    <plugin_config>
+      <mote>0</mote>
+      <mote>1</mote>
+      <mote>2</mote>
+      <showRadioRXTX />
+      <showRadioHW />
+      <zoomfactor>500.0</zoomfactor>
+    </plugin_config>
+    <width>411</width>
+    <z>2</z>
+    <height>268</height>
+    <location_x>-5</location_x>
+    <location_y>451</location_y>
   </plugin>
 </simconf>
 
