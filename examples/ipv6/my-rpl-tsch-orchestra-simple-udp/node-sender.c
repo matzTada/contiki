@@ -172,7 +172,7 @@ receiver(struct simple_udp_connection *c,
          const uint8_t *data,
          uint16_t datalen)
 {
-  printf("Data received from ");
+  printf("DATA: received from ");
   uip_debug_ipaddr_print(sender_addr);
   printf(" on port %d from port %d with length %d: '%s'\n",
          receiver_port, sender_port, datalen, data);
@@ -288,20 +288,27 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
     etimer_set(&send_timer, SEND_TIME);
 
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
+    
+    /*--- target address decision ---*/
+    /*-- to registered target with servreg_hack --*/
     //addr = servreg_hack_lookup(SERVICE_ID);
-    uip_ds6_defrt_t *default_route;
-    default_route = uip_ds6_defrt_lookup(uip_ds6_defrt_choose());
-    if(default_route != NULL){
-      addr = &default_route->ipaddr;
-    }else{
-      addr = NULL;
-    }
+    /*-- to default root --*/
+    //uip_ds6_defrt_t *default_route;
+    //default_route = uip_ds6_defrt_lookup(uip_ds6_defrt_choose());
+    //if(default_route != NULL) addr = &default_route->ipaddr;
+    //else addr = NULL;
+    /*-- decide by address directory--*/
+    uip_ipaddr_t temp_ipaddr;
+    uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,1);
+    addr = &temp_ipaddr;
+ 
+    /*--- sending ---*/ 
     if(addr != NULL) {
       static unsigned int message_number;
       char buf[20];
 
       sprintf(buf, "Hello TadaMatz %d", message_number);
-      printf("Sending unicast to ");
+      printf("DATA: Sending unicast to ");
       uip_debug_ipaddr_print(addr);
       printf(" '");
       printf(buf);
@@ -309,7 +316,7 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
       message_number++;
       simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
     } else {
-      printf("Service %d not found\n", SERVICE_ID);
+      printf("DATA: addr is NULL!!");
     }
   }
 

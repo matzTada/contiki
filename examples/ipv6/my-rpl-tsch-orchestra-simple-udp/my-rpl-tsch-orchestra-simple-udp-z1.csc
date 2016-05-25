@@ -23,7 +23,7 @@
     <motetype>
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z11</identifier>
-      <description>Z1 Mote Type #z11</description>
+      <description>Z1 Mote Type Receiver</description>
       <source EXPORT="discard">[CONTIKI_DIR]/examples/ipv6/my-rpl-tsch-orchestra-simple-udp/node-receiver.c</source>
       <commands EXPORT="discard">make node-receiver.z1 TARGET=z1</commands>
       <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-rpl-tsch-orchestra-simple-udp/node-receiver.z1</firmware>
@@ -43,7 +43,7 @@
     <motetype>
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z12</identifier>
-      <description>Z1 Mote Type #z12</description>
+      <description>Z1 Mote Type Sender</description>
       <source EXPORT="discard">[CONTIKI_DIR]/examples/ipv6/my-rpl-tsch-orchestra-simple-udp/node-sender.c</source>
       <commands EXPORT="discard">make node-sender.z1 TARGET=z1</commands>
       <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-rpl-tsch-orchestra-simple-udp/node-sender.z1</firmware>
@@ -114,6 +114,78 @@
       </interface_config>
       <motetype_identifier>z12</motetype_identifier>
     </mote>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>147.07008733670068</x>
+        <y>61.32442756105969</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>4</id>
+      </interface_config>
+      <motetype_identifier>z12</motetype_identifier>
+    </mote>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>177.3958308067185</x>
+        <y>67.97402690993184</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>5</id>
+      </interface_config>
+      <motetype_identifier>z12</motetype_identifier>
+    </mote>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>207.85884503505346</x>
+        <y>74.24054593232711</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>6</id>
+      </interface_config>
+      <motetype_identifier>z12</motetype_identifier>
+    </mote>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>243.0254194240505</x>
+        <y>81.25917723466405</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>7</id>
+      </interface_config>
+      <motetype_identifier>z12</motetype_identifier>
+    </mote>
   </simulation>
   <plugin>
     org.contikios.cooja.plugins.SimControl
@@ -131,10 +203,10 @@
       <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
-      <viewport>4.566753897437981 0.0 0.0 4.566753897437981 -136.8463742908594 -90.06028187234135</viewport>
+      <viewport>1.2796242108267342 0.0 0.0 1.2796242108267342 25.03197484100252 86.2844723620183</viewport>
     </plugin_config>
     <width>400</width>
-    <z>4</z>
+    <z>1</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -147,7 +219,7 @@
       <coloring />
     </plugin_config>
     <width>862</width>
-    <z>1</z>
+    <z>2</z>
     <height>989</height>
     <location_x>472</location_x>
     <location_y>1</location_y>
@@ -158,13 +230,17 @@
       <mote>0</mote>
       <mote>1</mote>
       <mote>2</mote>
+      <mote>3</mote>
+      <mote>4</mote>
+      <mote>5</mote>
+      <mote>6</mote>
       <showRadioRXTX />
       <showRadioHW />
       <showLEDs />
       <zoomfactor>2000.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
-    <z>2</z>
+    <z>3</z>
     <height>166</height>
     <location_x>0</location_x>
     <location_y>987</location_y>
@@ -176,7 +252,7 @@
       <decorations>true</decorations>
     </plugin_config>
     <width>381</width>
-    <z>3</z>
+    <z>4</z>
     <height>160</height>
     <location_x>5</location_x>
     <location_y>829</location_y>
