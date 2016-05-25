@@ -286,15 +286,24 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
     etimer_set(&send_timer, SEND_TIME);
 
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
-    addr = servreg_hack_lookup(SERVICE_ID);
+    //addr = servreg_hack_lookup(SERVICE_ID);
+    uip_ds6_defrt_t *default_route;
+    default_route = uip_ds6_defrt_lookup(uip_ds6_defrt_choose());
+    if(default_route != NULL){
+      addr = &default_route->ipaddr;
+    }else{
+      addr = NULL;
+    }
     if(addr != NULL) {
       static unsigned int message_number;
       char buf[20];
 
+      sprintf(buf, "Hello TadaMatz %d", message_number);
       printf("Sending unicast to ");
       uip_debug_ipaddr_print(addr);
-      printf("\n");
-      sprintf(buf, "Message %d", message_number);
+      printf(" '");
+      printf(buf);
+      printf("'\n");
       message_number++;
       simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
     } else {
