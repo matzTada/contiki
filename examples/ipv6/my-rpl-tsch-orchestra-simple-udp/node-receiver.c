@@ -67,7 +67,7 @@
 // #include "net/ip/uip-debug.h"
 
 #include "simple-udp.h"
-#include "servreg-hack.h"
+//#include "servreg-hack.h"
 
 // #include "net/rpl/rpl.h"
 
@@ -266,18 +266,18 @@ PROCESS_THREAD(node_process, ev, data)
 /*simple-udp-rpl---------------------------------------------------------------------------*/
 PROCESS_THREAD(unicast_receiver_process, ev, data)
 {
-  uip_ipaddr_t *ipaddr;
+  //uip_ipaddr_t *ipaddr;
 
   PROCESS_BEGIN();
 
-  servreg_hack_init();
+  //servreg_hack_init();
 
   // ipaddr = set_global_address();
-  ipaddr = &uip_ds6_if.addr_list[0].ipaddr; //oh... should be nice
+  //ipaddr = &uip_ds6_if.addr_list[0].ipaddr; //oh... should be nice
 
   // create_rpl_dag(ipaddr);
 
-  servreg_hack_register(SERVICE_ID, ipaddr);
+  //servreg_hack_register(SERVICE_ID, ipaddr);
 
   simple_udp_register(&unicast_connection, UDP_PORT,
                       NULL, UDP_PORT, receiver);

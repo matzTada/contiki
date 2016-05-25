@@ -67,7 +67,7 @@
 // #include "net/ip/uip-debug.h"
 
 #include "simple-udp.h"
-#include "servreg-hack.h"
+//#include "servreg-hack.h"
 
 // #include "net/rpl/rpl.h"
 
@@ -172,8 +172,10 @@ receiver(struct simple_udp_connection *c,
          const uint8_t *data,
          uint16_t datalen)
 {
-  printf("Data received on port %d from port %d with length %d\n",
-         receiver_port, sender_port, datalen);
+  printf("Data received from ");
+  uip_debug_ipaddr_print(sender_addr);
+  printf(" on port %d from port %d with length %d: '%s'\n",
+         receiver_port, sender_port, datalen, data);
 }
 /* ----------------- simple-udp-rpl functions end ----------------- */
 /*---------------------------------------------------------------------------*/
@@ -271,7 +273,7 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
 
   PROCESS_BEGIN();
 
-  servreg_hack_init();
+  //servreg_hack_init();
 
   // set_global_address();
 
