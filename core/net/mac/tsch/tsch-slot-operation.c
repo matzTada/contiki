@@ -314,6 +314,8 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
         p = tsch_queue_get_packet_for_nbr(n, link);
         /* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
         if(p == NULL && n == n_broadcast) {
+	  //added by TadaMatz to see what happens in DIO sending
+	  PRINTF("u_p_for_any called\n");
           p = tsch_queue_get_unicast_packet_for_any(&n, link);
         }
       }
