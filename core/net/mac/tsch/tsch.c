@@ -59,11 +59,14 @@
 #error TSCH: FRAME802154_VERSION must be at least FRAME802154_IEEE802154E_2012
 #endif
 
-#if TSCH_LOG_LEVEL >= 1
-#define DEBUG DEBUG_PRINT
-#else /* TSCH_LOG_LEVEL */
+//modified b TadaMatz 27/May/2016 en/disable DEBUG PRINT manually
 #define DEBUG DEBUG_NONE
-#endif /* TSCH_LOG_LEVEL */
+//#if TSCH_LOG_LEVEL >= 1
+//#define DEBUG DEBUG_PRINT
+//#else /* TSCH_LOG_LEVEL */
+//#define DEBUG DEBUG_NONE
+//#endif /* TSCH_LOG_LEVEL */
+
 #include "net/ip/uip-debug.h"
 
 /* Use to collect link statistics even on Keep-Alive, even though they were

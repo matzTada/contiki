@@ -310,13 +310,15 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
       /* NORMAL link or no EB to send, pick a data packet */
       if(p == NULL) {
         /* Get neighbor queue associated to the link and get packet from it */
-        n = tsch_queue_get_nbr(&link->addr);
-        p = tsch_queue_get_packet_for_nbr(n, link);
-        /* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
+	n = tsch_queue_get_nbr(&link->addr);
+	p = tsch_queue_get_packet_for_nbr(n, link);
+	//added by TadaMatz to see what happens in DIO sending
+	if(p != NULL) PRINTF("np %u %u\n", n->addr.u8[0], n->addr.u8[1]);
+	/* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
         if(p == NULL && n == n_broadcast) {
-	  //added by TadaMatz to see what happens in DIO sending
-	  PRINTF("u_p_for_any called\n");
           p = tsch_queue_get_unicast_packet_for_any(&n, link);
+	  //added by TadaMatz to see what happens in DIO sending
+	  if(p != NULL) PRINTF("up %u %u\n", n->addr.u8[0], n->addr.u8[1]);
         }
       }
     }
@@ -891,13 +893,13 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
         static struct pt slot_tx_pt;
         PT_SPAWN(&slot_operation_pt, &slot_tx_pt, tsch_tx_slot(&slot_tx_pt, t));
 	//added by TadaMatz 19/May/2016 to see packet sent or not
-	//PRINTF("so TS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
+	PRINTF("so TS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
       } else if((current_link->link_options & LINK_OPTION_RX)) {
         /* Listen */
         static struct pt slot_rx_pt;
         PT_SPAWN(&slot_operation_pt, &slot_rx_pt, tsch_rx_slot(&slot_rx_pt, t));
 	//added by TadaMatz 19/May/2016 to see packet sent or not
-	//PRINTF("so RS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
+	PRINTF("so RS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
       }
       TSCH_DEBUG_SLOT_END();
 
