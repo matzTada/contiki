@@ -81,18 +81,22 @@
 #define SEND_TIME   (random_rand() % (SEND_INTERVAL))
 
 static struct simple_udp_connection unicast_connection;
-
-PROCESS(unicast_sender_process, "Unicast sender example process");
-// AUTOSTART_PROCESSES(&unicast_sender_process);
 /* ----------------- simple-udp-rpl include and declaration end ----------------- */
 
+/*------------------ serial controll include and declaration start----------------*/
+#include "dev/uart0.h" //specific to mote. this is for z1
+#include "dev/serial-line.h"
+#include <stdio.h>
+
+PROCESS(serial_sender_process, "Send data corresponding to input on Serial");
+/*------------------ serial controll include and declaration end----------------*/
 
 /*---------------------------------------------------------------------------*/
 PROCESS(node_process, "RPL Node sender");
 #if CONFIG_VIA_BUTTON
-AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_sender_process);
+AUTOSTART_PROCESSES(&node_process, &sensors_process, &serial_sender_process, &serial_line_process);
 #else /* CONFIG_VIA_BUTTON */
-AUTOSTART_PROCESSES(&node_process, &unicast_sender_process);
+AUTOSTART_PROCESSES(&node_process, &serial_sender_process, &serial_line_process);
 #endif /* CONFIG_VIA_BUTTON */
 
 /*---------------------------------------------------------------------------*/
@@ -263,63 +267,57 @@ PROCESS_THREAD(node_process, ev, data)
   PROCESS_END();
 }
 /*---------------------------------------------------------------------------*/
-/* ----------------- simple-udp-rpl process start----------------- */
-/*simple-udp-rpl---------------------------------------------------------------------------*/
-PROCESS_THREAD(unicast_sender_process, ev, data)
+/* ----------------- serial sender process start ----------------- */
+PROCESS_THREAD(serial_sender_process, ev, data)
 {
-  static struct etimer periodic_timer;
-  static struct etimer send_timer;
-  uip_ipaddr_t *addr;
+	PROCESS_BEGIN();
 
-  PROCESS_BEGIN();
+	uart0_set_input(serial_line_input_byte);//here must be changed corresponding to mote
+	serial_line_init();
 
-  //servreg_hack_init();
+	simple_udp_register(&unicast_connection, UDP_PORT, NULL, UDP_PORT, receiver); //this defines the reveiver and also unicast connection
 
-  // set_global_address();
+	while(1){
+		PROCESS_YIELD();
+		if(ev == serial_line_event_message){
+			printf("SERIAL: in: %s\n", (char *) data);
 
-  simple_udp_register(&unicast_connection, UDP_PORT,
-                      NULL, UDP_PORT, receiver);
+			char sbuf[20];
+			sprintf(sbuf, "%s", (char *)data);
+	
+			uip_ipaddr_t temp_ipaddr;
+			if('1' <= sbuf[0] && sbuf[0] <= '9'){
+				//printf("SERIAL: %c", sbuf[0]);
+				uip_ip6addr(&temp_ipaddr, 0xfd00, 0, 0, 0, 0xc30c, 0, 0, (uint16_t)(sbuf[0] - '0'));
+			}
+			else if('A' <= sbuf[0] && sbuf[0] <= 'Z'){
+				uip_ip6addr(&temp_ipaddr, 0xfd00, 0, 0, 0, 0xc30c, 0, 0, (uint16_t)(sbuf[0] - 'A' + 10));
+			}
+			else{
+				uip_ip6addr(&temp_ipaddr, 0xfd00, 0, 0, 0, 0xc30c, 0, 0, 1);
+			}
+			uip_ipaddr_t * addr;
+			addr = &temp_ipaddr;
 
-  etimer_set(&periodic_timer, SEND_INTERVAL);
-  while(1) {
+    			/*--- sending ---*/ 
+			if(addr != NULL) {
+				static unsigned int message_number;
+				//char buf[20];
 
-    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
-    etimer_reset(&periodic_timer);
-    etimer_set(&send_timer, SEND_TIME);
-
-    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
-    
-    /*--- target address decision ---*/
-    /*-- to registered target with servreg_hack --*/
-    //addr = servreg_hack_lookup(SERVICE_ID);
-    /*-- to default root --*/
-    //uip_ds6_defrt_t *default_route;
-    //default_route = uip_ds6_defrt_lookup(uip_ds6_defrt_choose());
-    //if(default_route != NULL) addr = &default_route->ipaddr;
-    //else addr = NULL;
-    /*-- decide by address directory--*/
-    uip_ipaddr_t temp_ipaddr;
-    uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,6);
-    addr = &temp_ipaddr;
- 
-    /*--- sending ---*/ 
-    if(addr != NULL) {
-      static unsigned int message_number;
-      char buf[20];
-
-      sprintf(buf, "Hello TadaMatz %d", message_number);
-      printf("DATA: Sending unicast to ");
-      uip_debug_ipaddr_print(addr);
-      printf(" '");
-      printf(buf);
-      printf("'\n");
-      message_number++;
-      simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
-    } else {
-      printf("DATA: addr is NULL!!");
-    }
-  }
-
-  PROCESS_END();
+				sprintf(sbuf, "%s,%d", (char *)data, message_number);
+				printf("DATA: Send unicast to ");
+      				uip_debug_ipaddr_print(&temp_ipaddr);
+      				printf(" '");
+      				printf(sbuf);
+      				printf("'\n");
+      				message_number++;
+      				simple_udp_sendto(&unicast_connection, sbuf, strlen(sbuf) + 1, &temp_ipaddr);
+    			} else {
+      				printf("DATA: addr is NULL!!");
+    			}
+		}	
+  	}
+	
+	PROCESS_END();
 }
-/* ----------------- simple-udp-rpl process end ----------------- */
+/* ----------------- serial sender process end ----------------- */
