@@ -300,15 +300,15 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
     //if(default_route != NULL) addr = &default_route->ipaddr;
     //else addr = NULL;
     /*-- decide by address directory--*/
-    //uip_ipaddr_t temp_ipaddr;
-    //uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,1);
-    //addr = &temp_ipaddr;
+    uip_ipaddr_t temp_ipaddr;
+    uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,1);
+    addr = &temp_ipaddr;
     /*-- linklocal rplnodes mcast --*/
     //uip_ipaddr_t temp_ipaddr;
     //uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
     //addr = &temp_ipaddr;
     /*-- to default parent --*/
-    addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent); 
+    //addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent); 
 
     /*--- sending ---*/ 
     if(addr != NULL) {

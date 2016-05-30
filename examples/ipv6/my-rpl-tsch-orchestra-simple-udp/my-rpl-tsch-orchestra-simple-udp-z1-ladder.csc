@@ -248,7 +248,7 @@
       <viewport>4.303828432811558 0.0 0.0 4.303828432811558 -21.606889681412916 20.044870870365642</viewport>
     </plugin_config>
     <width>400</width>
-    <z>0</z>
+    <z>1</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -289,18 +289,6 @@
     <location_y>987</location_y>
   </plugin>
   <plugin>
-    org.contikios.cooja.plugins.Notes
-    <plugin_config>
-      <notes>Enter notes here</notes>
-      <decorations>true</decorations>
-    </plugin_config>
-    <width>381</width>
-    <z>5</z>
-    <height>160</height>
-    <location_x>5</location_x>
-    <location_y>829</location_y>
-  </plugin>
-  <plugin>
     org.contikios.cooja.plugins.MoteInterfaceViewer
     <mote_arg>7</mote_arg>
     <plugin_config>
@@ -308,10 +296,10 @@
       <scrollpos>0,0</scrollpos>
     </plugin_config>
     <width>350</width>
-    <z>1</z>
+    <z>0</z>
     <height>300</height>
-    <location_x>26</location_x>
-    <location_y>545</location_y>
+    <location_x>24</location_x>
+    <location_y>633</location_y>
   </plugin>
 </simconf>
 
