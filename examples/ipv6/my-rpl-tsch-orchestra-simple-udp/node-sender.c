@@ -301,6 +301,10 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
     uip_ipaddr_t temp_ipaddr;
     uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,1);
     addr = &temp_ipaddr;
+    /*-- linklocal rplnodes mcast --*/
+    //uip_ipaddr_t temp_ipaddr;
+    //uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
+    //addr = &temp_ipaddr;
  
     /*--- sending ---*/ 
     if(addr != NULL) {
