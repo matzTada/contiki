@@ -41,6 +41,7 @@
  * \author Tada Matz
  */
 
+
 #include "contiki.h"
 #include "node-id.h"
 #include "net/rpl/rpl.h"
@@ -88,9 +89,6 @@ PROCESS(unicast_sender_process, "Unicast sender example process");
 extern rpl_instance_t * default_instance; //used for getting default parent from node program
 /* ----------------- simple-udp-rpl include and declaration end ----------------- */
 
-/* ------------------- leapfrog collaboration include and declaration by TadaMatz start --------------------*/
-#define LEAPFROG //if defined using leapfrog collaboration
-/* ------------------- leapfrog collaboration include and declaration by TadaMatz end --------------------*/
 
 
 /*---------------------------------------------------------------------------*/
@@ -305,7 +303,7 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
     //else addr = NULL;
     /*-- decide by address directory--*/
     uip_ipaddr_t temp_ipaddr;
-    uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,4);
+    uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,2);
     addr = &temp_ipaddr;
     /*-- linklocal rplnodes mcast --*/
     //uip_ipaddr_t temp_ipaddr;

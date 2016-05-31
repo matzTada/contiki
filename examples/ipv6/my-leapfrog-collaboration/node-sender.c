@@ -300,7 +300,7 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
     //else addr = NULL;
     /*-- decide by address directory--*/
     uip_ipaddr_t temp_ipaddr;
-    uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,4);
+    uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,3);
     addr = &temp_ipaddr;
     /*-- linklocal rplnodes mcast --*/
     //uip_ipaddr_t temp_ipaddr;
