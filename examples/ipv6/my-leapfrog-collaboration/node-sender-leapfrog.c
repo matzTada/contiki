@@ -92,7 +92,7 @@ extern rpl_instance_t * default_instance; //used for getting default parent from
 
 
 /*---------------------------------------------------------------------------*/
-PROCESS(node_process, "RPL Node sender");
+PROCESS(node_process, "RPL Node sender leapfrog");
 #if CONFIG_VIA_BUTTON
 AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_sender_process);
 #else /* CONFIG_VIA_BUTTON */
