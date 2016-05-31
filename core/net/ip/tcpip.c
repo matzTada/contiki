@@ -38,9 +38,6 @@
  * \author  Julien Abeille <jabeille@cisco.com> (IPv6 related code)
  */
 
-//added by TadaMatz 31/May/2016
-#define LEAPFROG
-
 #include "contiki-net.h"
 #include "net/ip/uip-split.h"
 #include "net/ip/uip-packetqueue.h"
@@ -722,26 +719,26 @@ tcpip_ipv6_output(void)
       }
 #endif /*UIP_CONF_IPV6_QUEUE_PKT*/
 
-#ifdef LEAPFROG
+#ifdef WITH_LEAPFROG
       //try send packet everytime to default route
-      PRINTF("LEAPFROG copy part\n");
+      PRINTF("LEAPFROG: Replication Start\n");
       uip_ipaddr_t temp_ipaddr; 
-      uip_ip6addr(&temp_ipaddr, 0xfe80, 0, 0, 0, 0xc30c, 0, 0, 2);
+      uip_ip6addr(&temp_ipaddr, 0xfe80, 0, 0, 0, 0xc30c, 0, 0, 3);
       nexthop = &temp_ipaddr;
       //nexthop = uip_ds6_defrt_choose();
       if(nexthop != NULL){
-          PRINTF("LEAPFROG nexthop: ");
+          PRINTF("LEAPFROG: nexthop: ");
           PRINT6ADDR(nexthop);
           PRINTF("\n");
           nbr = uip_ds6_nbr_lookup(nexthop);
           if(nbr != NULL){
-               PRINTF("LEAPFROG tcpip_output call\n");
+               PRINTF("LEAPFROG: tcpip_output call\n");
                tcpip_output(uip_ds6_nbr_get_ll(nbr));
           }else{
-               PRINTF("LEAPFROG nbr == NULL!!\n");
+               PRINTF("LEAPFROG: nbr == NULL!!\n");
           }
       }else{
-          PRINTF("LEAPFROG nexthop == NULL!!\n");
+          PRINTF("LEAPFROG: nexthop == NULL!!\n");
       }
 #endif /*LEAPFROG*/
 

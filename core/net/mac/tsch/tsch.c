@@ -59,7 +59,7 @@
 #error TSCH: FRAME802154_VERSION must be at least FRAME802154_IEEE802154E_2012
 #endif
 
-//modified b TadaMatz 27/May/2016 en/disable DEBUG PRINT manually
+//modified TadaMatz 27/May/2016 en/disable DEBUG PRINT manually
 #define DEBUG DEBUG_NONE
 //#if TSCH_LOG_LEVEL >= 1
 //#define DEBUG DEBUG_PRINT

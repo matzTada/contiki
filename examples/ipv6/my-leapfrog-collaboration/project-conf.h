@@ -35,6 +35,9 @@
 #ifndef __PROJECT_CONF_H__
 #define __PROJECT_CONF_H__
 
+//added by TadaMatz 31/May/2016
+#define WITH_LEAPFROG
+
 #define WITH_ORCHESTRA 1
 
 /* Set to run orchestra */
