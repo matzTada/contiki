@@ -86,14 +86,33 @@ PROCESS(unicast_receiver_process, "Unicast receiver example process");
 // AUTOSTART_PROCESSES(&unicast_receiver_process);
 /* ----------------- simple-udp-rpl include and declaration end ----------------- */
 
+/* ----------------- leapfrog include and declaration start ----------------- */
+#ifdef WITH_LEAPFROG
+#define LEAPFROG_UDP_PORT 5678
+#define LEAPFROG_SEND_INTERVAL   (30 * CLOCK_SECOND)
+#define LEAPFROG_SEND_TIME   (random_rand() % (SEND_INTERVAL))
+static struct simple_udp_connection leapfrog_unicast_connection;
+PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
+#endif
+/* ----------------- leapfrog include and declaration end ----------------- */
+
+
 /*---------------------------------------------------------------------------*/
-PROCESS(node_process, "RPL Node receiver");
+#ifdef WITH_LEAPFROG
+PROCESS(node_process, "RPL Node receiver leapfrog");
+#if CONFIG_VIA_BUTTON
+AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_receiver_process, &leapfrog_beaconing_process);
+#else /* CONFIG_VIA_BUTTON */
+AUTOSTART_PROCESSES(&node_process, &unicast_receiver_process, &leapfrog_beaconing_process);
+#endif /* CONFIG_VIA_BUTTON */
+#else /*WITH_LEAPFROG*/
+PROCESS(node_process, "RPL Node receiver leapfrog");
 #if CONFIG_VIA_BUTTON
 AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_receiver_process);
 #else /* CONFIG_VIA_BUTTON */
 AUTOSTART_PROCESSES(&node_process, &unicast_receiver_process);
 #endif /* CONFIG_VIA_BUTTON */
-
+#endif /*WITH_LEAPFROG*/
 /*---------------------------------------------------------------------------*/
 static void
 print_network_status(void)
@@ -288,3 +307,51 @@ PROCESS_THREAD(unicast_receiver_process, ev, data)
   PROCESS_END();
 }
 /* ----------------- simple-udp-rpl process end ----------------- */
+
+/* ----------------- leapfrog process start----------------- */
+PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
+{
+  static struct etimer periodic_timer;
+  static struct etimer send_timer;
+  uip_ipaddr_t *addr;
+
+  PROCESS_BEGIN();
+
+  simple_udp_register(&leapfrog_unicast_connection, LEAPFROG_UDP_PORT,
+                      NULL, LEAPFROG_UDP_PORT, receiver);
+
+  etimer_set(&periodic_timer, LEAPFROG_SEND_INTERVAL);
+    while(1) {
+    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
+    etimer_reset(&periodic_timer);
+    etimer_set(&send_timer, LEAPFROG_SEND_TIME);
+
+    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
+    
+    /*--- target address decision ---*/
+    /*-- linklocal rplnodes mcast --*/
+    uip_ipaddr_t temp_ipaddr;
+    uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
+    addr = &temp_ipaddr;
+
+    /*--- sending ---*/ 
+    if(addr != NULL) {
+      static unsigned int message_number;
+      char buf[20];
+
+      sprintf(buf, "leapfrog beacon %d", message_number);
+      printf("LEAPFROG: Sending beacon to ");
+      uip_debug_ipaddr_print(addr);
+      printf(" '");
+      printf(buf);
+      printf("'\n");
+      message_number++;
+      simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
+    } else {
+      printf("LEAPFROG: addr is null!!");
+    }
+  }
+
+  PROCESS_END();
+}
+/* ----------------- leapfrog process end ----------------- */
