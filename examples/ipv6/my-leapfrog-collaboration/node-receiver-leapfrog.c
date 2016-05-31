@@ -91,7 +91,10 @@ PROCESS(unicast_receiver_process, "Unicast receiver example process");
 #define LEAPFROG_UDP_PORT 5678
 #define LEAPFROG_SEND_INTERVAL   (30 * CLOCK_SECOND)
 #define LEAPFROG_SEND_TIME   (random_rand() % (SEND_INTERVAL))
+#define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
+
 static struct simple_udp_connection leapfrog_unicast_connection;
+
 PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
 #endif
 /* ----------------- leapfrog include and declaration end ----------------- */
@@ -195,6 +198,14 @@ receiver(struct simple_udp_connection *c,
   uip_debug_ipaddr_print(sender_addr);
   printf(" on port %d from port %d with length %d: '%s'\n",
          receiver_port, sender_port, datalen, data);
+
+#ifdef WITH_LEAPFROG
+  char beacon_buf[datalen];
+  sprintf(beacon_buf, "%s", data);
+  if(data[0] == LEAPFROG_BEACON_HEADER){
+    printf("LEAPFROG beacon gets!!");
+  }
+#endif /*WITH_LEAPFROG*/
 }
 /* ----------------- simple-udp-rpl functions end ----------------- */
 /*---------------------------------------------------------------------------*/
@@ -309,23 +320,6 @@ PROCESS_THREAD(unicast_receiver_process, ev, data)
 /* ----------------- simple-udp-rpl process end ----------------- */
 
 #ifdef WITH_LEAPFROG
-/*----------- function to do leapfrog things start---------*/
-static void
-leapfrog_receiver(struct simple_udp_connection *c,
-         const uip_ipaddr_t *sender_addr,
-         uint16_t sender_port,
-         const uip_ipaddr_t *receiver_addr,
-         uint16_t receiver_port,
-         const uint8_t *data,
-         uint16_t datalen)
-{
-  printf("LEAPFROG: received from ");
-  uip_debug_ipaddr_print(sender_addr);
-  printf(" on port %d from port %d with length %d: '%s'\n",
-         receiver_port, sender_port, datalen, data);
-}
-/*----------- function to do leapfrog things end---------*/
-
 /* ----------------- leapfrog process start----------------- */
 PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
 {
@@ -336,7 +330,7 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
   PROCESS_BEGIN();
 
   simple_udp_register(&leapfrog_unicast_connection, LEAPFROG_UDP_PORT,
-                      NULL, LEAPFROG_UDP_PORT, leapfrog_receiver);
+                      NULL, LEAPFROG_UDP_PORT, receiver);
 
   etimer_set(&periodic_timer, LEAPFROG_SEND_INTERVAL);
   while(1) {
@@ -357,7 +351,7 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
       static unsigned int message_number;
       char buf[20];
 
-      sprintf(buf, "leapfrog beacon %d", message_number);
+      sprintf(buf, "%clf beacon %d", LEAPFROG_BEACON_HEADER, message_number);
       printf("LEAPFROG: Sending beacon to ");
       uip_debug_ipaddr_print(addr);
       printf(" '");
