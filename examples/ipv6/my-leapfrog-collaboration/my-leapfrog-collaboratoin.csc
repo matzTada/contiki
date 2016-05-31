@@ -23,10 +23,8 @@
     <motetype>
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z11</identifier>
-      <description>Z1 Mote Type Receiver</description>
-      <source EXPORT="discard">[CONTIKI_DIR]/examples/ipv6/my-rpl-tsch-orchestra-simple-udp/node-receiver.c</source>
-      <commands EXPORT="discard">make node-receiver.z1 TARGET=z1</commands>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-rpl-tsch-orchestra-simple-udp/node-receiver.z1</firmware>
+      <description>Z1 Mote Type #z11</description>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-leapfrog-collaboration/node-receiver.z1</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -43,10 +41,10 @@
     <motetype>
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z12</identifier>
-      <description>Z1 Mote Type Sender</description>
-      <source EXPORT="discard">[CONTIKI_DIR]/examples/ipv6/my-rpl-tsch-orchestra-simple-udp/node-sender.c</source>
-      <commands EXPORT="discard">make node-sender.z1 TARGET=z1</commands>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-rpl-tsch-orchestra-simple-udp/node-sender.z1</firmware>
+      <description>Z1 Mote Type sender</description>
+      <source EXPORT="discard">[CONTIKI_DIR]/examples/ipv6/my-leapfrog-collaboration/node-sender-leapfrog.c</source>
+      <commands EXPORT="discard">make node-sender-leapfrog.z1 TARGET=z1</commands>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-leapfrog-collaboration/node-sender-leapfrog.z1</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -64,8 +62,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>48.56582816509435</x>
-        <y>56.13024369210597</y>
+        <x>50.0842854291842</x>
+        <y>17.7064349691864</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -82,8 +80,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>76.76050460034816</x>
-        <y>59.05679955660838</y>
+        <x>31.582599932158793</x>
+        <y>49.846063178227666</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -100,8 +98,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>105.7531786227185</x>
-        <y>62.62182348584908</y>
+        <x>35.08349357766312</x>
+        <y>78.31452624449992</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -118,8 +116,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>240.4469158292268</x>
-        <y>82.7300576194634</y>
+        <x>37.284529731046916</x>
+        <y>112.71939868418345</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -136,8 +134,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>172.8621913290196</x>
-        <y>74.14941801997448</y>
+        <x>66.89525282238071</x>
+        <y>48.49296087807816</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -154,8 +152,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>209.1582016800721</x>
-        <y>76.82157599591314</y>
+        <x>66.93409334548569</x>
+        <y>77.00151739991277</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -172,8 +170,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>140.58131716465877</x>
-        <y>70.64611039764567</y>
+        <x>66.78113365681726</x>
+        <y>111.42539694227881</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -190,10 +188,10 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>1</z>
+    <z>4</z>
     <height>160</height>
-    <location_x>11</location_x>
-    <location_y>440</location_y>
+    <location_x>400</location_x>
+    <location_y>0</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Visualizer
@@ -203,7 +201,7 @@
       <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
-      <viewport>1.4580362057333744 0.0 0.0 1.4580362057333744 -17.034372189769563 91.12440951980048</viewport>
+      <viewport>2.758794188417031 0.0 0.0 2.758794188417031 58.60635956178564 -9.242349284514864</viewport>
     </plugin_config>
     <width>400</width>
     <z>0</z>
@@ -218,11 +216,11 @@
       <formatted_time />
       <coloring />
     </plugin_config>
-    <width>862</width>
-    <z>2</z>
-    <height>989</height>
-    <location_x>472</location_x>
-    <location_y>1</location_y>
+    <width>935</width>
+    <z>3</z>
+    <height>240</height>
+    <location_x>400</location_x>
+    <location_y>160</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.TimeLine
@@ -237,10 +235,10 @@
       <showRadioRXTX />
       <showRadioHW />
       <showLEDs />
-      <zoomfactor>2000.0</zoomfactor>
+      <zoomfactor>500.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
-    <z>4</z>
+    <z>2</z>
     <height>166</height>
     <location_x>0</location_x>
     <location_y>987</location_y>
@@ -251,11 +249,11 @@
       <notes>Enter notes here</notes>
       <decorations>true</decorations>
     </plugin_config>
-    <width>381</width>
-    <z>3</z>
+    <width>655</width>
+    <z>1</z>
     <height>160</height>
-    <location_x>32</location_x>
-    <location_y>673</location_y>
+    <location_x>680</location_x>
+    <location_y>0</location_y>
   </plugin>
 </simconf>
 

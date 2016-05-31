@@ -34,8 +34,8 @@
  *         Press use button at startup to configure.
  *
  * \author Simon Duquennoy <simonduq@sics.se>
- * 
- * \file sender
+ *
+ * \file sender 
  * \modify enable application packet on RPL-TSCH by combining
  *  the rpl-tsch example and the simple-udp-rpl example
  * \author Tada Matz
@@ -82,18 +82,16 @@
 
 static struct simple_udp_connection unicast_connection;
 
-PROCESS(unicast_sender_process, "Unicast sender example process");
-// AUTOSTART_PROCESSES(&unicast_sender_process);a
-
-extern rpl_instance_t * default_instance; //used for getting default parent from node program
+PROCESS(unicast_receiver_process, "Unicast receiver example process");
+// AUTOSTART_PROCESSES(&unicast_receiver_process);
 /* ----------------- simple-udp-rpl include and declaration end ----------------- */
 
 /*---------------------------------------------------------------------------*/
-PROCESS(node_process, "RPL Node sender");
+PROCESS(node_process, "RPL Node receiver");
 #if CONFIG_VIA_BUTTON
-AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_sender_process);
+AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_receiver_process);
 #else /* CONFIG_VIA_BUTTON */
-AUTOSTART_PROCESSES(&node_process, &unicast_sender_process);
+AUTOSTART_PROCESSES(&node_process, &unicast_receiver_process);
 #endif /* CONFIG_VIA_BUTTON */
 
 /*---------------------------------------------------------------------------*/
@@ -162,6 +160,7 @@ net_init(uip_ipaddr_t *br_prefix)
 
   NETSTACK_MAC.on();
 }
+/*---------------------------------------------------------------------------*/
 /* ----------------- simple-udp-rpl functions start----------------- */
 /*simple-udp-rpl---------------------------------------------------------------------------*/
 static void
@@ -179,7 +178,6 @@ receiver(struct simple_udp_connection *c,
          receiver_port, sender_port, datalen, data);
 }
 /* ----------------- simple-udp-rpl functions end ----------------- */
-/*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(node_process, ev, data)
 {
@@ -266,67 +264,27 @@ PROCESS_THREAD(node_process, ev, data)
 /*---------------------------------------------------------------------------*/
 /* ----------------- simple-udp-rpl process start----------------- */
 /*simple-udp-rpl---------------------------------------------------------------------------*/
-PROCESS_THREAD(unicast_sender_process, ev, data)
+PROCESS_THREAD(unicast_receiver_process, ev, data)
 {
-  static struct etimer periodic_timer;
-  static struct etimer send_timer;
-  uip_ipaddr_t *addr;
+  //uip_ipaddr_t *ipaddr;
 
   PROCESS_BEGIN();
 
   //servreg_hack_init();
 
-  // set_global_address();
+  // ipaddr = set_global_address();
+  //ipaddr = &uip_ds6_if.addr_list[0].ipaddr; //oh... should be nice
+
+  // create_rpl_dag(ipaddr);
+
+  //servreg_hack_register(SERVICE_ID, ipaddr);
 
   simple_udp_register(&unicast_connection, UDP_PORT,
                       NULL, UDP_PORT, receiver);
 
-  etimer_set(&periodic_timer, SEND_INTERVAL);
   while(1) {
-
-    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
-    etimer_reset(&periodic_timer);
-    etimer_set(&send_timer, SEND_TIME);
-
-    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
-    
-    /*--- target address decision ---*/
-    /*-- to registered target with servreg_hack --*/
-    //addr = servreg_hack_lookup(SERVICE_ID);
-    /*-- to default root --*/
-    //uip_ds6_defrt_t *default_route;
-    //default_route = uip_ds6_defrt_lookup(uip_ds6_defrt_choose());
-    //if(default_route != NULL) addr = &default_route->ipaddr;
-    //else addr = NULL;
-    /*-- decide by address directory--*/
-    uip_ipaddr_t temp_ipaddr;
-    uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,4);
-    addr = &temp_ipaddr;
-    /*-- linklocal rplnodes mcast --*/
-    //uip_ipaddr_t temp_ipaddr;
-    //uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
-    //addr = &temp_ipaddr;
-    /*-- to default parent --*/
-    //addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent); 
-
-    /*--- sending ---*/ 
-    if(addr != NULL) {
-      static unsigned int message_number;
-      char buf[20];
-
-      sprintf(buf, "Hello TadaMatz %d", message_number);
-      printf("DATA: Sending unicast to ");
-      uip_debug_ipaddr_print(addr);
-      printf(" '");
-      printf(buf);
-      printf("'\n");
-      message_number++;
-      simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
-    } else {
-      printf("DATA: addr is NULL!!");
-    }
+    PROCESS_WAIT_EVENT();
   }
-
   PROCESS_END();
 }
 /* ----------------- simple-udp-rpl process end ----------------- */

@@ -88,6 +88,11 @@ PROCESS(unicast_sender_process, "Unicast sender example process");
 extern rpl_instance_t * default_instance; //used for getting default parent from node program
 /* ----------------- simple-udp-rpl include and declaration end ----------------- */
 
+/* ------------------- leapfrog collaboration include and declaration by TadaMatz start --------------------*/
+#define LEAPFROG //if defined using leapfrog collaboration
+/* ------------------- leapfrog collaboration include and declaration by TadaMatz end --------------------*/
+
+
 /*---------------------------------------------------------------------------*/
 PROCESS(node_process, "RPL Node sender");
 #if CONFIG_VIA_BUTTON
