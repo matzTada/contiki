@@ -36,6 +36,11 @@
  * \author  Adam Dunkels <adam@sics.se>\author
  * \author  Mathilde Durvy <mdurvy@cisco.com> (IPv6 related code)
  * \author  Julien Abeille <jabeille@cisco.com> (IPv6 related code)
+ *
+ *
+ * \modified by  TadaMatz (leapfrog related code)
+ * \comment 
+ *         to use leapfrog you have to define WITH_LEAPFROG at Makefile or Project conf
  */
 
 #include "contiki-net.h"
@@ -86,6 +91,13 @@ static struct etimer periodic;
 /* Timer for reassembly. */
 extern struct etimer uip_reass_timer;
 #endif
+
+/* Leap frog variable by TadaMatz 31/May/2016*/
+#ifdef WITH_LEAPFROG
+extern char leapfrog_parent_id;
+extern char leapfrog_grand_parent_id;
+extern char leapfrog_alt_parent_id;
+#endif /*WITH_LEAPFROG*/
 
 #if UIP_TCP
 /**
@@ -720,25 +732,27 @@ tcpip_ipv6_output(void)
 #endif /*UIP_CONF_IPV6_QUEUE_PKT*/
 
 #ifdef WITH_LEAPFROG
-      //try send packet everytime to default route
-      PRINTF("LEAPFROG: Replication Start\n");
-      uip_ipaddr_t temp_ipaddr; 
-      uip_ip6addr(&temp_ipaddr, 0xfe80, 0, 0, 0, 0xc30c, 0, 0, 3);
-      nexthop = &temp_ipaddr;
-      //nexthop = uip_ds6_defrt_choose();
-      if(nexthop != NULL){
-          PRINTF("LEAPFROG: nexthop: ");
-          PRINT6ADDR(nexthop);
-          PRINTF("\n");
-          nbr = uip_ds6_nbr_lookup(nexthop);
-          if(nbr != NULL){
-               PRINTF("LEAPFROG: tcpip_output call\n");
-               tcpip_output(uip_ds6_nbr_get_ll(nbr));
-          }else{
-               PRINTF("LEAPFROG: nbr == NULL!!\n");
-          }
-      }else{
-          PRINTF("LEAPFROG: nexthop == NULL!!\n");
+      if(leapfrog_alt_parent_id > 0){
+        //try send packet everytime to default route
+        PRINTF("LEAPFROG: Replication to ID:%d\n", leapfrog_alt_parent_id);
+        uip_ipaddr_t temp_ipaddr; 
+        uip_ip6addr(&temp_ipaddr, 0xfe80, 0, 0, 0, 0xc30c, 0, 0, (uint8_t)leapfrog_alt_parent_id);
+        nexthop = &temp_ipaddr;
+        //nexthop = uip_ds6_defrt_choose();
+        if(nexthop != NULL){
+            PRINTF("LEAPFROG: nexthop: ");
+            PRINT6ADDR(nexthop);
+            PRINTF("\n");
+            nbr = uip_ds6_nbr_lookup(nexthop);
+            if(nbr != NULL){
+                 PRINTF("LEAPFROG: call output\n");
+                 tcpip_output(uip_ds6_nbr_get_ll(nbr));
+            }else{
+                 PRINTF("LEAPFROG: nbr == NULL!!\n");
+            }
+        }else{
+            PRINTF("LEAPFROG: nexthop == NULL!!\n");
+        }
       }
 #endif /*LEAPFROG*/
 
