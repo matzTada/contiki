@@ -203,18 +203,15 @@ receiver(struct simple_udp_connection *c,
          receiver_port, sender_port, datalen, data);
 
 #ifdef WITH_LEAPFROG
-  char beacon_buf[datalen];
-  sprintf(beacon_buf, "%s", data);
   if(data[0] == LEAPFROG_BEACON_HEADER){
     char temp_sid = 0; //sender id of packet
     char temp_pid = 0; //sender's parent id
     char temp_gid = 0; //sender's grand parent id
-    temp_sid = sender_addr->u[15]; //get most least byte. must be modified to store whole address
-    temp_pid = data[2];
-    temp_gid = data[4];
-    printf("LEAPFROG: beacon get! SenderID: %d P: %d GP: %d\n", temp_sid, temp_pid, temp-gid);
-
-    //get sender id from sender addr
+    temp_sid = sender_addr->u8[15]; //get most least byte. must be modified to store whole address
+    temp_pid = data[2] - 48;
+    temp_gid = data[4] - 48;
+    printf("LEAPFROG: beacon S: %d P: %d GP: %d\n", temp_sid, temp_pid, temp_gid);
+    
     //parent and grandparent register
 
     printf("LEAPFROG: own P: %d GP: %d\n", leapfrog_parent_id, leapfrog_grand_parend_id);
@@ -366,7 +363,7 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
       static unsigned int message_number;
       char buf[20];
 
-      sprintf(buf, "%cP%cG%cN%d", LEAPFROG_BEACON_HEADER, leapfrog_parent_id, 
+      sprintf(buf, "%cP%dG%dN%d", LEAPFROG_BEACON_HEADER, leapfrog_parent_id, 
         leapfrog_grand_parend_id, message_number);
       printf("LEAPFROG: Sending beacon to ");
       uip_debug_ipaddr_print(addr);
