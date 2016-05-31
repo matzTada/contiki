@@ -93,6 +93,9 @@ PROCESS(unicast_receiver_process, "Unicast receiver example process");
 #define LEAPFROG_SEND_TIME   (random_rand() % (SEND_INTERVAL))
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
 
+char leapfrog_parent_id = 0;
+char leapfrog_grand_parend_id = 0;
+
 static struct simple_udp_connection leapfrog_unicast_connection;
 
 PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
@@ -203,7 +206,19 @@ receiver(struct simple_udp_connection *c,
   char beacon_buf[datalen];
   sprintf(beacon_buf, "%s", data);
   if(data[0] == LEAPFROG_BEACON_HEADER){
-    printf("LEAPFROG beacon gets!!");
+    char temp_sid = 0; //sender id of packet
+    char temp_pid = 0; //sender's parent id
+    char temp_gid = 0; //sender's grand parent id
+    temp_sid = sender_addr->u[15]; //get most least byte. must be modified to store whole address
+    temp_pid = data[2];
+    temp_gid = data[4];
+    printf("LEAPFROG: beacon get! SenderID: %d P: %d GP: %d\n", temp_sid, temp_pid, temp-gid);
+
+    //get sender id from sender addr
+    //parent and grandparent register
+
+    printf("LEAPFROG: own P: %d GP: %d\n", leapfrog_parent_id, leapfrog_grand_parend_id);
+
   }
 #endif /*WITH_LEAPFROG*/
 }
@@ -351,7 +366,8 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
       static unsigned int message_number;
       char buf[20];
 
-      sprintf(buf, "%clf beacon %d", LEAPFROG_BEACON_HEADER, message_number);
+      sprintf(buf, "%cP%cG%cN%d", LEAPFROG_BEACON_HEADER, leapfrog_parent_id, 
+        leapfrog_grand_parend_id, message_number);
       printf("LEAPFROG: Sending beacon to ");
       uip_debug_ipaddr_print(addr);
       printf(" '");
