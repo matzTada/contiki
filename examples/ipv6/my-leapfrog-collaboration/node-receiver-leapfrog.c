@@ -323,6 +323,7 @@ leapfrog_receiver(struct simple_udp_connection *c,
   uip_debug_ipaddr_print(sender_addr);
   printf(" on port %d from port %d with length %d: '%s'\n",
          receiver_port, sender_port, datalen, data);
+}
 /*----------- function to do leapfrog things end---------*/
 
 /* ----------------- leapfrog process start----------------- */
@@ -338,7 +339,7 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
                       NULL, LEAPFROG_UDP_PORT, leapfrog_receiver);
 
   etimer_set(&periodic_timer, LEAPFROG_SEND_INTERVAL);
-    while(1) {
+  while(1) {
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
     etimer_reset(&periodic_timer);
     etimer_set(&send_timer, LEAPFROG_SEND_TIME);
