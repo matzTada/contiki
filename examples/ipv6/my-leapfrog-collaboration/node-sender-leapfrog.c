@@ -91,9 +91,10 @@ extern rpl_instance_t * default_instance; //used for getting default parent from
 
 /* ----------------- leapfrog include and declaration start ----------------- */
 #ifdef WITH_LEAPFROG
-char leapfrog_parent_id = 0;
-char leapfrog_grand_parent_id = 0;
+#define LEAPFROG_BEACON_OFFSET 48 //for avoid NULL character in data packet
+#define LEAPFROG_DATA_HEADER 0xf2 //for sending data
 char leapfrog_alt_parent_id = 0;
+char leapfrog_data_counter = 0;
 #endif
 /* ----------------- leapfrog include and declaration end ----------------- */
 
@@ -323,7 +324,13 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
       static unsigned int message_number;
       char buf[20];
 
+#ifdef WITH_LEAPFROG
+      leapfrog_data_counter++;
+      if(leapfrog_data_counter > 127) leapfrog_data_counter = 0;
+      sprintf(buf, "%c%cHello TadaMatz %d", LEAPFROG_DATA_HEADER, leapfrog_data_counter + LEAPFROG_BEACON_OFFSET, message_number);
+#else
       sprintf(buf, "Hello TadaMatz %d", message_number);
+#endif
       printf("DATA: Sending unicast to ");
       uip_debug_ipaddr_print(addr);
       printf(" '");

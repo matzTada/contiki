@@ -92,14 +92,17 @@ PROCESS(unicast_receiver_process, "Unicast receiver example process");
 #define LEAPFROG_SEND_INTERVAL   (15 * CLOCK_SECOND)
 #define LEAPFROG_SEND_TIME   (random_rand() % (SEND_INTERVAL))
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
+#define LEAPFROG_BEACON_OFFSET 48 //for avoid NULL character in data packet
+#define LEAPFROG_DATA_HEADER 0xf2 //for sending data
 
 char leapfrog_parent_id = 0;
 char leapfrog_grand_parent_id = 0;
 char leapfrog_alt_parent_id = 0;
+
+char leapfrog_data_counter = 0;
+
 extern rpl_instance_t * default_instance;
-
 static struct simple_udp_connection leapfrog_unicast_connection;
-
 PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
 #endif
 /* ----------------- leapfrog include and declaration end ----------------- */
@@ -210,8 +213,10 @@ receiver(struct simple_udp_connection *c,
     char temp_pid = 0; //sender's parent id
     char temp_gid = 0; //sender's grand parent id
     temp_sid = sender_addr->u8[15]; //get most least byte. must be modified to store whole address
-    temp_pid = data[2] - 48;
-    temp_gid = data[4] - 48;
+    temp_pid = data[2] - LEAPFROG_BEACON_OFFSET;
+    temp_gid = data[4] - LEAPFROG_BEACON_OFFSET;
+    //temp_pid = data[2] - 48;
+    //temp_gid = data[4] - 48;
     printf("LEAPFROG: beacon S: %d P: %d GP: %d\n", temp_sid, temp_pid, temp_gid);
     
     //parent and grandparent register
@@ -384,8 +389,11 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
       static unsigned int message_number;
       char buf[20];
 
-      sprintf(buf, "%cP%dG%dN%d", LEAPFROG_BEACON_HEADER, leapfrog_parent_id, 
-        leapfrog_grand_parent_id, message_number);
+      sprintf(buf, "%cP%cG%cN%d", 
+	LEAPFROG_BEACON_HEADER, 
+	leapfrog_parent_id + LEAPFROG_BEACON_OFFSET, 
+	leapfrog_grand_parent_id + LEAPFROG_BEACON_OFFSET, 
+	message_number);
       printf("LEAPFROG: Sending beacon to ");
       uip_debug_ipaddr_print(addr);
       printf(" '");
@@ -393,6 +401,7 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
       printf("'\n");
       message_number++;
       simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
+      //simple_udp_sendto(&unicast_connection, buf, cnt, addr);
     } else {
       printf("LEAPFROG: addr is null!!");
     }
