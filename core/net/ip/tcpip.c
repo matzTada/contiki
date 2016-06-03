@@ -706,24 +706,31 @@ tcpip_ipv6_output(void)
 //	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1],
 //	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1]);
         PRINTF("LEAPFROG: judge Data Packet in tcpip_ipv6_output\n");
-        char temp_leapfrog_packet_counter = uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - 4] - LEAPFROG_BEACON_OFFSET;
-        int temp_sender_id = UIP_IP_BUF->srcipaddr.u8[15];
-        PRINTF("LEAPFROG: sID: %d lfpc: %d  uip_buf IPTCPH-3 direct: %c->%d %c->%d\n",
-          temp_sender_id,
-          temp_leapfrog_packet_counter,
+        char tmp_lf_pc = uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - 4] - LEAPFROG_BEACON_OFFSET;
+        int tmp_sid = UIP_IP_BUF->srcipaddr.u8[15];
+        char tmp_lf_an = leapfrog_elimination_id_array[tmp_sid];
+        PRINTF("LEAPFROG: sID %d pc %d an %d uip_buf IPTCPH-3 direct: %c->%d %c->%d\n",
+          tmp_sid,
+          tmp_lf_pc,
+          tmp_lf_an,
   	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4],
 	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4],
 	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - 4],
 	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - 4]);
         
-        //start elimination process
-        if(leapfrog_elimination_id_array[temp_sender_id] == temp_leapfrog_packet_counter){
-          PRINTF("LEAPFROG: Elimination do not forward\n");
-          leapfrog_elimination_flag = 1;
+        //start elimination judging process
+        if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
+          if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an) <= tmp_lf_pc) leapfrog_elimination_flag = 1;
         }else{
-          leapfrog_elimination_id_array[temp_sender_id] = temp_leapfrog_packet_counter;
+          if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
         }
+
+        if(leapfrog_elimination_flag == 1){
+          PRINTF("LEAPFROG: Elimination do not forward\n");
+        }else{
+          leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
         }
+     }
 /*
 here must be updated to get accurate value. DO NOT USE MAGIC NUMBER by TadaMatz
 */
