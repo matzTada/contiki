@@ -37,6 +37,14 @@
 
 //added by TadaMatz 31/May/2016
 #define WITH_LEAPFROG
+#ifdef WITH_LEAPFROG
+#define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
+#define LEAPFROG_DATA_HEADER 0xf2 //for sending data
+#define LEAPFROG_BEACON_OFFSET 48 //for avoiding NULL character in data packet
+#define LEAPFROG_NUM_NODE 32 //used for elimination
+#define LEAPFROG_DATA_COUNTER_MAX 20 //since fixed value of header counter has limited value
+#define LEAPFROG_DATA_COUNTER_WIDTH 10 //sender node sends data with sequential number, but it happens that the order to arrive dst can be inversed. This number shows how many packet should be discarded compared to current number.
+#endif /*WITH_LEAPFROG*/
 
 #define WITH_ORCHESTRA 1
 

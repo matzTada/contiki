@@ -205,23 +205,15 @@ receiver(struct simple_udp_connection *c,
 {
 #ifdef WITH_LEAPFROG //for packet elimination
   int leapfrog_elimination_flag = 0;
-    
+  char temp_leapfrog_packet_counter = data[1] - LEAPFROG_BEACON_OFFSET;
+  int temp_sender_id = sender_addr->u8[15];
   if(data[0] == LEAPFROG_DATA_HEADER){
-    char tmp_lf_pc = data[1] - LEAPFROG_BEACON_OFFSET;
-    int tmp_sid = sender_addr->u8[15];
-    char tmp_lf_an = leapfrog_elimination_id_array[tmp_sid];
-
-    if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
-      if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an ) <= tmp_lf_pc) leapfrog_elimination_flag = 1; 
-    }else{
-      if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
-    }
-
-    if(leapfrog_elimination_flag == 1){
+    if(leapfrog_elimination_id_array[temp_sender_id] == temp_leapfrog_packet_counter){
       PRINTF("LEAPFROG: Elimination discard data\n");
+      leapfrog_elimination_flag = 1;
     }else{
       PRINTF("LEAPFROG: ");
-      leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
+      leapfrog_elimination_id_array[temp_sender_id] = temp_leapfrog_packet_counter;
     }
   }
 

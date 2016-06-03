@@ -1102,6 +1102,19 @@ uip_process(uint8_t flag)
   /* This is where the input processing starts. */
   UIP_STAT(++uip_stat.ip.recv);
 
+//added by TadaMatz 3/June/2016
+#ifdef WITH_LEAPFROG
+/*
+  uint8_t databuffer[UIP_BUFSIZE];
+  memcpy(databuffer, uip_appdata, 2);
+  if(databuffer[0] != '\n'){
+	PRINTF("LEAPFROG: appdata in uip_process %c->%d %c->%d\n", 
+		databuffer[0], databuffer[0], databuffer[1], databuffer[1]);
+	PRINTF("LEAPFROG: appdata in uip_process: %s\n", databuffer);
+  }
+*/
+#endif /*WITH_LEAPFROG*/
+
   /* Start of IP input header processing code. */
 
   /* Check validity of the IP header. */

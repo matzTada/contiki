@@ -94,9 +94,11 @@ extern struct etimer uip_reass_timer;
 
 /* Leap frog variable by TadaMatz 31/May/2016*/
 #ifdef WITH_LEAPFROG
+//extern valuable are declared in node-[receiver/sender]-leapfrog.c
 extern char leapfrog_parent_id;
 extern char leapfrog_grand_parent_id;
 extern char leapfrog_alt_parent_id;
+extern char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
 #endif /*WITH_LEAPFROG*/
 
 #if UIP_TCP
@@ -690,6 +692,44 @@ tcpip_ipv6_output(void)
       return;  
 #endif /* UIP_ND6_SEND_NA */
     } else {
+#ifdef WITH_LEAPFROG
+      int leapfrog_elimination_flag = 0;
+      if(uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4] == LEAPFROG_DATA_HEADER){
+//        PRINTF("LEAPFROG: uip_buf IPUDPH direct: %c->%d %c->%d\n", 
+//  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN],
+//	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN],
+//	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + 1],
+//	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + 1]);
+//        PRINTF("LEAPFROG: uip_buf IPTCPH direct: %c->%d %c->%d\n", 
+//  	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN],
+//	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN],
+//	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1],
+//	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1]);
+        PRINTF("LEAPFROG: judge Data Packet in tcpip_ipv6_output\n");
+        char temp_leapfrog_packet_counter = uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - 4] - LEAPFROG_BEACON_OFFSET;
+        int temp_sender_id = UIP_IP_BUF->srcipaddr.u8[15];
+        PRINTF("LEAPFROG: sID: %d lfpc: %d  uip_buf IPTCPH-3 direct: %c->%d %c->%d\n",
+          temp_sender_id,
+          temp_leapfrog_packet_counter,
+  	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4],
+	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4],
+	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - 4],
+	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - 4]);
+        
+        //start elimination process
+        if(leapfrog_elimination_id_array[temp_sender_id] == temp_leapfrog_packet_counter){
+          PRINTF("LEAPFROG: Elimination do not forward\n");
+          leapfrog_elimination_flag = 1;
+        }else{
+          leapfrog_elimination_id_array[temp_sender_id] = temp_leapfrog_packet_counter;
+        }
+        }
+/*
+here must be updated to get accurate value. DO NOT USE MAGIC NUMBER by TadaMatz
+*/
+        if(leapfrog_elimination_flag != 1){
+#endif /*WITH_LEAPFROG*/
+
 #if UIP_ND6_SEND_NA
       if(nbr->state == NBR_INCOMPLETE) {
         PRINTF("tcpip_ipv6_output: nbr cache entry incomplete\n");
@@ -731,7 +771,7 @@ tcpip_ipv6_output(void)
       }
 #endif /*UIP_CONF_IPV6_QUEUE_PKT*/
 
-#ifdef WITH_LEAPFROG
+#ifdef WITH_LEAPFROG //Leap frog Replication forward packet by TadaMatz
       if(leapfrog_alt_parent_id > 0){
         //try send packet everytime to default route
         PRINTF("LEAPFROG: Replication to ID:%d\n", leapfrog_alt_parent_id);
@@ -754,7 +794,11 @@ tcpip_ipv6_output(void)
             PRINTF("LEAPFROG: nexthop == NULL!!\n");
         }
       }
-#endif /*LEAPFROG*/
+
+      }else{
+        //Forwarding processes is skipped because of elimination
+      } //for fermer if else
+#endif /*WIRH_LEAPFROG*/
 
       uip_clear_buf();
       return;

@@ -91,10 +91,9 @@ extern rpl_instance_t * default_instance; //used for getting default parent from
 
 /* ----------------- leapfrog include and declaration start ----------------- */
 #ifdef WITH_LEAPFROG
-#define LEAPFROG_BEACON_OFFSET 48 //for avoid NULL character in data packet
-#define LEAPFROG_DATA_HEADER 0xf2 //for sending data
 char leapfrog_alt_parent_id = 0;
 char leapfrog_data_counter = 0;
+char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
 #endif
 /* ----------------- leapfrog include and declaration end ----------------- */
 
@@ -325,9 +324,9 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
       char buf[20];
 
 #ifdef WITH_LEAPFROG
+      sprintf(buf, "%c%cHello Tada %d", LEAPFROG_DATA_HEADER, leapfrog_data_counter + LEAPFROG_BEACON_OFFSET, message_number);
       leapfrog_data_counter++;
-      if(leapfrog_data_counter > 127) leapfrog_data_counter = 0;
-      sprintf(buf, "%c%cHello TadaMatz %d", LEAPFROG_DATA_HEADER, leapfrog_data_counter + LEAPFROG_BEACON_OFFSET, message_number);
+      if(leapfrog_data_counter > LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
 #else
       sprintf(buf, "Hello TadaMatz %d", message_number);
 #endif
