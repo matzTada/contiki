@@ -692,51 +692,51 @@ tcpip_ipv6_output(void)
       return;  
 #endif /* UIP_ND6_SEND_NA */
     } else {
-#ifdef WITH_LEAPFROG
-      int leapfrog_elimination_flag = 0;
-      int LEAPFROG_MAGIC_NUMBER_FOR_DATA = 4;
-      if(uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - LEAPFROG_MAGIC_NUMBER_FOR_DATA] == LEAPFROG_DATA_HEADER){
-//        PRINTF("LEAPFROG: uip_buf IPUDPH direct: %c->%d %c->%d\n", 
-//  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN],
-//	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN],
-//	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + 1],
-//	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + 1]);
-//        PRINTF("LEAPFROG: uip_buf IPTCPH direct: %c->%d %c->%d\n", 
-//  	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN],
-//	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN],
-//	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1],
-//	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1]);
-        PRINTF("LEAPFROG: judge Data Packet in tcpip_ipv6_output\n");
-        char tmp_lf_pc = uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - LEAPFROG_MAGIC_NUMBER_FOR_DATA] - LEAPFROG_BEACON_OFFSET;
-        int tmp_sid = UIP_IP_BUF->srcipaddr.u8[15];
-        char tmp_lf_an = leapfrog_elimination_id_array[tmp_sid];
-        PRINTF("LEAPFROG: sID %d pc %d an %d uip_buf IPTCPH-3 direct: %c->%d %c->%d\n",
-          tmp_sid,
-          tmp_lf_pc,
-          tmp_lf_an,
-  	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - LEAPFROG_MAGIC_NUMBER_FOR_DATA],
-	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - LEAPFROG_MAGIC_NUMBER_FOR_DATA],
-	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - LEAPFROG_MAGIC_NUMBER_FOR_DATA],
-	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - LEAPFROG_MAGIC_NUMBER_FOR_DATA]);
+// #ifdef WITH_LEAPFROG
+//       int leapfrog_elimination_flag = 0;
+//       int LEAPFROG_MAGIC_NUMBER_FOR_DATA = 4;
+//       if(uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - LEAPFROG_MAGIC_NUMBER_FOR_DATA] == LEAPFROG_DATA_HEADER){
+// //        PRINTF("LEAPFROG: uip_buf IPUDPH direct: %c->%d %c->%d\n", 
+// //  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN],
+// //	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN],
+// //	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + 1],
+// //	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + 1]);
+// //        PRINTF("LEAPFROG: uip_buf IPTCPH direct: %c->%d %c->%d\n", 
+// //  	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN],
+// //	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN],
+// //	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1],
+// //	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1]);
+//         PRINTF("LEAPFROG: judge Data Packet in tcpip_ipv6_output\n");
+//         char tmp_lf_pc = uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - LEAPFROG_MAGIC_NUMBER_FOR_DATA] - LEAPFROG_BEACON_OFFSET;
+//         int tmp_sid = UIP_IP_BUF->srcipaddr.u8[15];
+//         char tmp_lf_an = leapfrog_elimination_id_array[tmp_sid];
+//         PRINTF("LEAPFROG: sID %d pc %d an %d uip_buf IPTCPH-3 direct: %c->%d %c->%d\n",
+//           tmp_sid,
+//           tmp_lf_pc,
+//           tmp_lf_an,
+//   	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - LEAPFROG_MAGIC_NUMBER_FOR_DATA],
+// 	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - LEAPFROG_MAGIC_NUMBER_FOR_DATA],
+// 	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - LEAPFROG_MAGIC_NUMBER_FOR_DATA],
+// 	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - LEAPFROG_MAGIC_NUMBER_FOR_DATA]);
         
-        //start elimination judging process
-        if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
-          if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an) <= tmp_lf_pc) leapfrog_elimination_flag = 1;
-        }else{
-          if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
-        }
+//         //start elimination judging process
+//         if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
+//           if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an) <= tmp_lf_pc) leapfrog_elimination_flag = 1;
+//         }else{
+//           if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
+//         }
 
-        if(leapfrog_elimination_flag == 1){
-          PRINTF("LEAPFROG: Elimination do not forward\n");
-        }else{
-          leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
-        }
-     }
-/*
-here must be updated to get accurate value. DO NOT USE MAGIC NUMBER by TadaMatz
-*/
-        if(leapfrog_elimination_flag != 1){
-#endif /*WITH_LEAPFROG*/
+//         if(leapfrog_elimination_flag == 1){
+//           PRINTF("LEAPFROG: Elimination do not forward\n");
+//         }else{
+//           leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
+//         }
+//      }
+// /*
+// here must be updated to get accurate value. DO NOT USE MAGIC NUMBER by TadaMatz
+// */
+//      if(leapfrog_elimination_flag != 1){
+// #endif /*WITH_LEAPFROG*/
 
 #if UIP_ND6_SEND_NA
       if(nbr->state == NBR_INCOMPLETE) {
@@ -803,9 +803,9 @@ here must be updated to get accurate value. DO NOT USE MAGIC NUMBER by TadaMatz
         }
       }
 
-      }else{
-        //Forwarding processes is skipped because of elimination
-      } //for fermer if else
+      // }else{
+      //   //Forwarding processes is skipped because of elimination
+      // } //for fermer if else
 #endif /*WIRH_LEAPFROG*/
 
       uip_clear_buf();

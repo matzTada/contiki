@@ -105,7 +105,7 @@ char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
 extern rpl_instance_t * default_instance;
 static struct simple_udp_connection leapfrog_unicast_connection;
 PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
-#endif
+#endif //WITH_LEAPFROG
 /* ----------------- leapfrog include and declaration end ----------------- */
 
 
@@ -203,30 +203,30 @@ receiver(struct simple_udp_connection *c,
          const uint8_t *data,
          uint16_t datalen)
 {
-#ifdef WITH_LEAPFROG //for packet elimination
-  int leapfrog_elimination_flag = 0;
+// #ifdef WITH_LEAPFROG //for packet elimination
+//   int leapfrog_elimination_flag = 0;
     
-  if(data[0] == LEAPFROG_DATA_HEADER){
-    char tmp_lf_pc = data[1] - LEAPFROG_BEACON_OFFSET;
-    int tmp_sid = sender_addr->u8[15];
-    char tmp_lf_an = leapfrog_elimination_id_array[tmp_sid];
+//   if(data[0] == LEAPFROG_DATA_HEADER){
+//     char tmp_lf_pc = data[1] - LEAPFROG_BEACON_OFFSET;
+//     int tmp_sid = sender_addr->u8[15];
+//     char tmp_lf_an = leapfrog_elimination_id_array[tmp_sid];
 
-    if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
-      if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an ) <= tmp_lf_pc) leapfrog_elimination_flag = 1; 
-    }else{
-      if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
-    }
+//     if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
+//       if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an ) <= tmp_lf_pc) leapfrog_elimination_flag = 1; 
+//     }else{
+//       if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
+//     }
 
-    if(leapfrog_elimination_flag == 1){
-      PRINTF("LEAPFROG: Elimination discard data\n");
-    }else{
-      PRINTF("LEAPFROG: ");
-      leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
-    }
-  }
+//     if(leapfrog_elimination_flag == 1){
+//       PRINTF("LEAPFROG: Elimination discard data\n");
+//     }else{
+//       PRINTF("LEAPFROG: ");
+//       leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
+//     }
+//   }
 
-  if(leapfrog_elimination_flag != 1){
-#endif /*WITH_LEAPFROG*/
+//   if(leapfrog_elimination_flag != 1){
+// #endif /*WITH_LEAPFROG*/
 
   printf("DATA: received from ");
   uip_debug_ipaddr_print(sender_addr);
@@ -270,9 +270,9 @@ receiver(struct simple_udp_connection *c,
     }      
   }
 
-  }else{
-    //receiving processes is skipped because of elimination
-  }
+  // }else{
+  //   //receiving processes is skipped because of elimination
+  // }
 #endif /*WITH_LEAPFROG*/
 }
 /* ----------------- simple-udp-rpl functions end ----------------- */

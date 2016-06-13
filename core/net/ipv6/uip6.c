@@ -288,6 +288,17 @@ struct uip_icmp6_conn uip_icmp6_conns;
 /** @} */
 
 /*---------------------------------------------------------------------------*/
+/* Leap frog variable by TadaMatz 13/June/2016*/
+/*---------------------------------------------------------------------------*/
+#ifdef WITH_LEAPFROG
+//extern valuable are declared in node-[receiver/sender]-leapfrog.c
+extern char leapfrog_parent_id;
+extern char leapfrog_grand_parent_id;
+extern char leapfrog_alt_parent_id;
+extern char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
+#endif /*WITH_LEAPFROG*/
+
+/*---------------------------------------------------------------------------*/
 /* Functions                                                                 */
 /*---------------------------------------------------------------------------*/
 #if UIP_TCP
@@ -1103,7 +1114,7 @@ uip_process(uint8_t flag)
   UIP_STAT(++uip_stat.ip.recv);
 
 //added by TadaMatz 3/June/2016
-#ifdef WITH_LEAPFROG
+// #ifdef WITH_LEAPFROG
 /*
   uint8_t databuffer[UIP_BUFSIZE];
   memcpy(databuffer, uip_appdata, 2);
@@ -1113,7 +1124,7 @@ uip_process(uint8_t flag)
 	PRINTF("LEAPFROG: appdata in uip_process: %s\n", databuffer);
   }
 */
-#endif /*WITH_LEAPFROG*/
+// #endif /*WITH_LEAPFROG*/
 
   /* Start of IP input header processing code. */
 
@@ -1195,13 +1206,45 @@ uip_process(uint8_t flag)
   }
 
 //added by TadaMatz 13/June/2016
+  #ifdef WITH_LEAPFROG //for elimination of packet
   PRINTF("uip_process: uip_ext_len: %d\n", uip_ext_len);
   PRINTF("uip_process: uip_buf [%d]='%c' [%d]='%c'\n",
-	uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
-	uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
-	uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1],
-	uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1]
+	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1],
+	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1]
 	);
+
+  int leapfrog_elimination_flag = 0;
+  if(uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len] == LEAPFROG_DATA_HEADER){
+    PRINTF("LEAPFROG: judge Leapfrog Data Packet in uip_process\n");
+    char tmp_lf_pc = uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1] - LEAPFROG_BEACON_OFFSET;
+    int tmp_sid = UIP_IP_BUF->srcipaddr.u8[15];
+    char tmp_lf_an = leapfrog_elimination_id_array[tmp_sid];
+    PRINTF("LEAPFROG: sID %d pc %d an %d uip_buf direct: [%d]:%c [%d]:%c\n",
+    tmp_sid,
+    tmp_lf_pc,
+    tmp_lf_an,
+    uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+    uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+    uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1],
+    uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1]);
+        
+    //start elimination judging process
+    if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
+      if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an) <= tmp_lf_pc) leapfrog_elimination_flag = 1;
+    }else{
+      if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
+    }
+
+    if(leapfrog_elimination_flag == 1){
+      PRINTF("LEAPFROG: Elimination discard data goto drop\n");
+      goto drop;
+    }else{
+      leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
+    }
+  }
+  #endif //WITH_LEAPFROG
 
   /*
    * Process Packets with a routable multicast destination:
