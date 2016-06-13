@@ -1194,6 +1194,9 @@ uip_process(uint8_t flag)
     }
   }
 
+//added by TadaMatz 13/June/2016
+  PRINTF("uip_process: uip_ext_len: %d\n", uip_ext_len);
+
   /*
    * Process Packets with a routable multicast destination:
    * - We invoke the multicast engine and let it do its thing
@@ -1486,6 +1489,9 @@ uip_process(uint8_t flag)
 #if UIP_UDP
   /* UDP input processing. */
   udp_input:
+
+//added by TadaMatz 13/June/2016
+//  PRINTF("uip_process: uip_ext_len: %d\n", uip_ext_len);
 
   remove_ext_hdr();
   UIP_IP_BUF->proto = UIP_PROTO_UDP;

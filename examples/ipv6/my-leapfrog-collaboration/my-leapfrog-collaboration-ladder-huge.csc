@@ -386,7 +386,7 @@
       <viewport>1.097576461499141 0.0 0.0 1.097576461499141 162.59247156562625 -49.91085733938001</viewport>
     </plugin_config>
     <width>400</width>
-    <z>1</z>
+    <z>2</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -394,12 +394,12 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter>own|Hello</filter>
+      <filter>Hello|Replication|Elimination</filter>
       <formatted_time />
       <coloring />
     </plugin_config>
     <width>935</width>
-    <z>2</z>
+    <z>1</z>
     <height>987</height>
     <location_x>400</location_x>
     <location_y>0</location_y>

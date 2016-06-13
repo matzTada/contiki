@@ -694,7 +694,8 @@ tcpip_ipv6_output(void)
     } else {
 #ifdef WITH_LEAPFROG
       int leapfrog_elimination_flag = 0;
-      if(uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4] == LEAPFROG_DATA_HEADER){
+      int LEAPFROG_MAGIC_NUMBER_FOR_DATA = 4;
+      if(uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - LEAPFROG_MAGIC_NUMBER_FOR_DATA] == LEAPFROG_DATA_HEADER){
 //        PRINTF("LEAPFROG: uip_buf IPUDPH direct: %c->%d %c->%d\n", 
 //  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN],
 //	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN],
@@ -706,17 +707,17 @@ tcpip_ipv6_output(void)
 //	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1],
 //	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1]);
         PRINTF("LEAPFROG: judge Data Packet in tcpip_ipv6_output\n");
-        char tmp_lf_pc = uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - 4] - LEAPFROG_BEACON_OFFSET;
+        char tmp_lf_pc = uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - LEAPFROG_MAGIC_NUMBER_FOR_DATA] - LEAPFROG_BEACON_OFFSET;
         int tmp_sid = UIP_IP_BUF->srcipaddr.u8[15];
         char tmp_lf_an = leapfrog_elimination_id_array[tmp_sid];
         PRINTF("LEAPFROG: sID %d pc %d an %d uip_buf IPTCPH-3 direct: %c->%d %c->%d\n",
           tmp_sid,
           tmp_lf_pc,
           tmp_lf_an,
-  	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4],
-	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4],
-	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - 4],
-	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - 4]);
+  	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - LEAPFROG_MAGIC_NUMBER_FOR_DATA],
+	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - LEAPFROG_MAGIC_NUMBER_FOR_DATA],
+	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - LEAPFROG_MAGIC_NUMBER_FOR_DATA],
+	  uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1 - LEAPFROG_MAGIC_NUMBER_FOR_DATA]);
         
         //start elimination judging process
         if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
