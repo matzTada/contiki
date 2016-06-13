@@ -1207,16 +1207,16 @@ uip_process(uint8_t flag)
 
 //added by TadaMatz 13/June/2016
   #ifdef WITH_LEAPFROG //for elimination of packet
-  PRINTF("uip_process: uip_ext_len: %d\n", uip_ext_len);
-  PRINTF("uip_process: uip_buf [%d]='%c' [%d]='%c'\n",
-	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
-	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
-	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1],
-	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1]
-	);
-
-  int leapfrog_elimination_flag = 0;
   if(uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len] == LEAPFROG_DATA_HEADER){
+    PRINTF("uip_process: uip_ext_len: %d\n", uip_ext_len);
+    PRINTF("uip_process: uip_buf [%d]='%c' [%d]='%c'\n",
+  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1],
+  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1]
+  	);
+
+    int leapfrog_elimination_flag = 0;
     PRINTF("LEAPFROG: judge Leapfrog Data Packet in uip_process\n");
     char tmp_lf_pc = uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1] - LEAPFROG_BEACON_OFFSET;
     int tmp_sid = UIP_IP_BUF->srcipaddr.u8[15];

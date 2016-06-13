@@ -100,8 +100,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>66.60095419348711</x>
-        <y>92.28220207864602</y>
+        <x>67.76912778003928</x>
+        <y>91.11402849209385</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -190,10 +190,10 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>1</z>
+    <z>3</z>
     <height>160</height>
-    <location_x>96</location_x>
-    <location_y>486</location_y>
+    <location_x>58</location_x>
+    <location_y>428</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Visualizer
@@ -206,7 +206,7 @@
       <viewport>1.7120743209944767 0.0 0.0 1.7120743209944767 117.06442426331449 -31.783297804658964</viewport>
     </plugin_config>
     <width>400</width>
-    <z>0</z>
+    <z>2</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -214,12 +214,12 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter />
+      <filter>uip_process|Forwarding|Receiving UDP|Cutting|IPv6 packet|Sending unicast|Elimination</filter>
       <formatted_time />
       <coloring />
     </plugin_config>
     <width>935</width>
-    <z>2</z>
+    <z>0</z>
     <height>987</height>
     <location_x>400</location_x>
     <location_y>0</location_y>
@@ -240,10 +240,23 @@
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
-    <z>3</z>
+    <z>4</z>
     <height>166</height>
     <location_x>0</location_x>
     <location_y>987</location_y>
+  </plugin>
+  <plugin>
+    org.contikios.cooja.plugins.Notes
+    <plugin_config>
+      <notes>"check elimination process" uip_process|Forwarding|Receiving UDP|Cutting|IPv6 packet|Sending unicast|Elimination
+"check leapfrog roughly" Hello|Elimination|Replication</notes>
+      <decorations>true</decorations>
+    </plugin_config>
+    <width>826</width>
+    <z>1</z>
+    <height>245</height>
+    <location_x>9</location_x>
+    <location_y>709</location_y>
   </plugin>
 </simconf>
 
