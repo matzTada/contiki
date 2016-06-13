@@ -1196,6 +1196,12 @@ uip_process(uint8_t flag)
 
 //added by TadaMatz 13/June/2016
   PRINTF("uip_process: uip_ext_len: %d\n", uip_ext_len);
+  PRINTF("uip_process: uip_buf [%d]='%c' [%d]='%c'\n",
+	uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+	uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+	uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1],
+	uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1]
+	);
 
   /*
    * Process Packets with a routable multicast destination:
