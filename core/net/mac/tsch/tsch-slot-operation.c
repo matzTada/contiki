@@ -317,14 +317,14 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
 	p = tsch_queue_get_packet_for_nbr(n, link);
 	#ifdef DEBUG_TADAMATZ
 	//added by TadaMatz to see what happens in DIO sending
-	if(p != NULL) PRINTF("np %u %u\n", n->addr.u8[0], n->addr.u8[1]);
+	if(p != NULL) PRINTF("np %u %u\n", n->addr.u8[6], n->addr.u8[7]);
 	#endif
 	/* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
         if(p == NULL && n == n_broadcast) {
           p = tsch_queue_get_unicast_packet_for_any(&n, link);
 	  #ifdef DEBUG_TADAMATZ
 	  //added by TadaMatz to see what happens in DIO sending
-	  if(p != NULL) PRINTF("up %u %u\n", n->addr.u8[0], n->addr.u8[1]);
+	  if(p != NULL) PRINTF("ap %u %u\n", n->addr.u8[6], n->addr.u8[7]);
 	  #endif
         }
       }

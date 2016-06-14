@@ -90,8 +90,11 @@ add_uc_link(const linkaddr_t *linkaddr)
         ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_RX : LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG,
         LINK_TYPE_NORMAL, 
         //modified by TadaMatz 14/June/2016
-        //&tsch_broadcast_address,
-        linkaddr,
+#ifdef WITH_LEAPFROG_TSCH
+	linkaddr,
+#else
+	&tsch_broadcast_address,
+#endif
         timeslot, 
         channel_offset);
   }
