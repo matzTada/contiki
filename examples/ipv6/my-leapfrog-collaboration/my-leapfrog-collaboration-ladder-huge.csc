@@ -394,7 +394,7 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter>Hello|Replication|Elimination</filter>
+      <filter>Hello|Replication|Elimination|add packet failed</filter>
       <formatted_time />
       <coloring />
     </plugin_config>
@@ -430,10 +430,22 @@
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
-    <z>3</z>
+    <z>4</z>
     <height>166</height>
     <location_x>0</location_x>
     <location_y>987</location_y>
+  </plugin>
+  <plugin>
+    org.contikios.cooja.plugins.Notes
+    <plugin_config>
+      <notes>Hello|Replication|Elimination|ForwardingEnter notes here</notes>
+      <decorations>true</decorations>
+    </plugin_config>
+    <width>655</width>
+    <z>3</z>
+    <height>160</height>
+    <location_x>38</location_x>
+    <location_y>703</location_y>
   </plugin>
 </simconf>
 
