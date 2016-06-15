@@ -142,7 +142,7 @@ print_network_status(void)
     state = uip_ds6_if.addr_list[i].state;
     if(uip_ds6_if.addr_list[i].isused &&
        (state == ADDR_TENTATIVE || state == ADDR_PREFERRED)) {
-      PRINTA("-- ");
+      PRINTA("-%d- ",i);
       uip_debug_ipaddr_print(&uip_ds6_if.addr_list[i].ipaddr);
       PRINTA("\n");
     }
@@ -238,36 +238,54 @@ receiver(struct simple_udp_connection *c,
     char temp_sid = 0; //sender id of packet
     char temp_pid = 0; //sender's parent id
     char temp_gid = 0; //sender's grand parent id
+    char temp_aid = 0; //sender's alt parent id
     temp_sid = sender_addr->u8[15]; //get most least byte. must be modified to store whole address
     temp_pid = data[2] - LEAPFROG_BEACON_OFFSET;
     temp_gid = data[4] - LEAPFROG_BEACON_OFFSET;
-    //temp_pid = data[2] - 48;
-    //temp_gid = data[4] - 48;
-    printf("LEAPFROG: beacon S: %d P: %d GP: %d\n", temp_sid, temp_pid, temp_gid);
+    temp_aid = data[6] - LEAPFROG_BEACON_OFFSET;
+    printf("LEAPFROG: beacon S %d P %d GP %d AP %d\n", temp_sid, temp_pid, temp_gid, temp_aid);
     
-    //parent and grandparent register
+    //judge and registor parent, grandparent, alt parent 
     uip_ipaddr_t * addr;
     addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent);
     if(addr != NULL){
       char my_pid = addr->u8[15];
-      if(leapfrog_parent_id == 0){
-        leapfrog_parent_id = my_pid;
-      }else if(leapfrog_parent_id > 0 && leapfrog_parent_id != my_pid){
+//      if(leapfrog_parent_id == 0){ //registor parent
+//        leapfrog_parent_id = my_pid;
+//      }else 
+      if(leapfrog_parent_id != my_pid){ //new parent and reset P, GP, AP
         leapfrog_parent_id = my_pid;
         leapfrog_grand_parent_id = 0;
         leapfrog_alt_parent_id = 0;
-      }else if(leapfrog_parent_id > 0 && leapfrog_parent_id == my_pid){
+      }
+      if(leapfrog_parent_id > 0 && leapfrog_parent_id == my_pid){ //judge Grand Parent
         if(temp_sid == my_pid){
           if(temp_pid > 0 && temp_pid != my_pid){
             leapfrog_grand_parent_id = temp_pid; //get grand parent
           }
         }
       }
-      if(leapfrog_grand_parent_id > 0 && temp_pid > 0 && leapfrog_grand_parent_id == temp_pid && leapfrog_parent_id != temp_sid){
-        leapfrog_alt_parent_id = temp_sid; //get alt parent
+      if(leapfrog_grand_parent_id > 0 && temp_pid > 0 && leapfrog_grand_parent_id == temp_pid && leapfrog_parent_id != temp_sid){ //judge Alt Parent
+        if(leapfrog_alt_parent_id != temp_sid){
+          leapfrog_alt_parent_id = temp_sid; //get alt parent
+          printf("LEAPFROG: get new AP %d\n", leapfrog_alt_parent_id);
+#ifdef WITH_LEAPFROG_TSCH
+          printf("LEAPFROG-TSCH: update timeslot tx -> AP %d\n", leapfrog_alt_parent_id);
+#endif /*WITH_LEAPFROG_TSCH*/
+        }
       }
-      printf("LEAPFROG: own P: %d GP: %d AP: %d\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id);
-    }      
+      printf("LEAPFROG: own P %d GP %d AP %d\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id);
+
+#ifdef WITH_LEAPFROG_TSCH //judge I am sender's Alt Parent
+      addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
+      if(addr != NULL){
+        char my_id = addr->u8[15];
+        if(temp_aid != 0 && my_id == temp_aid){
+          printf("LEAPFROG-TSCH: update timeslot rx <- (alt)C %d\n", temp_sid);
+        }
+      }
+#endif /*WITH_LEAPFROG_TSCH*/      
+    }
   }
 
   // }else{
@@ -419,10 +437,11 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
       static unsigned int message_number;
       char buf[20];
 
-      sprintf(buf, "%cP%cG%cN%d", 
+      sprintf(buf, "%cP%cG%cA%cN%d", 
 	LEAPFROG_BEACON_HEADER, 
 	leapfrog_parent_id + LEAPFROG_BEACON_OFFSET, 
-	leapfrog_grand_parent_id + LEAPFROG_BEACON_OFFSET, 
+	leapfrog_grand_parent_id + LEAPFROG_BEACON_OFFSET,
+        leapfrog_alt_parent_id + LEAPFROG_BEACON_OFFSET,
 	message_number);
       printf("LEAPFROG: Sending beacon to ");
       uip_debug_ipaddr_print(addr);

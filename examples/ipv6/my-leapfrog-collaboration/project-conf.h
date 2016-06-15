@@ -46,6 +46,7 @@
 #define LEAPFROG_DATA_COUNTER_MAX 50 //since fixed value of header counter has limited value
 #define LEAPFROG_DATA_COUNTER_WIDTH 25 //sender node sends data with sequential number, but it happens that the order to arrive dst can be inversed. This number shows how many packet should be discarded compared to current number.
 
+//if defined, make the new timeslot for alt-parent
 #define WITH_LEAPFROG_TSCH
 
 #endif /*WITH_LEAPFROG*/
