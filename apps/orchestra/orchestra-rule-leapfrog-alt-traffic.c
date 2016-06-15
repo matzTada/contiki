@@ -55,8 +55,8 @@ static struct tsch_slotframe *sf_lfat; //leapfrog alt traffic
 static uint16_t
 get_node_timeslot(const linkaddr_t *addr)
 {
-  if(addr != NULL && ORCHESTRA_UNICAST_PERIOD > 0) {
-    return ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_UNICAST_PERIOD;
+  if(addr != NULL && ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD > 0) {
+    return ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD;
   } else {
     return 0xffff;
   }
@@ -83,7 +83,7 @@ add_uc_link(const linkaddr_t *linkaddr)
   if(linkaddr != NULL) {
     uint16_t timeslot = get_node_timeslot(linkaddr);
     tsch_schedule_add_link(
-        sf_unicast,
+        sf_lfat,
         ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_RX : LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG,
         LINK_TYPE_NORMAL, 
         //modified by TadaMatz 14/June/2016
@@ -108,7 +108,7 @@ remove_uc_link(const linkaddr_t *linkaddr)
   }
 
   timeslot = get_node_timeslot(linkaddr);
-  l = tsch_schedule_get_link_by_timeslot(sf_unicast, timeslot);
+  l = tsch_schedule_get_link_by_timeslot(sf_lfat, timeslot);
   if(l == NULL) {
     return;
   }
@@ -117,8 +117,8 @@ remove_uc_link(const linkaddr_t *linkaddr)
     /* Yes, this timeslot is being used, return */
     return;
   }
-  /* Does any other child need this timeslot?
-   * (lookup all route next hops) */
+   Does any other child need this timeslot?
+   * (lookup all route next hops) 
   nbr_table_item_t *item = nbr_table_head(nbr_routes);
   while(item != NULL) {
     linkaddr_t *addr = nbr_table_get_lladdr(nbr_routes, item);
@@ -128,37 +128,37 @@ remove_uc_link(const linkaddr_t *linkaddr)
     }
     item = nbr_table_next(nbr_routes, item);
   }
-  tsch_schedule_remove_link(sf_unicast, l);
+  tsch_schedule_remove_link(sf_lfat, l);
 }
 /*---------------------------------------------------------------------------*/
 static void
 child_added(const linkaddr_t *linkaddr)
 {
-  add_uc_link(linkaddr);
+  // add_uc_link(linkaddr);
 }
 /*---------------------------------------------------------------------------*/
 static void
 child_removed(const linkaddr_t *linkaddr)
 {
-  remove_uc_link(linkaddr);
+  // remove_uc_link(linkaddr);
 }
 /*---------------------------------------------------------------------------*/
 static int
 select_packet(uint16_t *slotframe, uint16_t *timeslot)
 {
-  /* Select data packets we have a unicast link to */
-  const linkaddr_t *dest = packetbuf_addr(PACKETBUF_ADDR_RECEIVER);
-  if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME
-     && neighbor_has_uc_link(dest)) {
-    if(slotframe != NULL) {
-      *slotframe = slotframe_handle;
-    }
-    if(timeslot != NULL) {
-      *timeslot = ORCHESTRA_UNICAST_SENDER_BASED ? get_node_timeslot(&linkaddr_node_addr) : get_node_timeslot(dest);
-    }
-    return 1;
-  }
-  return 0;
+  // /* Select data packets we have a unicast link to */
+  // const linkaddr_t *dest = packetbuf_addr(PACKETBUF_ADDR_RECEIVER);
+  // if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME
+  //    && neighbor_has_uc_link(dest)) {
+  //   if(slotframe != NULL) {
+  //     *slotframe = slotframe_handle;
+  //   }
+  //   if(timeslot != NULL) {
+  //     *timeslot = ORCHESTRA_UNICAST_SENDER_BASED ? get_node_timeslot(&linkaddr_node_addr) : get_node_timeslot(dest);
+  //   }
+  //   return 1;
+  // }
+  // return 0;
 }
 /*---------------------------------------------------------------------------*/
 static void
@@ -181,16 +181,16 @@ init(uint16_t sf_handle)
 {
   slotframe_handle = sf_handle;
   channel_offset = sf_handle;
-  /* Slotframe for unicast transmissions */
-  sf_unicast = tsch_schedule_add_slotframe(slotframe_handle, ORCHESTRA_UNICAST_PERIOD);
+  /* Slotframe for Leapfrog alt traffic */
+  sf_lfat = tsch_schedule_add_slotframe(slotframe_handle, ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD);
   uint16_t timeslot = get_node_timeslot(&linkaddr_node_addr);
-  tsch_schedule_add_link(sf_unicast,
+  tsch_schedule_add_link(sf_lfat,
             ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG: LINK_OPTION_RX,
             LINK_TYPE_NORMAL, &tsch_broadcast_address,
             timeslot, channel_offset);
 }
 /*---------------------------------------------------------------------------*/
-struct orchestra_rule unicast_per_neighbor = {
+struct orchestra_rule leapfrog_alt_traffic = {
   init,
   new_time_source,
   select_packet,
