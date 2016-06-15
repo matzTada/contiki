@@ -75,4 +75,10 @@ void orchestra_callback_child_added(const linkaddr_t *addr);
 /* Set with #define NETSTACK_CONF_ROUTING_NEIGHBOR_REMOVED_CALLBACK orchestra_callback_child_removed */
 void orchestra_callback_child_removed(const linkaddr_t *addr);
 
+#ifdef WITH_LEAPFROG_TSCH
+/*call from Leapfrog TSCH to handle slotframe*/
+void orchestra_leapfrog_add_uc_tx_link(char alt_parent_id);
+void orchestra_leafprog_add_uc_rx_link(char child_id);
+#ifdef /*WITH_LEAPFROG_TSCH*/
+
 #endif /* __ORCHESTRA_H__ */

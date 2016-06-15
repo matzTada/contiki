@@ -107,7 +107,7 @@ static struct simple_udp_connection leapfrog_unicast_connection;
 PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
 
 #ifdef WITH_LEAPFROG_TSCH
-extern struct tsch_slotframe *sf_lfat; //leapfrog alt traffic
+// extern struct tsch_slotframe *sf_lfat; //leapfrog alt traffic
 #endif /*WITH_LEAPFROG_TSCH*/
 
 #endif //WITH_LEAPFROG
@@ -283,22 +283,23 @@ receiver(struct simple_udp_connection *c,
 #ifdef WITH_LEAPFROG_TSCH //add unicast tx link to AP based on own(child) ID
           printf("LEAPFROG-TSCH: update timeslot tx -> AP %d\n", leapfrog_alt_parent_id);
           
-          uint16_t child_timeslot = 0;
-          child_timeslot = linkaddr_node_addr.u8[7] % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
-          linkaddr_t altparent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, leapfrog_alt_parent_id}};
+          orchestra_leapfrog_add_uc_tx_slot(leapfrog_alt_parent_id);
+          // uint16_t child_timeslot = 0;
+          // child_timeslot = linkaddr_node_addr.u8[7] % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+          // linkaddr_t altparent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, leapfrog_alt_parent_id}};
 
-          struct tsch_link *child_l;
-          child_l = tsch_schedule_get_link_by_timeslot(sf_lfat, child_timeslot);
-          if(child_l != NULL) {
-            tsch_schedule_remove_link(sf_lfat, child_l);
-          }
-          tsch_schedule_add_link(
-            sf_lfat,
-            LINK_OPTION_TX | LINK_OPTION_SHARED,
-            LINK_TYPE_NORMAL,
-            &altparent_linkaddr, //dest linkaddr
-            child_timeslot,
-            sf_lfat->handle); //should be modified to get correct channel_offset of link
+          // struct tsch_link *child_l;
+          // child_l = tsch_schedule_get_link_by_timeslot(sf_lfat, child_timeslot);
+          // if(child_l != NULL) {
+          //   tsch_schedule_remove_link(sf_lfat, child_l);
+          // }
+          // tsch_schedule_add_link(
+          //   sf_lfat,
+          //   LINK_OPTION_TX | LINK_OPTION_SHARED,
+          //   LINK_TYPE_NORMAL,
+          //   &altparent_linkaddr, //dest linkaddr
+          //   child_timeslot,
+          //   sf_lfat->handle); //should be modified to get correct channel_offset of link
 #endif /*WITH_LEAPFROG_TSCH*/
         }
       }
@@ -308,21 +309,22 @@ receiver(struct simple_udp_connection *c,
       if(temp_aid != 0 && my_id == temp_aid){
         printf("LEAPFROG-TSCH: update timeslot rx <- (alt)C %d\n", temp_sid);
 
-        //linkaddr_t child_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, temp_sid}};
-        uint16_t altparent_timeslot = temp_sid % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+        orchestra_leapfrog_add_uc_rx_link(temp_sid);
+        // //linkaddr_t child_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, temp_sid}};
+        // uint16_t altparent_timeslot = temp_sid % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
 
-        struct tsch_link *altparent_l;
-        altparent_l = tsch_schedule_get_link_by_timeslot(sf_lfat, altparent_timeslot);
-        if(altparent_l != NULL) {
-          tsch_schedule_remove_link(sf_lfat, altparent_l);
-        }
-        tsch_schedule_add_link(
-          sf_lfat,
-          LINK_OPTION_RX,
-          LINK_TYPE_NORMAL,
-          &tsch_broadcast_address, //welcome everyone
-          altparent_timeslot,
-          sf_lfat->handle); //should be modified to get correct channel_offset of link
+        // struct tsch_link *altparent_l;
+        // altparent_l = tsch_schedule_get_link_by_timeslot(sf_lfat, altparent_timeslot);
+        // if(altparent_l != NULL) {
+        //   tsch_schedule_remove_link(sf_lfat, altparent_l);
+        // }
+        // tsch_schedule_add_link(
+        //   sf_lfat,
+        //   LINK_OPTION_RX,
+        //   LINK_TYPE_NORMAL,
+        //   &tsch_broadcast_address, //welcome everyone
+        //   altparent_timeslot,
+        //   sf_lfat->handle); //should be modified to get correct channel_offset of link
       }
 #endif /*WITH_LEAPFROG_TSCH*/      
     }
