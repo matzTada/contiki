@@ -46,14 +46,19 @@
  * - a sender-based or receiver-based slotframe for unicast to RPL parents and children
  * - a common shared slotframe for any other traffic (mostly broadcast)
  *  */
+//added by TadaMatz 15/June/2016
+#ifdef WITH_LEAPFROG_TSCH
 #define ORCHESTRA_RULES { &eb_per_time_source, \
                           &unicast_per_neighbor, \
                           &default_common, \
-//added by TadaMatz 15/June/2016
-#ifdef WITH_LEAPFROG_TSCH
                           &leapfrog_alt_traffic, \
-#endif /*WITH_LEAPFROG_TSCH*/
                         }
+#else /*WITH_LEAPFROG_TSCH*/
+#define ORCHESTRA_RULES { &eb_per_time_source, \
+                          &unicast_per_neighbor, \
+                          &default_common, \
+                        }
+#endif /*WITH_LEAPFROG_TSCH*/
 #endif /* ORCHESTRA_CONF_RULES */
 
 /* Length of the various slotframes. Tune to balance network capacity,

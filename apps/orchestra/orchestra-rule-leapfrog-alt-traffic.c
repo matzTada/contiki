@@ -117,8 +117,7 @@ remove_uc_link(const linkaddr_t *linkaddr)
     /* Yes, this timeslot is being used, return */
     return;
   }
-   Does any other child need this timeslot?
-   * (lookup all route next hops) 
+  /* Does any other child need this timeslot? (lookup all route next hops) */
   nbr_table_item_t *item = nbr_table_head(nbr_routes);
   while(item != NULL) {
     linkaddr_t *addr = nbr_table_get_lladdr(nbr_routes, item);
@@ -158,7 +157,7 @@ select_packet(uint16_t *slotframe, uint16_t *timeslot)
   //   }
   //   return 1;
   // }
-  // return 0;
+  return 0;
 }
 /*---------------------------------------------------------------------------*/
 static void
