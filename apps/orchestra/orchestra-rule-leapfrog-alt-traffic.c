@@ -146,7 +146,8 @@ orchestra_leapfrog_add_uc_tx_link(char alt_parent_id)
     sf_lfat,
     LINK_OPTION_TX | LINK_OPTION_SHARED,
     LINK_TYPE_NORMAL,
-    &altparent_linkaddr, //dest linkaddr
+    &tsch_broadcast_address,
+//    &altparent_linkaddr, //dest linkaddr
     child_timeslot,
     channel_offset); //should be modified to get correct channel_offset of link
 }
