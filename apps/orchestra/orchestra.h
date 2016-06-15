@@ -55,6 +55,10 @@ struct orchestra_rule {
 struct orchestra_rule eb_per_time_source;
 struct orchestra_rule unicast_per_neighbor;
 struct orchestra_rule default_common;
+//added by TadaMatz 15/June/2016
+#ifdef WITH_LEAPFROG_TSCH
+struct orchestra_rule leapfrog_alt_traffic;
+#endif
 
 extern linkaddr_t orchestra_parent_linkaddr;
 extern int orchestra_parent_knows_us;

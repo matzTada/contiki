@@ -49,6 +49,10 @@
 #define ORCHESTRA_RULES { &eb_per_time_source, \
                           &unicast_per_neighbor, \
                           &default_common, \
+//added by TadaMatz 15/June/2016
+#ifdef WITH_LEAPFROG_TSCH
+                          &leapfrog_alt_traffic, \
+#endif /*WITH_LEAPFROG_TSCH*/
                         }
 #endif /* ORCHESTRA_CONF_RULES */
 
@@ -80,6 +84,15 @@
 #else /* ORCHESTRA_CONF_UNICAST_SENDER_BASED */
 #define ORCHESTRA_UNICAST_SENDER_BASED            0
 #endif /* ORCHESTRA_CONF_UNICAST_SENDER_BASED */
+
+//added by TadaMatz 15/June/2016
+#ifdef WITH_LEAPFROG_TSCH
+#ifdef ORCHESTRA_CONF_LEAPFROG_ALT_TRAFFIC_PERIOD
+#define ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD                  ORCHESTRA_CONF_LEAPFROG_ALT_TRAFFIC_PERIOD
+#else /* ORCHESTRA_CONF_LEAPFROG_ALT_TRAFFIC_PERIOD */
+#define ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD                  23
+#endif /* ORCHESTRA_CONF_LEAPFROG_ALT_TRAFFIC_PERIOD */
+#endif /*WITH_LEAPFROG_TSCH*/
 
 /* The hash function used to assign timeslot to a given node (based on its link-layer address) */
 #ifdef ORCHESTRA_CONF_LINKADDR_HASH
