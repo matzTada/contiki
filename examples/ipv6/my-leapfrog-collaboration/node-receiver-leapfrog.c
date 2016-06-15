@@ -105,6 +105,11 @@ char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
 extern rpl_instance_t * default_instance;
 static struct simple_udp_connection leapfrog_unicast_connection;
 PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
+
+#ifdef WITH_LEAPFROG_TSCH
+extern static struct tsch_slotframe *sf_lfat; //leapfrog alt traffic
+#endif /*WITH_LEAPFROG_TSCH*/
+
 #endif //WITH_LEAPFROG
 /* ----------------- leapfrog include and declaration end ----------------- */
 
@@ -246,7 +251,12 @@ receiver(struct simple_udp_connection *c,
     printf("LEAPFROG: beacon S %d P %d GP %d AP %d\n", temp_sid, temp_pid, temp_gid, temp_aid);
     
     //judge and registor parent, grandparent, alt parent 
+    char my_id = 0;
     uip_ipaddr_t * addr;
+    addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
+    if(addr != NULL){
+      my_id = addr->u8[15];
+    }
     addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent);
     if(addr != NULL){
       char my_pid = addr->u8[15];
@@ -257,6 +267,7 @@ receiver(struct simple_udp_connection *c,
         leapfrog_parent_id = my_pid;
         leapfrog_grand_parent_id = 0;
         leapfrog_alt_parent_id = 0;
+        printf("LEAPFROG: reset P GP AP\n");
       }
       if(leapfrog_parent_id > 0 && leapfrog_parent_id == my_pid){ //judge Grand Parent
         if(temp_sid == my_pid){
@@ -269,20 +280,48 @@ receiver(struct simple_udp_connection *c,
         if(leapfrog_alt_parent_id != temp_sid){
           leapfrog_alt_parent_id = temp_sid; //get alt parent
           printf("LEAPFROG: get new AP %d\n", leapfrog_alt_parent_id);
-#ifdef WITH_LEAPFROG_TSCH
+#ifdef WITH_LEAPFROG_TSCH //add unicast tx link to AP based on own(child) ID
           printf("LEAPFROG-TSCH: update timeslot tx -> AP %d\n", leapfrog_alt_parent_id);
+          
+          uint16_t child_timeslot = ORCHESTRA_LINK_ADDR_HASH(&linkaddr_node_addr) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINK_ADDR_HASH(linkaddr)%PERIOD
+          linkaddr_t altparent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, leapfrog_alt_parent_id}};
+
+          struct tsch_link *child_l;
+          child_l = tsch_schedule_get_link_by_timeslot(sf_lfat, child_timeslot);
+          if(child_l != NULL) {
+            tsch_schedule_remove_link(sf_lfat, child_l);
+          }
+          tsch_schedule_add_link(
+            sf_lfat,
+            LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG,
+            LINK_TYPE_NORMAL,
+            altparent_linkaddr, //dest linkaddr
+            child_timeslot,
+            sf_lfat->handle); //should be modified to get correct channel_offset of link
 #endif /*WITH_LEAPFROG_TSCH*/
         }
       }
       printf("LEAPFROG: own P %d GP %d AP %d\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id);
 
 #ifdef WITH_LEAPFROG_TSCH //judge I am sender's Alt Parent
-      addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
-      if(addr != NULL){
-        char my_id = addr->u8[15];
-        if(temp_aid != 0 && my_id == temp_aid){
-          printf("LEAPFROG-TSCH: update timeslot rx <- (alt)C %d\n", temp_sid);
+      if(temp_aid != 0 && my_id == temp_aid){
+        printf("LEAPFROG-TSCH: update timeslot rx <- (alt)C %d\n", temp_sid);
+
+        linkaddr_t child_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, temp_sid}};
+        uint16_t altparent_timeslot = ORCHESTRA_LINK_ADDR_HASH(child_linkaddr) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINK_ADDR_HASH(linkaddr)%PERIOD
+
+        struct tsch_link *altparent_l;
+        altparent_l = tsch_schedule_get_link_by_timeslot(sf_lfat, altparent_timeslot);
+        if(altparent_l != NULL) {
+          tsch_schedule_remove_link(sf_lfat, altparent_l);
         }
+        tsch_schedule_add_link(
+          sf_lfat,
+          LINK_OPTION_RX,
+          LINK_TYPE_NORMAL,
+          &tsch_broadcast_address, //welcome everyone
+          altparent_timeslot,
+          sf_lfat->handle); //should be modified to get correct channel_offset of link
       }
 #endif /*WITH_LEAPFROG_TSCH*/      
     }
