@@ -78,54 +78,6 @@ neighbor_has_uc_link(const linkaddr_t *linkaddr)
 }
 /*---------------------------------------------------------------------------*/
 static void
-add_uc_link(const linkaddr_t *linkaddr)
-{
-  // if(linkaddr != NULL) {
-  //   uint16_t timeslot = get_node_timeslot(linkaddr);
-  //   tsch_schedule_add_link(
-  //       sf_lfat,
-  //       LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG, // ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_RX : LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG,
-  //       LINK_TYPE_NORMAL, 
-  //     	linkaddr, //	&tsch_broadcast_address,
-  //       timeslot, 
-  //       channel_offset);
-  // }
-}
-/*---------------------------------------------------------------------------*/
-static void
-remove_uc_link(const linkaddr_t *linkaddr)
-{
-  // uint16_t timeslot;
-  // struct tsch_link *l;
-
-  // if(linkaddr == NULL) {
-  //   return;
-  // }
-
-  // timeslot = get_node_timeslot(linkaddr);
-  // l = tsch_schedule_get_link_by_timeslot(sf_lfat, timeslot);
-  // if(l == NULL) {
-  //   return;
-  // }
-  // /* Does our current parent need this timeslot? */
-  // if(timeslot == get_node_timeslot(&orchestra_parent_linkaddr)) {
-  //   /* Yes, this timeslot is being used, return */
-  //   return;
-  // }
-  /* Does any other child need this timeslot? (lookup all route next hops) */
-  // nbr_table_item_t *item = nbr_table_head(nbr_routes);
-  // while(item != NULL) {
-  //   linkaddr_t *addr = nbr_table_get_lladdr(nbr_routes, item);
-  //   if(timeslot == get_node_timeslot(addr)) {
-  //     /* Yes, this timeslot is being used, return */
-  //     return;
-  //   }
-  //   item = nbr_table_next(nbr_routes, item);
-  // }
-  // tsch_schedule_remove_link(sf_lfat, l);
-}
-/*---------------------------------------------------------------------------*/
-static void
 child_added(const linkaddr_t *linkaddr)
 {
   // add_uc_link(linkaddr);
@@ -158,16 +110,6 @@ select_packet(uint16_t *slotframe, uint16_t *timeslot)
 static void
 new_time_source(const struct tsch_neighbor *old, const struct tsch_neighbor *new)
 {
-  // if(new != old) {
-  //   const linkaddr_t *new_addr = new != NULL ? &new->addr : NULL;
-  //   if(new_addr != NULL) {
-  //     linkaddr_copy(&orchestra_parent_linkaddr, new_addr);
-  //   } else {
-  //     linkaddr_copy(&orchestra_parent_linkaddr, &linkaddr_null);
-  //   }
-  //   remove_uc_link(new_addr);
-  //   add_uc_link(new_addr);
-  // }
 }
 /*---------------------------------------------------------------------------*/
 static void
@@ -177,12 +119,6 @@ init(uint16_t sf_handle)
   channel_offset = sf_handle;
   /* Slotframe for Leapfrog alt traffic */
   sf_lfat = tsch_schedule_add_slotframe(slotframe_handle, ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD);
-
-  uint16_t timeslot = get_node_timeslot(&linkaddr_node_addr);
-  tsch_schedule_add_link(sf_lfat,
-            ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG: LINK_OPTION_RX,
-            LINK_TYPE_NORMAL, &tsch_broadcast_address,
-            timeslot, channel_offset);
 }
 /*---------------------------------------------------------------------------*/
 struct orchestra_rule leapfrog_alt_traffic = {
@@ -193,7 +129,7 @@ struct orchestra_rule leapfrog_alt_traffic = {
   child_removed,
 };
 /*---------------------------------------------------------------------------*/
-static void
+void
 orchestra_leapfrog_add_uc_tx_link(char alt_parent_id)
 {
   uint16_t child_timeslot = 0;
@@ -215,7 +151,7 @@ orchestra_leapfrog_add_uc_tx_link(char alt_parent_id)
     channel_offset); //should be modified to get correct channel_offset of link
 }
 /*---------------------------------------------------------------------------*/
-static void
+void
 orchestra_leapfrog_add_uc_rx_link(char child_id)
 {
   uint16_t altparent_timeslot = child_id % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD

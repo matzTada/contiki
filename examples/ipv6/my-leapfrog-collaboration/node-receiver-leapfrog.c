@@ -283,7 +283,7 @@ receiver(struct simple_udp_connection *c,
 #ifdef WITH_LEAPFROG_TSCH //add unicast tx link to AP based on own(child) ID
           printf("LEAPFROG-TSCH: update timeslot tx -> AP %d\n", leapfrog_alt_parent_id);
           
-          orchestra_leapfrog_add_uc_tx_slot(leapfrog_alt_parent_id);
+          orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
           // uint16_t child_timeslot = 0;
           // child_timeslot = linkaddr_node_addr.u8[7] % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
           // linkaddr_t altparent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, leapfrog_alt_parent_id}};

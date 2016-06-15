@@ -58,7 +58,7 @@ struct orchestra_rule default_common;
 //added by TadaMatz 15/June/2016
 #ifdef WITH_LEAPFROG_TSCH
 struct orchestra_rule leapfrog_alt_traffic;
-#endif
+#endif /*WITH_LEAPFROG_TSCH*/
 
 extern linkaddr_t orchestra_parent_linkaddr;
 extern int orchestra_parent_knows_us;
@@ -78,7 +78,7 @@ void orchestra_callback_child_removed(const linkaddr_t *addr);
 #ifdef WITH_LEAPFROG_TSCH
 /*call from Leapfrog TSCH to handle slotframe*/
 void orchestra_leapfrog_add_uc_tx_link(char alt_parent_id);
-void orchestra_leafprog_add_uc_rx_link(char child_id);
-#ifdef /*WITH_LEAPFROG_TSCH*/
+void orchestra_leapfrog_add_uc_rx_link(char child_id);
+#endif /*WITH_LEAPFROG_TSCH*/
 
 #endif /* __ORCHESTRA_H__ */
