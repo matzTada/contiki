@@ -1,4 +1,4 @@
-/*
+         /*
  * Copyright (c) 2015, Swedish Institute of Computer Science.
  * All rights reserved.
  *
@@ -196,3 +196,46 @@ struct orchestra_rule unicast_per_neighbor = {
   child_added,
   child_removed,
 };
+/*---------------------------------------------------------------------------*/
+// to test the alt traffic slot in unicast frame
+void
+orchestra_leapfrog_add_uc_tx_link(char alt_parent_id)
+{
+  uint16_t child_timeslot = 0;
+  child_timeslot = linkaddr_node_addr.u8[7] % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD + 8; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+  linkaddr_t altparent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, alt_parent_id}};
+
+  struct tsch_link *child_l;
+  child_l = tsch_schedule_get_link_by_timeslot(sf_unicast, child_timeslot);
+  if(child_l != NULL) {
+    tsch_schedule_remove_link(sf_unicast, child_l);
+  }
+
+  tsch_schedule_add_link(
+    sf_unicast,
+    LINK_OPTION_TX | LINK_OPTION_SHARED,
+    LINK_TYPE_NORMAL,
+    &tsch_broadcast_address,
+//    &altparent_linkaddr, //dest linkaddr
+    child_timeslot,
+    channel_offset); //should be modified to get correct channel_offset of link
+}
+/*---------------------------------------------------------------------------*/
+void
+orchestra_leapfrog_add_uc_rx_link(char child_id)
+{
+  uint16_t altparent_timeslot = child_id % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD + 8; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+
+  struct tsch_link *altparent_l;
+  altparent_l = tsch_schedule_get_link_by_timeslot(sf_unicast, altparent_timeslot);
+  if(altparent_l != NULL) {
+    tsch_schedule_remove_link(sf_unicast, altparent_l);
+  }
+  tsch_schedule_add_link(
+    sf_unicast,
+    LINK_OPTION_RX,
+    LINK_TYPE_NORMAL,
+    &tsch_broadcast_address, //welcome everyone
+    altparent_timeslot,
+    channel_offset); //should be modified to get correct channel_offset of link
+}
