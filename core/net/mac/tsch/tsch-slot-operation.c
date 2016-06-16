@@ -65,7 +65,7 @@
 #define DEBUG_TADAMATZ
 
 #ifdef WITH_LEAPFROG_TSCH //added by TadaMatz 16/June/2016
-extern char leapfrog_parent_id;
+extern char leapfrog_alt_parent_id;
 #endif /*WITH_LEAPFROG_TSCH*/
 
 /* TSCH debug macros, i.e. to set LEDs or GPIOs on various TSCH
@@ -320,27 +320,31 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
         PRINTF("o %d %d\n", link->channel_offset, link->timeslot);
 #endif
         /* Get neighbor queue associated to the link and get packet from it */
-  	    n = tsch_queue_get_nbr(&link->addr);
+  	n = tsch_queue_get_nbr(&link->addr);
 #ifdef WITH_LEAPFROG_TSCH //added by TadaMatz 16/June/2016 to get Alt traffic packet directly
-        if(current_link->slotframe_handle == 3 && leapfrog_parent_id > 0){ //slotframe for Alt Traffic this number is kind of MAGIC number. 
+        if(current_link->slotframe_handle == 3 && leapfrog_alt_parent_id > 0){ //slotframe for Alt Traffic this number is kind of MAGIC number. 
           //directly get Alt traffic packet
           PRINTF("D s\n");
-          linkaddr_t altparent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, leapfrog_parent_id}};
-          n = tsch_queue_get_nbr(altparent_linkaddr);
-          if(p != NULL) PRINTF("D !\n");
+          linkaddr_t alt_parent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, leapfrog_alt_parent_id}};
+          n = tsch_queue_get_nbr(&alt_parent_linkaddr);
+          if(n != NULL){
+            PRINTF("D !\n");
+            p = tsch_queue_get_packet_for_nbr(n, link);
+          }
+          return p;
         }
 #endif /*WITH_LEAPFROG_TSCH end of added 16/June/2016*/
-	      p = tsch_queue_get_packet_for_nbr(n, link);
+	p = tsch_queue_get_packet_for_nbr(n, link);
 #ifdef DEBUG_TADAMATZ
 	    //added by TadaMatz to see what happens in DIO sending
       	if(p != NULL) PRINTF("np %u\n", n->addr.u8[7]);
 #endif
 	    /* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
-          if(p == NULL && n == n_broadcast) {
-            p = tsch_queue_get_unicast_packet_for_any(&n, link);
+        if(p == NULL && n == n_broadcast) {
+          p = tsch_queue_get_unicast_packet_for_any(&n, link);
 #ifdef DEBUG_TADAMATZ
-        	  //added by TadaMatz to see what happens in DIO sending
-	          if(p != NULL) PRINTF("ap %u\n", n->addr.u8[7]);
+          //added by TadaMatz to see what happens in DIO sending
+	  if(p != NULL) PRINTF("ap %u\n", n->addr.u8[7]);
 #endif
         }
       }
