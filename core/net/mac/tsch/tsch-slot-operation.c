@@ -313,7 +313,7 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
       /* NORMAL link or no EB to send, pick a data packet */
       if(p == NULL) {
       #ifdef DEBUG_TADAMATZ
-      PRINTF("o %d\n", link->channel_offset);
+      PRINTF("o %d %d\n", link->channel_offset, link->timeslot);
       #endif
         /* Get neighbor queue associated to the link and get packet from it */
 	n = tsch_queue_get_nbr(&link->addr);

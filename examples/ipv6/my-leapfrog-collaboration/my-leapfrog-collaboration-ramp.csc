@@ -23,7 +23,7 @@
     <motetype>
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z11</identifier>
-      <description>\Z1 Mote Type receiver</description>
+      <description>Z1 Mote Type receiver</description>
       <source EXPORT="discard">[CONTIKI_DIR]/examples/ipv6/my-leapfrog-collaboration/node-receiver-leapfrog.c</source>
       <commands EXPORT="discard">make node-receiver-leapfrog.z1 TARGET=z1</commands>
       <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-leapfrog-collaboration/node-receiver-leapfrog.z1</firmware>
@@ -190,7 +190,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>0</z>
+    <z>1</z>
     <height>160</height>
     <location_x>58</location_x>
     <location_y>428</location_y>
@@ -214,12 +214,12 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter />
+      <filter>^(?=.*ID:6)(?=.*Replication)|(?=.*ID:6)(?=.*o )</filter>
       <formatted_time />
       <coloring />
     </plugin_config>
     <width>935</width>
-    <z>1</z>
+    <z>0</z>
     <height>928</height>
     <location_x>400</location_x>
     <location_y>0</location_y>
