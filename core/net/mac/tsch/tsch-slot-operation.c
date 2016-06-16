@@ -62,7 +62,7 @@
 #include "net/ip/uip-debug.h"
 
 //added by TadaMatz 31/May/2016 to ON OFF debug of slot operatoin
-//#define DEBUG_TADAMATZ
+#define DEBUG_TADAMATZ
 
 /* TSCH debug macros, i.e. to set LEDs or GPIOs on various TSCH
  * timeslot events */
@@ -312,19 +312,22 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
     if(link->link_type != LINK_TYPE_ADVERTISING_ONLY) {
       /* NORMAL link or no EB to send, pick a data packet */
       if(p == NULL) {
+      #ifdef DEBUG_TADAMATZ
+      PRINTF("o %d\n", link->channel_offset);
+      #endif
         /* Get neighbor queue associated to the link and get packet from it */
 	n = tsch_queue_get_nbr(&link->addr);
 	p = tsch_queue_get_packet_for_nbr(n, link);
 	#ifdef DEBUG_TADAMATZ
 	//added by TadaMatz to see what happens in DIO sending
-	if(p != NULL) PRINTF("np %u %u\n", n->addr.u8[6], n->addr.u8[7]);
+	if(p != NULL) PRINTF("np %u\n", n->addr.u8[7]);
 	#endif
 	/* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
         if(p == NULL && n == n_broadcast) {
           p = tsch_queue_get_unicast_packet_for_any(&n, link);
 	  #ifdef DEBUG_TADAMATZ
 	  //added by TadaMatz to see what happens in DIO sending
-	  if(p != NULL) PRINTF("ap %u %u\n", n->addr.u8[6], n->addr.u8[7]);
+	  if(p != NULL) PRINTF("ap %u\n", n->addr.u8[7]);
 	  #endif
         }
       }

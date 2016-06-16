@@ -229,6 +229,9 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
   if(!tsch_is_locked()) {
     n = tsch_queue_add_nbr(addr);
     if(n != NULL) {
+//added by TadaMatz 16/6/2016
+      PRINTF("TSCH: q a p of lddr:%d\n", addr->u8[7]);
+//added end
       put_index = ringbufindex_peek_put(&n->tx_ringbuf);
       if(put_index != -1) {
         p = memb_alloc(&packet_memb);

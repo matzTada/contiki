@@ -370,7 +370,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>0</z>
+    <z>2</z>
     <height>160</height>
     <location_x>96</location_x>
     <location_y>486</location_y>
@@ -386,7 +386,7 @@
       <viewport>1.097576461499141 0.0 0.0 1.097576461499141 162.59247156562625 -49.91085733938001</viewport>
     </plugin_config>
     <width>400</width>
-    <z>2</z>
+    <z>4</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -394,13 +394,13 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter>Hello|Replication|Elimination|add packet failed</filter>
+      <filter />
       <formatted_time />
       <coloring />
     </plugin_config>
     <width>935</width>
-    <z>1</z>
-    <height>987</height>
+    <z>0</z>
+    <height>747</height>
     <location_x>400</location_x>
     <location_y>0</location_y>
   </plugin>
@@ -427,13 +427,13 @@
       <showRadioRXTX />
       <showRadioHW />
       <showLEDs />
-      <zoomfactor>500.0</zoomfactor>
+      <zoomfactor>1000.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
-    <z>4</z>
-    <height>166</height>
+    <z>3</z>
+    <height>400</height>
     <location_x>0</location_x>
-    <location_y>987</location_y>
+    <location_y>753</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Notes
@@ -442,10 +442,10 @@
       <decorations>true</decorations>
     </plugin_config>
     <width>655</width>
-    <z>3</z>
+    <z>1</z>
     <height>160</height>
-    <location_x>38</location_x>
-    <location_y>703</location_y>
+    <location_x>15</location_x>
+    <location_y>667</location_y>
   </plugin>
 </simconf>
 
