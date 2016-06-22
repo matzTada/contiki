@@ -317,10 +317,10 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
     if(link->link_type != LINK_TYPE_ADVERTISING_ONLY) {
       /* NORMAL link or no EB to send, pick a data packet */
       if(p == NULL) {
-        PRINTF("o %d %d\n", link->channel_offset, link->timeslot);
+        //PRINTF("o %d %d\n", link->channel_offset, link->timeslot);
         /* Get neighbor queue associated to the link and get packet from it */
   	n = tsch_queue_get_nbr(&link->addr);
-#ifdef WITH_LEAPFROG_TSCH //added by TadaMatz 16/June/2016 to get Alt traffic packet directly
+/*#ifdef WITH_LEAPFROG_TSCH //added by TadaMatz 16/June/2016 to get Alt traffic packet directly
         if(current_link->slotframe_handle == 3 && leapfrog_alt_parent_id > 0){ //slotframe for Alt Traffic this number is kind of MAGIC number. 
           //directly get Alt traffic packet
           n = tsch_queue_get_nbr(&alt_parent_linkaddr);
@@ -335,7 +335,8 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
           }
           return p;
         }
-#endif /*WITH_LEAPFROG_TSCH end of added 16/June/2016*/
+#endif //WITH_LEAPFROG_TSCH end of added 16/June/2016
+*/
 	p = tsch_queue_get_packet_for_nbr(n, link);
 #ifdef DEBUG_TADAMATZ
 	    //added by TadaMatz to see what happens in DIO sending

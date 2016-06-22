@@ -370,7 +370,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>2</z>
+    <z>1</z>
     <height>160</height>
     <location_x>96</location_x>
     <location_y>486</location_y>
@@ -399,7 +399,7 @@
       <coloring />
     </plugin_config>
     <width>935</width>
-    <z>0</z>
+    <z>2</z>
     <height>747</height>
     <location_x>400</location_x>
     <location_y>0</location_y>
@@ -438,11 +438,11 @@
   <plugin>
     org.contikios.cooja.plugins.Notes
     <plugin_config>
-      <notes>Hello|Replication|Elimination|ForwardingEnter notes here</notes>
+      <notes>Hello|Replication|Elimination|Forwarding</notes>
       <decorations>true</decorations>
     </plugin_config>
     <width>655</width>
-    <z>1</z>
+    <z>0</z>
     <height>160</height>
     <location_x>15</location_x>
     <location_y>667</location_y>

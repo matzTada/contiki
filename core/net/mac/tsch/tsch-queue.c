@@ -236,7 +236,7 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
     n = tsch_queue_add_nbr(addr);
     if(n != NULL) {
 //added by TadaMatz 16/6/2016
-      PRINTF("Qa %d\n", n->addr.u8[7]);
+      //PRINTF("Qa %d\n", n->addr.u8[7]);
 //added end
       put_index = ringbufindex_peek_put(&n->tx_ringbuf);
       if(put_index != -1) {
@@ -248,7 +248,7 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
 #endif
 #ifdef WITH_LEAPFROG_TSCH
           if(leapfrog_alt_parent_id > 0 && n->addr.u8[7] == leapfrog_alt_parent_id){
-            PRINTF("QsA\n");
+            //PRINTF("QsA\n");
             orchestra_leapfrog_set_packetbuf_attr(leapfrog_alt_parent_id);
           }
 #endif /*WITH_LEAPFROG_TSCH*/
