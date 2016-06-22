@@ -62,10 +62,11 @@
 #include "net/ip/uip-debug.h"
 
 //added by TadaMatz 31/May/2016 to ON OFF debug of slot operatoin
-#define DEBUG_TADAMATZ
+//#define DEBUG_TADAMATZ
 
 #ifdef WITH_LEAPFROG_TSCH //added by TadaMatz 16/June/2016
 extern char leapfrog_alt_parent_id;
+extern linkaddr_t alt_parent_linkaddr;
 #endif /*WITH_LEAPFROG_TSCH*/
 
 /* TSCH debug macros, i.e. to set LEDs or GPIOs on various TSCH
@@ -316,20 +317,21 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
     if(link->link_type != LINK_TYPE_ADVERTISING_ONLY) {
       /* NORMAL link or no EB to send, pick a data packet */
       if(p == NULL) {
-#ifdef DEBUG_TADAMATZ
         PRINTF("o %d %d\n", link->channel_offset, link->timeslot);
-#endif
         /* Get neighbor queue associated to the link and get packet from it */
   	n = tsch_queue_get_nbr(&link->addr);
 #ifdef WITH_LEAPFROG_TSCH //added by TadaMatz 16/June/2016 to get Alt traffic packet directly
         if(current_link->slotframe_handle == 3 && leapfrog_alt_parent_id > 0){ //slotframe for Alt Traffic this number is kind of MAGIC number. 
           //directly get Alt traffic packet
-          PRINTF("D s\n");
-          linkaddr_t alt_parent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, leapfrog_alt_parent_id}};
           n = tsch_queue_get_nbr(&alt_parent_linkaddr);
           if(n != NULL){
-            PRINTF("D !\n");
+            PRINTF("Ds\n");
             p = tsch_queue_get_packet_for_nbr(n, link);
+            if(p != NULL) PRINTF("Dd\n");
+            else{
+              p = tsch_queue_get_unicast_packet_for_any(&n, link);
+              if(p != NULL) PRINTF("Da\n");
+            }
           }
           return p;
         }
@@ -919,10 +921,10 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
          **/
         static struct pt slot_tx_pt;
         PT_SPAWN(&slot_operation_pt, &slot_tx_pt, tsch_tx_slot(&slot_tx_pt, t));
-	#ifdef DEBUG_TADAMATZ
+	//#ifdef DEBUG_TADAMATZ
 	      //added by TadaMatz 19/May/2016 to see packet sent or not
 	      PRINTF("so TS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
-	#endif /*DEBUG_TADAMATZ*/
+	//#endif /*DEBUG_TADAMATZ*/
       } else if((current_link->link_options & LINK_OPTION_RX)) {
         /* Listen */
         static struct pt slot_rx_pt;

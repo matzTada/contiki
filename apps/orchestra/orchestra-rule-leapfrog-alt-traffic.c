@@ -65,6 +65,7 @@ get_node_timeslot(const linkaddr_t *addr)
 static int
 neighbor_has_uc_link(const linkaddr_t *linkaddr)
 {
+/*
   if(linkaddr != NULL && !linkaddr_cmp(linkaddr, &linkaddr_null)) {
     if((orchestra_parent_knows_us || !ORCHESTRA_UNICAST_SENDER_BASED)
        && linkaddr_cmp(&orchestra_parent_linkaddr, linkaddr)) {
@@ -74,6 +75,7 @@ neighbor_has_uc_link(const linkaddr_t *linkaddr)
       return 1;
     }
   }
+*/
   return 0;
 }
 /*---------------------------------------------------------------------------*/
@@ -93,9 +95,9 @@ static int
 select_packet(uint16_t *slotframe, uint16_t *timeslot)
 {
   /* Select data packets we have a unicast link to */
+/*
   const linkaddr_t *dest = packetbuf_addr(PACKETBUF_ADDR_RECEIVER);
-  if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME
-     && neighbor_has_uc_link(dest)) {
+  if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME) {
     if(slotframe != NULL) {
       *slotframe = slotframe_handle;
     }
@@ -104,6 +106,7 @@ select_packet(uint16_t *slotframe, uint16_t *timeslot)
     }
     return 1;
   }
+*/
   return 0;
 }
 /*---------------------------------------------------------------------------*/
@@ -169,4 +172,13 @@ orchestra_leapfrog_add_uc_rx_link(char child_id)
     &tsch_broadcast_address, //welcome everyone
     altparent_timeslot,
     channel_offset); //should be modified to get correct channel_offset of link
+}
+/*---------------------------------------------------------------------------*/
+void
+orchestra_leapfrog_set_packetbuf_attr(char child_id)
+{
+  uint16_t child_timeslot = 0;
+  child_timeslot = linkaddr_node_addr.u8[7] % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+  packetbuf_set_attr(PACKETBUF_ATTR_TSCH_SLOTFRAME, slotframe_handle);
+  packetbuf_set_attr(PACKETBUF_ATTR_TSCH_TIMESLOT, child_timeslot);
 }

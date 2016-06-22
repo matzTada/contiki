@@ -77,6 +77,12 @@ LIST(neighbor_list);
 struct tsch_neighbor *n_broadcast;
 struct tsch_neighbor *n_eb;
 
+//added by TadaMatz 22/June/2016
+#ifdef WITH_LEAPFROG_TSCH
+#include "orchestra.h"
+extern char leapfrog_alt_parent_id;
+#endif /*WITH_LEAPFROG_TSCH*/
+
 /*---------------------------------------------------------------------------*/
 /* Add a TSCH neighbor */
 struct tsch_neighbor *
@@ -230,7 +236,7 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
     n = tsch_queue_add_nbr(addr);
     if(n != NULL) {
 //added by TadaMatz 16/6/2016
-      PRINTF("TSCH: q a p of lddr:%d\n", addr->u8[7]);
+      PRINTF("Qa %d\n", n->addr.u8[7]);
 //added end
       put_index = ringbufindex_peek_put(&n->tx_ringbuf);
       if(put_index != -1) {
@@ -240,6 +246,12 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
 #ifdef TSCH_CALLBACK_PACKET_READY
           TSCH_CALLBACK_PACKET_READY();
 #endif
+#ifdef WITH_LEAPFROG_TSCH
+          if(leapfrog_alt_parent_id > 0 && n->addr.u8[7] == leapfrog_alt_parent_id){
+            PRINTF("QsA\n");
+            orchestra_leapfrog_set_packetbuf_attr(leapfrog_alt_parent_id);
+          }
+#endif /*WITH_LEAPFROG_TSCH*/
           p->qb = queuebuf_new_from_packetbuf();
           if(p->qb != NULL) {
             p->sent = sent;
@@ -402,6 +414,8 @@ tsch_queue_get_unicast_packet_for_any(struct tsch_neighbor **n, struct tsch_link
           if(n != NULL) {
             *n = curr_nbr;
           }
+          //added by TadaMatz 22/6/2016 to make sure packet from which neighbor queue this function return
+          PRINTF("FA %d\n", curr_nbr->addr.u8[7]);
           return p;
         }
       }

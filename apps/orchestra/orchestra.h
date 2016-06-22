@@ -79,6 +79,7 @@ void orchestra_callback_child_removed(const linkaddr_t *addr);
 /*call from Leapfrog TSCH to handle slotframe*/
 void orchestra_leapfrog_add_uc_tx_link(char alt_parent_id);
 void orchestra_leapfrog_add_uc_rx_link(char child_id);
+void orchestra_leapfrog_set_packetbuf_attr(char child_id);
 #endif /*WITH_LEAPFROG_TSCH*/
 
 #endif /* __ORCHESTRA_H__ */

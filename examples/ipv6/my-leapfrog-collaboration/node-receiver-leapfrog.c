@@ -108,6 +108,7 @@ PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
 
 #ifdef WITH_LEAPFROG_TSCH
 // extern struct tsch_slotframe *sf_lfat; //leapfrog alt traffic
+linkaddr_t alt_parent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, 0}};
 #endif /*WITH_LEAPFROG_TSCH*/
 
 #endif //WITH_LEAPFROG
@@ -279,7 +280,19 @@ receiver(struct simple_udp_connection *c,
       if(leapfrog_grand_parent_id > 0 && temp_pid > 0 && leapfrog_grand_parent_id == temp_pid && leapfrog_parent_id != temp_sid){ //judge Alt Parent
         if(leapfrog_alt_parent_id != temp_sid){
           leapfrog_alt_parent_id = temp_sid; //get alt parent
-          printf("LEAPFROG: get new AP %d\n", leapfrog_alt_parent_id);
+          linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
+          //alt_parent_linkaddr.u8[7] = leapfrog_alt_parent_id; //for tsch
+          printf("LEAPFROG: get new AP %d %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n", 
+            leapfrog_alt_parent_id,
+            alt_parent_linkaddr.u8[0],
+            alt_parent_linkaddr.u8[1],
+            alt_parent_linkaddr.u8[2],
+            alt_parent_linkaddr.u8[3],
+            alt_parent_linkaddr.u8[4],
+            alt_parent_linkaddr.u8[5],
+            alt_parent_linkaddr.u8[6],
+            alt_parent_linkaddr.u8[7]
+           );
 #ifdef WITH_LEAPFROG_TSCH //add unicast tx link to AP based on own(child) ID
           printf("LEAPFROG-TSCH: update timeslot tx -> AP %d\n", leapfrog_alt_parent_id);
           

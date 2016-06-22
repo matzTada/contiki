@@ -190,7 +190,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>1</z>
+    <z>3</z>
     <height>160</height>
     <location_x>58</location_x>
     <location_y>428</location_y>
@@ -214,7 +214,7 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter>^(?=.*ID:6)(?=.*Replication)|(?=.*ID:6)(?=.*o )</filter>
+      <filter>FA|D s|Replication|update|Ds|Da|Dd|o 3</filter>
       <formatted_time />
       <coloring />
     </plugin_config>
@@ -250,11 +250,12 @@
     <plugin_config>
       <notes>"check elimination process" uip_process|Forwarding|Receiving UDP|Cutting|IPv6 packet|Sending unicast|Elimination
 "check leapfrog roughly" Hello|Elimination|Replication
-"check timeslot operation" ^(?=.*ID:5)(?=.*TS )|(?=.*ID:5)(?=.*o 1)|(?=.*ID:5)(?=.*ap )|(?=.*ID:5)(?=.*np )</notes>
+"check timeslot operation" ^(?=.*ID:5)(?=.*TS )|(?=.*ID:5)(?=.*o 1)|(?=.*ID:5)(?=.*ap )|(?=.*ID:5)(?=.*np )
+"check timeslot operation "FA|D s|Replication|update|Ds|Da|Dd|o 3</notes>
       <decorations>true</decorations>
     </plugin_config>
     <width>826</width>
-    <z>3</z>
+    <z>1</z>
     <height>245</height>
     <location_x>9</location_x>
     <location_y>709</location_y>
