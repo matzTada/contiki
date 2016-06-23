@@ -190,7 +190,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>3</z>
+    <z>2</z>
     <height>160</height>
     <location_x>58</location_x>
     <location_y>428</location_y>
@@ -214,7 +214,7 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter>FA|D s|Replication|update|Ds|Da|Dd|o 3</filter>
+      <filter>Hello|Elimination|Replication</filter>
       <formatted_time />
       <coloring />
     </plugin_config>
@@ -240,7 +240,7 @@
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
-    <z>2</z>
+    <z>3</z>
     <height>226</height>
     <location_x>0</location_x>
     <location_y>927</location_y>

@@ -252,12 +252,12 @@ receiver(struct simple_udp_connection *c,
     printf("LEAPFROG: beacon S %d P %d GP %d AP %d\n", temp_sid, temp_pid, temp_gid, temp_aid);
     
     //judge and registor parent, grandparent, alt parent 
-    char my_id = 0;
     uip_ipaddr_t * addr;
-    addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
-    if(addr != NULL){
-      my_id = addr->u8[15];
-    }
+    //char my_id = 0;
+    //addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
+    //if(addr != NULL){
+    //  my_id = addr->u8[15];
+    //}
     addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent);
     if(addr != NULL){
       char my_pid = addr->u8[15];
@@ -280,6 +280,7 @@ receiver(struct simple_udp_connection *c,
       if(leapfrog_grand_parent_id > 0 && temp_pid > 0 && leapfrog_grand_parent_id == temp_pid && leapfrog_parent_id != temp_sid){ //judge Alt Parent
         if(leapfrog_alt_parent_id != temp_sid){
           leapfrog_alt_parent_id = temp_sid; //get alt parent
+#ifdef WITH_LEAPFROG_TSCH //add unicast tx link to AP based on own(child) ID
           linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
           //alt_parent_linkaddr.u8[7] = leapfrog_alt_parent_id; //for tsch
           printf("LEAPFROG: get new AP %d %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n", 
@@ -293,7 +294,6 @@ receiver(struct simple_udp_connection *c,
             alt_parent_linkaddr.u8[6],
             alt_parent_linkaddr.u8[7]
            );
-#ifdef WITH_LEAPFROG_TSCH //add unicast tx link to AP based on own(child) ID
           printf("LEAPFROG-TSCH: update timeslot tx -> AP %d\n", leapfrog_alt_parent_id);
           
           orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
