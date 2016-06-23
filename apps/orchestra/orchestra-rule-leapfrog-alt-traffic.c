@@ -80,7 +80,7 @@ orchestra_leapfrog_add_uc_tx_link(char alt_parent_id)
 {
   uint16_t child_timeslot = 0;
   child_timeslot = linkaddr_node_addr.u8[7] % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
-  linkaddr_t altparent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, alt_parent_id}};
+//  linkaddr_t altparent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, alt_parent_id}};
 
   struct tsch_link *child_l;
   child_l = tsch_schedule_get_link_by_timeslot(sf_lfat, child_timeslot);

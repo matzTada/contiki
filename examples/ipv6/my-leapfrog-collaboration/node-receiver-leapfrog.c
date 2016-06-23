@@ -253,11 +253,13 @@ receiver(struct simple_udp_connection *c,
     
     //judge and registor parent, grandparent, alt parent 
     uip_ipaddr_t * addr;
-    //char my_id = 0;
-    //addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
-    //if(addr != NULL){
-    //  my_id = addr->u8[15];
-    //}
+    #ifdef WITH_LEAPFROG_TSCH
+    char my_id = 0;
+    addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
+    if(addr != NULL){
+      my_id = addr->u8[15];
+    }
+    #endif //WITH_LEAPFROG_TSCH
     addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent);
     if(addr != NULL){
       char my_pid = addr->u8[15];
