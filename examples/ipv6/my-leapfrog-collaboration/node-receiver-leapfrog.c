@@ -99,6 +99,9 @@ char leapfrog_parent_id = 0;
 char leapfrog_grand_parent_id = 0;
 char leapfrog_alt_parent_id = 0;
 
+char leapfrog_possible_parent_num = 0;
+char leapfrog_possible_parent_id_array[LEAPFROG_NUM_NEIGHBOR_NODE];
+
 char leapfrog_data_counter = 0;
 char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
 
@@ -493,13 +496,21 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
     if(addr != NULL) {
       static unsigned int message_number;
       char buf[20];
+      char possible_parent_str[1 + LEAPFROG_NUM_NEIGHBOR_NODE];
 
-      sprintf(buf, "%cP%cG%cA%cN%d", 
+      possible_parent_str[0] = leapfrog_possible_parent_num + LEAPFROG_BEACON_OFFSET;
+      int i;
+      for(i = 0; i < leapfrog_possible_parent_num; i++){
+        possible_parent_str[1 + i] = leapfrog_possible_parent_id_array[i] + LEAPFROG_BEACON_OFFSET;
+      }
+
+      sprintf(buf, "%cP%cG%cA%cN%dC%s", 
 	LEAPFROG_BEACON_HEADER, 
 	leapfrog_parent_id + LEAPFROG_BEACON_OFFSET, 
 	leapfrog_grand_parent_id + LEAPFROG_BEACON_OFFSET,
         leapfrog_alt_parent_id + LEAPFROG_BEACON_OFFSET,
-	message_number);
+	message_number,
+        possible_parent_str); //C for candidate
       printf("LEAPFROG: Sending beacon to ");
       uip_debug_ipaddr_print(addr);
       printf(" '");

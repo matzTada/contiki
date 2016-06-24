@@ -74,6 +74,12 @@
 #define UIP_ICMP_BUF     ((struct uip_icmp_hdr *)&uip_buf[uip_l2_l3_hdr_len])
 #define UIP_ICMP_PAYLOAD ((unsigned char *)&uip_buf[uip_l2_l3_icmp_hdr_len])
 /*---------------------------------------------------------------------------*/
+//added by TadaMatz 24/June/2016
+#ifdef WITH_LEAPFROG
+extern char leapfrog_possible_parent_num;
+extern char leapfrog_possible_parent_id_array[LEAPFROG_NUM_NEIGHBOR_NODE];
+#endif //WITH_LEAPFROG
+/*---------------------------------------------------------------------------*/
 static void dis_input(void);
 static void dio_input(void);
 static void dao_input(void);
@@ -334,6 +340,46 @@ dio_input(void)
          (unsigned)dio.instance_id,
          (unsigned)dio.version,
          (unsigned)dio.rank);
+
+#ifdef WITH_LEAPFROG
+  rpl_rank_t my_rank = (unsigned)default_instance->current_dag->rank;
+  rpl_rank_t sender_rank = (unsigned)dio.rank;
+  char sid = from.u8[15];
+  if(sender_rank < my_rank){
+    //add to PP array
+    //check we have it already or not
+    int is_already_registered = 0;
+    int my_itr;
+    for(my_itr = 0; my_itr < (int)leapfrog_possible_parent_num - 1; my_itr++){
+      if(leapfrog_possible_parent_id_array[my_itr] == sid){
+        is_already_registered = 1;
+        break;
+      }
+    }
+    //if it is not registered add sid to array
+    if(is_already_registered == 0){
+      leapfrog_possible_parent_num++;
+      if(leapfrog_possible_parent_num > LEAPFROG_NUM_NEIGHBOR_NODE){
+        leapfrog_possible_parent_num = LEAPFROG_NUM_NEIGHBOR_NODE;
+      }
+      leapfrog_possible_parent_id_array[leapfrog_possible_parent_num - 1] = sid;
+    }
+  }else{
+    //remove from PP array
+    int my_itr;
+    for(my_itr = 0; my_itr < (int)leapfrog_possible_parent_num - 1; my_itr++){
+      if(leapfrog_possible_parent_id_array[my_itr] == sid){
+        //if find sid in array, remove it and then shift it
+        int my_j;
+        for(my_j = my_itr; my_j < (int)leapfrog_possible_parent_num - 2; my_j++){
+          leapfrog_possible_parent_id_array[my_j] = leapfrog_possible_parent_id_array[my_j+1];
+        }
+        leapfrog_possible_parent_num--;
+        break;
+      }
+    }
+  }
+#endif //WITH_LEAPFROG
 
   dio.grounded = buffer[i] & RPL_DIO_GROUNDED;
   dio.mop = (buffer[i]& RPL_DIO_MOP_MASK) >> RPL_DIO_MOP_SHIFT;

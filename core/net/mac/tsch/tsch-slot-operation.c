@@ -922,10 +922,10 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
          **/
         static struct pt slot_tx_pt;
         PT_SPAWN(&slot_operation_pt, &slot_tx_pt, tsch_tx_slot(&slot_tx_pt, t));
-	//#ifdef DEBUG_TADAMATZ
+	#ifdef DEBUG_TADAMATZ
 	      //added by TadaMatz 19/May/2016 to see packet sent or not
 	      PRINTF("so TS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
-	//#endif /*DEBUG_TADAMATZ*/
+	#endif /*DEBUG_TADAMATZ*/
       } else if((current_link->link_options & LINK_OPTION_RX)) {
         /* Listen */
         static struct pt slot_rx_pt;

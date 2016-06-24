@@ -94,6 +94,10 @@ extern rpl_instance_t * default_instance; //used for getting default parent from
 char leapfrog_alt_parent_id = 0;
 char leapfrog_data_counter = 0;
 char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
+
+char leapfrog_possible_parent_num = 0;
+char leapfrog_possible_parent_id_array[LEAPFROG_NUM_NEIGHBOR_NODE];
+
 linkaddr_t alt_parent_linkaddr = {{0,0,0,0,0,0,0,0}};
 #endif
 /* ----------------- leapfrog include and declaration end ----------------- */
