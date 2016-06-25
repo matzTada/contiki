@@ -269,12 +269,14 @@ receiver(struct simple_udp_connection *c,
 //      if(leapfrog_parent_id == 0){ //registor parent
 //        leapfrog_parent_id = my_pid;
 //      }else 
+      //new parent and reset P, GP, AP
       if(leapfrog_parent_id != my_pid){ //new parent and reset P, GP, AP
         leapfrog_parent_id = my_pid;
         leapfrog_grand_parent_id = 0;
         leapfrog_alt_parent_id = 0;
         printf("LEAPFROG: reset P GP AP\n");
       }
+      //judge Grand Parent
       if(leapfrog_parent_id > 0 && leapfrog_parent_id == my_pid){ //judge Grand Parent
         if(temp_sid == my_pid){
           if(temp_pid > 0 && temp_pid != my_pid){
@@ -282,67 +284,53 @@ receiver(struct simple_udp_connection *c,
           }
         }
       }
+      //judge Alternate Parent
       if(leapfrog_grand_parent_id > 0 && temp_pid > 0 && leapfrog_grand_parent_id == temp_pid && leapfrog_parent_id != temp_sid){ //judge Alt Parent
         if(leapfrog_alt_parent_id != temp_sid){
           leapfrog_alt_parent_id = temp_sid; //get alt parent
 #ifdef WITH_LEAPFROG_TSCH //add unicast tx link to AP based on own(child) ID
           linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
           //alt_parent_linkaddr.u8[7] = leapfrog_alt_parent_id; //for tsch
-          printf("LEAPFROG: get new AP %d %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n", 
-            leapfrog_alt_parent_id,
-            alt_parent_linkaddr.u8[0],
-            alt_parent_linkaddr.u8[1],
-            alt_parent_linkaddr.u8[2],
-            alt_parent_linkaddr.u8[3],
-            alt_parent_linkaddr.u8[4],
-            alt_parent_linkaddr.u8[5],
-            alt_parent_linkaddr.u8[6],
-            alt_parent_linkaddr.u8[7]
-           );
-          printf("LEAPFROG-TSCH: update timeslot tx -> AP %d\n", leapfrog_alt_parent_id);
+          //printf("LEAPFROG-TSCH: update AP %d %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n", 
+          //  leapfrog_alt_parent_id,
+          //  alt_parent_linkaddr.u8[0],
+          //  alt_parent_linkaddr.u8[1],
+          //  alt_parent_linkaddr.u8[2],
+          //  alt_parent_linkaddr.u8[3],
+          //  alt_parent_linkaddr.u8[4],
+          //  alt_parent_linkaddr.u8[5],
+          //  alt_parent_linkaddr.u8[6],
+          //  alt_parent_linkaddr.u8[7]);
+
+          printf("LEAPFROG-TSCH: update alt tx normally -> AP %d\n", leapfrog_alt_parent_id);
           
           orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
-          // uint16_t child_timeslot = 0;
-          // child_timeslot = linkaddr_node_addr.u8[7] % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
-          // linkaddr_t altparent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, leapfrog_alt_parent_id}};
-
-          // struct tsch_link *child_l;
-          // child_l = tsch_schedule_get_link_by_timeslot(sf_lfat, child_timeslot);
-          // if(child_l != NULL) {
-          //   tsch_schedule_remove_link(sf_lfat, child_l);
-          // }
-          // tsch_schedule_add_link(
-          //   sf_lfat,
-          //   LINK_OPTION_TX | LINK_OPTION_SHARED,
-          //   LINK_TYPE_NORMAL,
-          //   &altparent_linkaddr, //dest linkaddr
-          //   child_timeslot,
-          //   sf_lfat->handle); //should be modified to get correct channel_offset of link
 #endif /*WITH_LEAPFROG_TSCH*/
         }
+      }else{ //judge Alternate Parent by Possible Parent
+        if(my_pid != temp_sid){
+          char temp_ppid_num = data[8] - LEAPFROG_BEACON_OFFSET;
+          int temp_pp_itr;
+          for(temp_pp_itr = 0; temp_pp_itr < (int)temp_ppid_num; temp_pp_itr++){
+            if(leapfrog_grand_parent_id == data[8 + 1 + temp_pp_itr] - LEAPFROG_BEACON_OFFSET){
+              leapfrog_alt_parent_id = temp_sid;
+              printf("LEAPFROG-TSCH: update alt tx by PP -> AP %d\n", leapfrog_alt_parent_id);
+          
+              orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
+              break;
+            }
+          }
+        }
       }
+
       printf("LEAPFROG: own P %d GP %d AP %d\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id);
 
+      //judge I am sender's Alt Parent and prepare Rx link for alt child
 #ifdef WITH_LEAPFROG_TSCH //judge I am sender's Alt Parent
       if(temp_aid != 0 && my_id == temp_aid){
-        printf("LEAPFROG-TSCH: update timeslot rx <- (alt)C %d\n", temp_sid);
+        printf("LEAPFROG-TSCH: update rx s <- (alt)C %d\n", temp_sid);
 
         orchestra_leapfrog_add_uc_rx_link(temp_sid);
-        // //linkaddr_t child_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, temp_sid}};
-        // uint16_t altparent_timeslot = temp_sid % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
-
-        // struct tsch_link *altparent_l;
-        // altparent_l = tsch_schedule_get_link_by_timeslot(sf_lfat, altparent_timeslot);
-        // if(altparent_l != NULL) {
-        //   tsch_schedule_remove_link(sf_lfat, altparent_l);
-        // }
-        // tsch_schedule_add_link(
-        //   sf_lfat,
-        //   LINK_OPTION_RX,
-        //   LINK_TYPE_NORMAL,
-        //   &tsch_broadcast_address, //welcome everyone
-        //   altparent_timeslot,
-        //   sf_lfat->handle); //should be modified to get correct channel_offset of link
       }
 #endif /*WITH_LEAPFROG_TSCH*/      
     }
@@ -504,13 +492,13 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
         possible_parent_str[1 + i] = leapfrog_possible_parent_id_array[i] + LEAPFROG_BEACON_OFFSET;
       }
 
-      sprintf(buf, "%cP%cG%cA%cN%dC%s", 
+      sprintf(buf, "%cP%cG%cA%cC%sN%d", 
 	LEAPFROG_BEACON_HEADER, 
 	leapfrog_parent_id + LEAPFROG_BEACON_OFFSET, 
 	leapfrog_grand_parent_id + LEAPFROG_BEACON_OFFSET,
         leapfrog_alt_parent_id + LEAPFROG_BEACON_OFFSET,
-	message_number,
-        possible_parent_str); //C for candidate
+        possible_parent_str, //C for candidate
+	message_number);
       printf("LEAPFROG: Sending beacon to ");
       uip_debug_ipaddr_print(addr);
       printf(" '");
