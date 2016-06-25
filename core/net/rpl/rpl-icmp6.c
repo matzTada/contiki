@@ -350,7 +350,7 @@ dio_input(void)
     //check we have it already or not
     int is_already_registered = 0;
     int my_itr;
-    for(my_itr = 0; my_itr < (int)leapfrog_possible_parent_num - 1; my_itr++){
+    for(my_itr = 0; my_itr < (int)leapfrog_possible_parent_num; my_itr++){
       if(leapfrog_possible_parent_id_array[my_itr] == sid){
         is_already_registered = 1;
         break;
@@ -367,11 +367,11 @@ dio_input(void)
   }else{
     //remove from PP array
     int my_itr;
-    for(my_itr = 0; my_itr < (int)leapfrog_possible_parent_num - 1; my_itr++){
+    for(my_itr = 0; my_itr < (int)leapfrog_possible_parent_num; my_itr++){
       if(leapfrog_possible_parent_id_array[my_itr] == sid){
         //if find sid in array, remove it and then shift it
         int my_j;
-        for(my_j = my_itr; my_j < (int)leapfrog_possible_parent_num - 2; my_j++){
+        for(my_j = my_itr; my_j < (int)leapfrog_possible_parent_num - 1; my_j++){
           leapfrog_possible_parent_id_array[my_j] = leapfrog_possible_parent_id_array[my_j+1];
         }
         leapfrog_possible_parent_num--;
