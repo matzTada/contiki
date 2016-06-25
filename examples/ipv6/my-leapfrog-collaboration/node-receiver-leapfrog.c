@@ -314,9 +314,12 @@ receiver(struct simple_udp_connection *c,
           for(temp_pp_itr = 0; temp_pp_itr < (int)temp_ppid_num; temp_pp_itr++){
             if(leapfrog_grand_parent_id == data[8 + 1 + temp_pp_itr] - LEAPFROG_BEACON_OFFSET){
               leapfrog_alt_parent_id = temp_sid;
+#ifdef WITH_LEAPFROG_TSCH
+              linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
               printf("LEAPFROG-TSCH: update alt tx by PP -> AP %d\n", leapfrog_alt_parent_id);
           
               orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
+#endif //WITH_LEAPFROG_TSCH
               break;
             }
           }
