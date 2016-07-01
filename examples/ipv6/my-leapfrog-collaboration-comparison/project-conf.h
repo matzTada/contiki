@@ -38,7 +38,7 @@
 //modified by TadaMatz 1/July/2016
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0
-#define WITH_LEAPFROG
+//#define WITH_LEAPFROG
 
 #ifdef WITH_LEAPFROG
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
