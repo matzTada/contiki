@@ -385,6 +385,11 @@ update_neighbor_state(struct tsch_neighbor *n, struct tsch_packet *p,
     }
   } else {
     /* Failed transmission */
+//modified by TadaMatz 1/July/2016 not to resend if IGNORE_TSCH_RESEND
+#ifdef IGNORE_TSCH_RESEND
+    tsch_queue_remove_packet_from_queue(n);
+    in_queue = 0;
+#else //IGNORE_TSCH_RESEND
     if(p->transmissions >= TSCH_MAC_MAX_FRAME_RETRIES + 1) {
       /* Drop packet */
       tsch_queue_remove_packet_from_queue(n);
@@ -399,6 +404,7 @@ update_neighbor_state(struct tsch_neighbor *n, struct tsch_packet *p,
         tsch_queue_backoff_inc(n);
       }
     }
+#endif //IGNORE_TSCH_RESEND
   }
 
   return in_queue;

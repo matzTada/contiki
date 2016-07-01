@@ -35,7 +35,8 @@
 #ifndef __PROJECT_CONF_H__
 #define __PROJECT_CONF_H__
 
-//modified by TadaMatz 14/June/2016
+//modified by TadaMatz 1/July/2016
+#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
 #define WITH_LEAPFROG
 
 #ifdef WITH_LEAPFROG
