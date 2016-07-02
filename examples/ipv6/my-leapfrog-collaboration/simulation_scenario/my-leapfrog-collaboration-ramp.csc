@@ -14,8 +14,8 @@
       org.contikios.cooja.radiomediums.UDGM
       <transmitting_range>50.0</transmitting_range>
       <interference_range>100.0</interference_range>
-      <success_ratio_tx>0.75</success_ratio_tx>
-      <success_ratio_rx>0.75</success_ratio_rx>
+      <success_ratio_tx>1.0</success_ratio_tx>
+      <success_ratio_rx>1.0</success_ratio_rx>
     </radiomedium>
     <events>
       <logoutput>40000</logoutput>
@@ -43,7 +43,9 @@
     <motetype>
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z12</identifier>
-      <description>Z1 Mote Type #z12</description>
+      <description>Z1 Mote sender</description>
+      <source EXPORT="discard">[CONTIKI_DIR]/examples/ipv6/my-leapfrog-collaboration/node-sender-leapfrog.c</source>
+      <commands EXPORT="discard">make node-sender-leapfrog.z1 TARGET=z1</commands>
       <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-leapfrog-collaboration/node-sender-leapfrog.z1</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
@@ -224,7 +226,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>4</z>
+    <z>2</z>
     <height>160</height>
     <location_x>40</location_x>
     <location_y>432</location_y>
@@ -239,8 +241,8 @@
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
       <viewport>1.6148578504316937 0.0 0.0 1.6148578504316937 163.29822478369599 0.21294198352417937</viewport>
     </plugin_config>
-    <width>400</width>
-    <z>2</z>
+    <width>395</width>
+    <z>5</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -252,11 +254,11 @@
       <formatted_time />
       <coloring />
     </plugin_config>
-    <width>1000</width>
+    <width>927</width>
     <z>3</z>
     <height>836</height>
-    <location_x>401</location_x>
-    <location_y>-1</location_y>
+    <location_x>406</location_x>
+    <location_y>-3</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.TimeLine
@@ -275,11 +277,11 @@
       <showLEDs />
       <zoomfactor>2000.0</zoomfactor>
     </plugin_config>
-    <width>1404</width>
-    <z>1</z>
+    <width>1164</width>
+    <z>4</z>
     <height>264</height>
-    <location_x>1</location_x>
-    <location_y>835</location_y>
+    <location_x>17</location_x>
+    <location_y>870</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Notes
@@ -288,7 +290,7 @@
       <decorations>true</decorations>
     </plugin_config>
     <width>720</width>
-    <z>5</z>
+    <z>6</z>
     <height>160</height>
     <location_x>15</location_x>
     <location_y>632</location_y>

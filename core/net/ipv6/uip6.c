@@ -86,8 +86,8 @@
 /*---------------------------------------------------------------------------*/
 
 //modified by TadaMatz 30/May/2016
-#define DEBUG DEBUG_PRINT
-//#define DEBUG DEBUG_NONE
+//#define DEBUG DEBUG_PRINT
+#define DEBUG DEBUG_NONE
 #include "net/ip/uip-debug.h"
 
 #if UIP_CONF_IPV6_RPL
@@ -1208,8 +1208,8 @@ uip_process(uint8_t flag)
 //added by TadaMatz 13/June/2016
   #ifdef WITH_LEAPFROG //for elimination of packet
   if(uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len] == LEAPFROG_DATA_HEADER){
-    PRINTF("uip_process: uip_ext_len: %d\n", uip_ext_len);
-    PRINTF("uip_process: uip_buf [%d]='%c' [%d]='%c'\n",
+    PRINTF("LEAPFROG: uip_ext_len: %d\n", uip_ext_len);
+    PRINTF("LEAPFROG: uip_buf [%d]='%c' [%d]='%c'\n",
   	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
   	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
   	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1],
