@@ -59,10 +59,14 @@
 #include <string.h>
 
 //modified by TadaMatz 2016/May/12
-#define DEBUG DEBUG_NONE
-//#define DEBUG DEBUG_PRINT
+//#define DEBUG DEBUG_NONE
+#define DEBUG DEBUG_PRINT
 
 #include "net/ip/uip-debug.h"
+
+#ifdef CONDUCT_ORCHESTRA
+#include "apps/orchestra/orchestra.h"
+#endif //CONDUCT_ORCHESTRA
 
 /*---------------------------------------------------------------------------*/
 #define RPL_DIO_GROUNDED                 0x80
@@ -363,6 +367,9 @@ dio_input(void)
         leapfrog_possible_parent_num = LEAPFROG_NUM_NEIGHBOR_NODE;
       }
       leapfrog_possible_parent_id_array[leapfrog_possible_parent_num - 1] = sid;
+#ifdef CONDUCT_ORCHESTRA //add_uc_rx_link for possible child
+      //orchestra_conduct_add_uc_link(packetbuf_addr(PACKETBUF_ADDR_SENDER), LINK_OPTION_RX);
+#endif //CONDUCT_ORCHESTRA
     }
   }else{
     //remove from PP array

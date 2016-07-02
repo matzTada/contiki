@@ -39,6 +39,8 @@
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH
 #define WITH_LEAPFROG
+#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
+#define CONDUCT_ORCHESTRA
 
 #ifdef WITH_LEAPFROG
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
@@ -48,12 +50,12 @@
 #define LEAPFROG_NUM_NEIGHBOR_NODE 8 //used for possible parent
 #define LEAPFROG_DATA_COUNTER_MAX 50 //since fixed value of header counter has limited value
 #define LEAPFROG_DATA_COUNTER_WIDTH 25 //sender node sends data with sequential number, but it happens that the order to arrive dst can be inversed. This number shows how many packet should be discarded compared to current number.
-
-//if defined, make the new timeslot for alt-parent
-#define WITH_LEAPFROG_TSCH
-
 #endif /*WITH_LEAPFROG*/
 //==added
+
+#ifdef CONDUCT_ORCHESTRA //change unicast slot feature for Leapfrog
+#define CONDUCT_EBSF_OFFSET 10
+#endif //CONDUCT_ORCHESTRA
 
 #define WITH_ORCHESTRA 1
 
@@ -104,7 +106,7 @@
 /* TSCH logging. 0: disabled. 1: basic log. 2: with delayed
  * log messages from interrupt */
 #undef TSCH_LOG_CONF_LEVEL
-#define TSCH_LOG_CONF_LEVEL 0
+#define TSCH_LOG_CONF_LEVEL 1
 
 /* IEEE802.15.4 PANID */
 #undef IEEE802154_CONF_PANID
