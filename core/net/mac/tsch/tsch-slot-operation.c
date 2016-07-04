@@ -56,12 +56,12 @@
 
 
 //added by TadaMatz 2/July/2016 to ON OFF debug of slot operatoin
-//#if TSCH_LOG_LEVEL >= 1
-//#define DEBUG DEBUG_PRINT
-//#else /* TSCH_LOG_LEVEL */
-//#define DEBUG DEBUG_NONE
-//#endif /* TSCH_LOG_LEVEL */
-#define DEBUG DEBUG_PRINT //controll debug print file by file
+#if TSCH_LOG_LEVEL >= 1
+#define DEBUG DEBUG_PRINT
+#else /* TSCH_LOG_LEVEL */
+#define DEBUG DEBUG_NONE
+#endif /* TSCH_LOG_LEVEL */
+//#define DEBUG DEBUG_PRINT //controll debug print file by file
 #include "net/ip/uip-debug.h"
 
 //added by TadaMatz 31/May/2016 to ON OFF debug of slot operatoin
@@ -931,8 +931,6 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
          **/
         static struct pt slot_tx_pt;
         PT_SPAWN(&slot_operation_pt, &slot_tx_pt, tsch_tx_slot(&slot_tx_pt, t));
-	
-        PRINTF("so TS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
 	#ifdef DEBUG_TADAMATZ
 	      //added by TadaMatz 19/May/2016 to see packet sent or not
 	      PRINTF("so TS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);

@@ -62,7 +62,8 @@
 #endif /* ORCHESTRA_CONF_RULES */
 
 #ifdef CONDUCT_ORCHESTRA //change unicast slot feature for Leapfrog
-#define CONDUCT_EBSF_OFFSET 10
+#define CONDUCT_EBSF_OFFSET 5
+#define CONDUCT_ALT_TRAFFIC_DRIFT_OFFSET 5
 #endif //CONDUCT_ORCHESTRA
 
 /* Length of the various slotframes. Tune to balance network capacity,
