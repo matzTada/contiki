@@ -61,13 +61,17 @@
 #endif /*WITH_LEAPFROG_TSCH*/
 #endif /* ORCHESTRA_CONF_RULES */
 
+#ifdef CONDUCT_ORCHESTRA //change unicast slot feature for Leapfrog
+#define CONDUCT_EBSF_OFFSET 10
+#endif //CONDUCT_ORCHESTRA
+
 /* Length of the various slotframes. Tune to balance network capacity,
  * contention, energy, latency. */
 #ifdef ORCHESTRA_CONF_EBSF_PERIOD
 #define ORCHESTRA_EBSF_PERIOD                     ORCHESTRA_CONF_EBSF_PERIOD
 #else /* ORCHESTRA_CONF_EBSF_PERIOD */
 #ifdef CONDUCT_ORCHESTRA //by TadaMatz 2/July/2016
-#define ORCHESTRA_EBSF_PERIOD                     400
+#define ORCHESTRA_EBSF_PERIOD                     300
 #else //CONDUCT_ORCHESTRA
 #define ORCHESTRA_EBSF_PERIOD                     397
 #endif //CONDUCT_ORCHESTRA
@@ -77,7 +81,7 @@
 #define ORCHESTRA_COMMON_SHARED_PERIOD            ORCHESTRA_CONF_COMMON_SHARED_PERIOD
 #else /* ORCHESTRA_CONF_COMMON_SHARED_PERIOD */
 #ifdef CONDUCT_ORCHESTRA //by TadaMatz 2/July/2016
-#define ORCHESTRA_COMMON_SHARED_PERIOD            50
+#define ORCHESTRA_COMMON_SHARED_PERIOD            30
 #else //CONDUCT_ORCHESTRA
 #define ORCHESTRA_COMMON_SHARED_PERIOD            31
 #endif //CONDUCT_ORCHESTRA
@@ -87,7 +91,7 @@
 #define ORCHESTRA_UNICAST_PERIOD                  ORCHESTRA_CONF_UNICAST_PERIOD
 #else /* ORCHESTRA_CONF_UNICAST_PERIOD */
 #ifdef CONDUCT_ORCHESTRA //by TadaMatz 2/July/2016
-#define ORCHESTRA_UNICAST_PERIOD                  25
+#define ORCHESTRA_UNICAST_PERIOD                  15
 #else //CONDUCT_ORCHESTRA
 #define ORCHESTRA_UNICAST_PERIOD                  17
 #endif //CONDUCT_ORCHESTRA

@@ -56,10 +56,6 @@
 #endif /*WITH_LEAPFROG*/
 //==added
 
-#ifdef CONDUCT_ORCHESTRA //change unicast slot feature for Leapfrog
-#define CONDUCT_EBSF_OFFSET 10
-#endif //CONDUCT_ORCHESTRA
-
 #define WITH_ORCHESTRA 1
 
 /* Set to run orchestra */
