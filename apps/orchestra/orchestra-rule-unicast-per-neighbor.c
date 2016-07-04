@@ -174,7 +174,7 @@ static void
 new_time_source(const struct tsch_neighbor *old, const struct tsch_neighbor *new)
 {
   if(new != old) {
-    const linkaddr_t *new_addr = new != NULL ? &new->addr : NULL;
+    const linkaddr_t *new_addr = new != NULL ? &new->addr : NULL; //if(new!=NULL){new_addr=&new->addr}else{new_addr=NULL}
     if(new_addr != NULL) {
       linkaddr_copy(&orchestra_parent_linkaddr, new_addr);
     } else {
