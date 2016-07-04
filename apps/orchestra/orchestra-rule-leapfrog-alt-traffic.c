@@ -79,7 +79,12 @@ void
 orchestra_leapfrog_add_uc_tx_link(char alt_parent_id)
 {
   uint16_t child_timeslot = 0;
+#ifdef CONDUCT_ORCHESTRA
+  child_timeslot = (linkaddr_node_addr.u8[7]) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+  //child_timeslot = (linkaddr_node_addr.u8[7] + CONDUCT_EBSF_OFFSET) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+#else //CONDUCT_ORCHESTRA
   child_timeslot = linkaddr_node_addr.u8[7] % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+#endif //CONDUCT_ORCHESTRA
 //  linkaddr_t altparent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, alt_parent_id}};
 
   struct tsch_link *child_l;
@@ -100,7 +105,13 @@ orchestra_leapfrog_add_uc_tx_link(char alt_parent_id)
 void
 orchestra_leapfrog_add_uc_rx_link(char child_id)
 {
-  uint16_t altparent_timeslot = child_id % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+  uint16_t altparent_timeslot = 0;
+#ifdef CONDUCT_ORCHESTRA
+  altparent_timeslot = (child_id) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+  //altparent_timeslot = (child_id + CONDUCT_EBSF_OFFSET) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+#else //CONDUCT_ORCHESTRA
+  altparent_timeslot = child_id % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+#endif //CONDUCT_ORCHESTRA
 
   struct tsch_link *altparent_l;
   altparent_l = tsch_schedule_get_link_by_timeslot(sf_lfat, altparent_timeslot);
@@ -120,7 +131,12 @@ void
 orchestra_leapfrog_set_packetbuf_attr(char child_id)
 {
   uint16_t child_timeslot = 0;
+#ifdef CONDUCT_ORCHESTRA
+  child_timeslot = (linkaddr_node_addr.u8[7]) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+  //child_timeslot = (linkaddr_node_addr.u8[7] + CONDUCT_EBSF_OFFSET) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+#else //CONDUCT_ORCHESTRA
   child_timeslot = linkaddr_node_addr.u8[7] % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+#endif //CONDUCT_ORCHESTRA
   packetbuf_set_attr(PACKETBUF_ATTR_TSCH_SLOTFRAME, slotframe_handle);
   packetbuf_set_attr(PACKETBUF_ATTR_TSCH_TIMESLOT, child_timeslot);
 }

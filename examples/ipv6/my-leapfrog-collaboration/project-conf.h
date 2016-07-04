@@ -42,6 +42,9 @@
 #define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
 #define CONDUCT_ORCHESTRA
 
+//#define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
+//#define ORCHESTRA_CONF_COLLISION_FREE_HASH 1
+
 #ifdef WITH_LEAPFROG
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
 #define LEAPFROG_DATA_HEADER 0xf2 //for sending data
