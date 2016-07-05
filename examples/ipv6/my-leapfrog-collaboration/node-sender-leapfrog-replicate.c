@@ -492,7 +492,7 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
       char buf[20];
 
 #ifdef WITH_LEAPFROG
-      sprintf(buf, "%c%cHello Tada %d", LEAPFROG_DATA_HEADER, leapfrog_data_counter + LEAPFROG_BEACON_OFFSET, message_number);
+      sprintf(buf, "%c%cHello Tada %04d", LEAPFROG_DATA_HEADER, leapfrog_data_counter + LEAPFROG_BEACON_OFFSET, message_number);
       leapfrog_data_counter++;
       if(leapfrog_data_counter > LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
 #else
