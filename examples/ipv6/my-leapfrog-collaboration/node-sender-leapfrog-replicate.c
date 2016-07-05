@@ -252,7 +252,15 @@ receiver(struct simple_udp_connection *c,
     temp_pid = data[2] - LEAPFROG_BEACON_OFFSET;
     temp_gid = data[4] - LEAPFROG_BEACON_OFFSET;
     temp_aid = data[6] - LEAPFROG_BEACON_OFFSET;
-    printf("LEAPFROG: beacon S %d P %d GP %d AP %d\n", temp_sid, temp_pid, temp_gid, temp_aid);
+    char temp_pps_num;
+    char temp_pps_str[LEAPFROG_NUM_NEIGHBOR_NODE];
+    int temp_pps_itr;
+    temp_pps_num = data[8] - LEAPFROG_BEACON_OFFSET;
+    for(temp_pps_itr = 0; temp_pps_itr < (int)temp_pps_num; temp_pps_itr++){ //do nothing if temp_pps_num = 0
+      temp_pps_str[temp_pps_itr] = data[8 + 1 + temp_pps_itr];
+    }
+
+    printf("LEAPFROG: receive beacon S %d P %d GP %d AP %d PPs #%d %s\n", temp_sid, temp_pid, temp_gid, temp_aid, temp_pps_num, temp_pps_str);
     
     //judge and registor parent, grandparent, alt parent 
     uip_ipaddr_t * addr;
@@ -309,10 +317,8 @@ receiver(struct simple_udp_connection *c,
         }
       }else{ //judge Alternate Parent by Possible Parent
         if(my_pid != temp_sid){
-          char temp_ppid_num = data[8] - LEAPFROG_BEACON_OFFSET;
-          int temp_pp_itr;
-          for(temp_pp_itr = 0; temp_pp_itr < (int)temp_ppid_num; temp_pp_itr++){
-            if(leapfrog_grand_parent_id == data[8 + 1 + temp_pp_itr] - LEAPFROG_BEACON_OFFSET){
+          for(temp_pps_itr = 0; temp_pps_itr < (int)temp_pps_num; temp_pps_itr++){ //do nothing if temp_pps_num = 0
+            if(leapfrog_grand_parent_id == data[8 + 1 + temp_pps_itr] - LEAPFROG_BEACON_OFFSET){
               leapfrog_alt_parent_id = temp_sid;
 #ifdef WITH_LEAPFROG_TSCH
               linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
@@ -326,7 +332,11 @@ receiver(struct simple_udp_connection *c,
         }
       }
 
-      printf("LEAPFROG: own P %d GP %d AP %d\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id);
+      for(temp_pps_itr = 0; temp_pps_itr < leapfrog_possible_parent_num; temp_pps_itr++){
+        temp_pps_str[temp_pps_itr] = leapfrog_possible_parent_id_array[temp_pps_itr] + LEAPFROG_BEACON_OFFSET;
+      }
+      temp_pps_str[temp_pps_itr] = '\0';
+      printf("LEAPFROG: own P %d GP %d AP %d PPs #%d %s\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id, leapfrog_possible_parent_num, temp_pps_str);
 
       //judge I am sender's Alt Parent and prepare Rx link for alt child
 #ifdef WITH_LEAPFROG_TSCH //judge I am sender's Alt Parent

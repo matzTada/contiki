@@ -415,7 +415,7 @@ tsch_queue_get_unicast_packet_for_any(struct tsch_neighbor **n, struct tsch_link
             *n = curr_nbr;
           }
           //added by TadaMatz 22/6/2016 to make sure packet from which neighbor queue this function return
-          PRINTF("FA %d\n", curr_nbr->addr.u8[7]);
+          //PRINTF("FA %d\n", curr_nbr->addr.u8[7]);
           return p;
         }
       }
