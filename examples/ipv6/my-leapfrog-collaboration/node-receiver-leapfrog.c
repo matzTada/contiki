@@ -482,48 +482,50 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
 
   etimer_set(&periodic_timer, LEAPFROG_SEND_INTERVAL);
   while(1) {
-    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
-    etimer_reset(&periodic_timer);
-    etimer_set(&send_timer, LEAPFROG_SEND_TIME);
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
+      etimer_reset(&periodic_timer);
+      etimer_set(&send_timer, LEAPFROG_SEND_TIME);
+  
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
+      
+    if(tsch_is_associated){
+      /*--- target address decision ---*/
+      /*-- linklocal rplnodes mcast --*/
+      uip_ipaddr_t temp_ipaddr;
+      uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
+      addr = &temp_ipaddr;
 
-    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
-    
-    /*--- target address decision ---*/
-    /*-- linklocal rplnodes mcast --*/
-    uip_ipaddr_t temp_ipaddr;
-    uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
-    addr = &temp_ipaddr;
+      /*--- sending ---*/ 
+      if(addr != NULL) {
+        static unsigned int message_number;
+        char buf[20];
+        char possible_parent_str[1 + LEAPFROG_NUM_NEIGHBOR_NODE];
 
-    /*--- sending ---*/ 
-    if(addr != NULL) {
-      static unsigned int message_number;
-      char buf[20];
-      char possible_parent_str[1 + LEAPFROG_NUM_NEIGHBOR_NODE];
+        possible_parent_str[0] = leapfrog_possible_parent_num + LEAPFROG_BEACON_OFFSET;
+        int i;
+        for(i = 0; i < leapfrog_possible_parent_num; i++){
+          possible_parent_str[1 + i] = leapfrog_possible_parent_id_array[i] + LEAPFROG_BEACON_OFFSET;
+        }
 
-      possible_parent_str[0] = leapfrog_possible_parent_num + LEAPFROG_BEACON_OFFSET;
-      int i;
-      for(i = 0; i < leapfrog_possible_parent_num; i++){
-        possible_parent_str[1 + i] = leapfrog_possible_parent_id_array[i] + LEAPFROG_BEACON_OFFSET;
+        sprintf(buf, "%cP%cG%cA%cC%sN%d", 
+  	  LEAPFROG_BEACON_HEADER, 
+  	  leapfrog_parent_id + LEAPFROG_BEACON_OFFSET, 
+	  leapfrog_grand_parent_id + LEAPFROG_BEACON_OFFSET,
+          leapfrog_alt_parent_id + LEAPFROG_BEACON_OFFSET,
+          possible_parent_str, //C for candidate
+	  message_number);
+        printf("LEAPFROG: Sending beacon to ");
+        uip_debug_ipaddr_print(addr);
+        printf(" '");
+        printf(buf);
+        printf("'\n");
+        message_number++;
+        simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
+        //simple_udp_sendto(&unicast_connection, buf, cnt, addr);
+      } else {
+        printf("LEAPFROG: addr is null!!");
       }
-
-      sprintf(buf, "%cP%cG%cA%cC%sN%d", 
-	LEAPFROG_BEACON_HEADER, 
-	leapfrog_parent_id + LEAPFROG_BEACON_OFFSET, 
-	leapfrog_grand_parent_id + LEAPFROG_BEACON_OFFSET,
-        leapfrog_alt_parent_id + LEAPFROG_BEACON_OFFSET,
-        possible_parent_str, //C for candidate
-	message_number);
-      printf("LEAPFROG: Sending beacon to ");
-      uip_debug_ipaddr_print(addr);
-      printf(" '");
-      printf(buf);
-      printf("'\n");
-      message_number++;
-      simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
-      //simple_udp_sendto(&unicast_connection, buf, cnt, addr);
-    } else {
-      printf("LEAPFROG: addr is null!!");
-    }
+    } //if tsch_is_associated
   }
 
   PROCESS_END();
