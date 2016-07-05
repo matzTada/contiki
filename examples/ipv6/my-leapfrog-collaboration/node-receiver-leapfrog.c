@@ -253,12 +253,13 @@ receiver(struct simple_udp_connection *c,
     temp_gid = data[4] - LEAPFROG_BEACON_OFFSET;
     temp_aid = data[6] - LEAPFROG_BEACON_OFFSET;
     char temp_pps_num;
-    char temp_pps_str[LEAPFROG_NUM_NEIGHBOR_NODE];
+    char temp_pps_str[LEAPFROG_NUM_NEIGHBOR_NODE + 1];
     int temp_pps_itr;
     temp_pps_num = data[8] - LEAPFROG_BEACON_OFFSET;
     for(temp_pps_itr = 0; temp_pps_itr < (int)temp_pps_num; temp_pps_itr++){ //do nothing if temp_pps_num = 0
       temp_pps_str[temp_pps_itr] = data[8 + 1 + temp_pps_itr];
     }
+    temp_pps_str[temp_pps_itr] = '\0';
 
     printf("LEAPFROG: receive beacon S %d P %d GP %d AP %d PPs #%d %s\n", temp_sid, temp_pid, temp_gid, temp_aid, temp_pps_num, temp_pps_str);
     

@@ -62,7 +62,7 @@
 #endif /* ORCHESTRA_CONF_RULES */
 
 #ifdef CONDUCT_ORCHESTRA //change unicast slot feature for Leapfrog
-#define CONDUCT_EBSF_OFFSET 10
+#define CONDUCT_EBSF_OFFSET 5
 #define CONDUCT_ALT_TRAFFIC_DRIFT_OFFSET 5
 #endif //CONDUCT_ORCHESTRA
 
@@ -72,7 +72,7 @@
 #define ORCHESTRA_EBSF_PERIOD                     ORCHESTRA_CONF_EBSF_PERIOD
 #else /* ORCHESTRA_CONF_EBSF_PERIOD */
 #ifdef CONDUCT_ORCHESTRA //by TadaMatz 2/July/2016
-#define ORCHESTRA_EBSF_PERIOD                     400
+#define ORCHESTRA_EBSF_PERIOD                     320
 #else //CONDUCT_ORCHESTRA
 #define ORCHESTRA_EBSF_PERIOD                     397
 #endif //CONDUCT_ORCHESTRA
