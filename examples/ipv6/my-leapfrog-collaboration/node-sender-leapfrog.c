@@ -50,6 +50,9 @@
 #if WITH_ORCHESTRA
 #include "orchestra.h"
 #endif /* WITH_ORCHESTRA */
+#ifdef WITH_POWERTRACE
+#include "powertrace.h"
+#endif //WITH_POWERTRACE
 
 #define DEBUG DEBUG_PRINT
 #include "net/ip/uip-debug.h"
@@ -264,6 +267,10 @@ PROCESS_THREAD(node_process, ev, data)
   orchestra_init();
 #endif /* WITH_ORCHESTRA */
   
+#ifdef WITH_POWERTRACE
+  powertrace_start(CLOCK_SECOND * 10);
+#endif //WITH_POWERTRACE
+
   /* Print out routing tables every minute */
   etimer_set(&et, CLOCK_SECOND * 60);
   //etimer_set(&et, CLOCK_SECOND * 10);

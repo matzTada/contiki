@@ -204,7 +204,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>1</z>
+    <z>3</z>
     <height>160</height>
     <location_x>72</location_x>
     <location_y>440</location_y>
@@ -220,7 +220,7 @@
       <viewport>2.306311580959471 0.0 0.0 2.306311580959471 75.90764561556432 21.021169546799147</viewport>
     </plugin_config>
     <width>400</width>
-    <z>3</z>
+    <z>4</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -228,15 +228,15 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter>Hello|Rep|Eli</filter>
+      <filter>Hello|radio</filter>
       <formatted_time />
       <coloring />
     </plugin_config>
-    <width>935</width>
-    <z>4</z>
-    <height>907</height>
-    <location_x>401</location_x>
-    <location_y>3</location_y>
+    <width>921</width>
+    <z>2</z>
+    <height>905</height>
+    <location_x>415</location_x>
+    <location_y>5</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.TimeLine
@@ -267,7 +267,7 @@
       <decorations>true</decorations>
     </plugin_config>
     <width>655</width>
-    <z>2</z>
+    <z>6</z>
     <height>160</height>
     <location_x>46</location_x>
     <location_y>647</location_y>
@@ -284,23 +284,25 @@
  * modified by TadaMatz 
  */
 
-TIMEOUT(100000, log.log("Simulation time expired\n")); /* milliseconds. print last msg at timeout */
+TIMEOUT(300000, log.log("Simulation time expired\n")); /* milliseconds. print last msg at timeout */
 
 log.log("Simulation starts\n");
 
 while(true){
     YIELD(); /* wait for another mote output */
     if(msg.match(/Hello/)){ //if "msg" contains "Hello" in it, write "msg" to log
-      log.log("msg: " + id + " " + msg + "\n");
+      log.log("COM: ID: " + id + " " + msg + "\n");
+    }else if(msg.match(/radio/){
+      log.log("PWR: ID: " + id + " " + msg + "\n");
     }
 }</script>
       <active>false</active>
     </plugin_config>
-    <width>600</width>
-    <z>0</z>
-    <height>700</height>
-    <location_x>205</location_x>
-    <location_y>253</location_y>
+    <width>698</width>
+    <z>1</z>
+    <height>616</height>
+    <location_x>11</location_x>
+    <location_y>596</location_y>
   </plugin>
 </simconf>
 
