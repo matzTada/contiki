@@ -13,6 +13,6 @@ do
   echo entering $i
   cd $i
   echo execute simulation
-  java -jar /homes/tmatsui/contiki/tools/cooja/dist/cooja.jar -nogui=/homes/tmatsui/contiki/examples/ipv6/my-leapfrog-collaboration/scenario/ladder-sender-replicate.csc -contiki=/homes/tmatsui/contiki/
+  java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-leapfrog-collaboration/scenario/ladder-sender-replicate.csc -contiki=$HOME/contiki/
   cd ..
 done
