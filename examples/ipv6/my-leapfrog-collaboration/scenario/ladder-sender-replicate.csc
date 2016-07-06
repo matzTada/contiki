@@ -275,7 +275,7 @@
   <plugin>
     org.contikios.cooja.plugins.ScriptRunner
     <plugin_config>
-      <scriptfile>./script.js</scriptfile>
+      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-leapfrog-collaboration/scenario/script.js</scriptfile>
       <active>false</active>
     </plugin_config>
     <width>698</width>
