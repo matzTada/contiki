@@ -267,42 +267,22 @@
       <decorations>true</decorations>
     </plugin_config>
     <width>655</width>
-    <z>6</z>
+    <z>1</z>
     <height>160</height>
-    <location_x>46</location_x>
-    <location_y>647</location_y>
+    <location_x>37</location_x>
+    <location_y>696</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.ScriptRunner
     <plugin_config>
-      <script>/*
- * Example Contiki test script (JavaScript).
- * A Contiki test script acts on mote output, such as via printf()'s.
- * The script may operate on the following variables:
- *  Mote mote, int id, String msg
- * 
- * modified by TadaMatz 
- */
-
-TIMEOUT(300000, log.log("Simulation time expired\n")); /* milliseconds. print last msg at timeout */
-
-log.log("Simulation starts\n");
-
-while(true){
-    YIELD(); /* wait for another mote output */
-    if(msg.match(/Hello/)){ //if "msg" contains "Hello" in it, write "msg" to log
-      log.log("COM: ID: " + id + " " + msg + "\n");
-    }else if(msg.match(/radio/){
-      log.log("PWR: ID: " + id + " " + msg + "\n");
-    }
-}</script>
+      <scriptfile>./script.js</scriptfile>
       <active>false</active>
     </plugin_config>
     <width>698</width>
-    <z>1</z>
+    <z>0</z>
     <height>616</height>
-    <location_x>11</location_x>
-    <location_y>596</location_y>
+    <location_x>127</location_x>
+    <location_y>312</location_y>
   </plugin>
 </simconf>
 
