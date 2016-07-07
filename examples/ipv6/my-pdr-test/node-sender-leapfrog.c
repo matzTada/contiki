@@ -50,6 +50,9 @@
 #if WITH_ORCHESTRA
 #include "orchestra.h"
 #endif /* WITH_ORCHESTRA */
+#ifdef WITH_POWERTRACE
+#include "powertrace.h"
+#endif //WITH_POWERTRACE
 
 #define DEBUG DEBUG_PRINT
 #include "net/ip/uip-debug.h"
@@ -264,6 +267,10 @@ PROCESS_THREAD(node_process, ev, data)
   orchestra_init();
 #endif /* WITH_ORCHESTRA */
   
+#ifdef WITH_POWERTRACE
+  powertrace_start(CLOCK_SECOND * 10);
+#endif //WITH_POWERTRACE
+
   /* Print out routing tables every minute */
   etimer_set(&et, CLOCK_SECOND * 60);
   //etimer_set(&et, CLOCK_SECOND * 10);
@@ -297,54 +304,55 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
 
   etimer_set(&periodic_timer, SEND_INTERVAL);
   while(1) {
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
+      etimer_reset(&periodic_timer);
+      etimer_set(&send_timer, SEND_TIME);
 
-    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
-    etimer_reset(&periodic_timer);
-    etimer_set(&send_timer, SEND_TIME);
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
+     
+    if(tsch_is_associated){
+      /*--- target address decision ---*/
+      /*-- to registered target with servreg_hack --*/
+      //addr = servreg_hack_lookup(SERVICE_ID);
+      /*-- to default route --*/
+      //uip_ds6_defrt_t *default_route;
+      //default_route = uip_ds6_defrt_lookup(uip_ds6_defrt_choose());
+      //if(default_route != NULL) addr = &default_route->ipaddr;
+      //else addr = NULL;
+      /*-- decide by address directory--*/
+      uip_ipaddr_t temp_ipaddr;
+      uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,1);
+      addr = &temp_ipaddr;
+      /*-- linklocal rplnodes mcast --*/
+      //uip_ipaddr_t temp_ipaddr;
+      //uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
+      //addr = &temp_ipaddr;
+      /*-- to default parent --*/
+      //addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent); 
 
-    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
-    
-    /*--- target address decision ---*/
-    /*-- to registered target with servreg_hack --*/
-    //addr = servreg_hack_lookup(SERVICE_ID);
-    /*-- to default route --*/
-    //uip_ds6_defrt_t *default_route;
-    //default_route = uip_ds6_defrt_lookup(uip_ds6_defrt_choose());
-    //if(default_route != NULL) addr = &default_route->ipaddr;
-    //else addr = NULL;
-    /*-- decide by address directory--*/
-    uip_ipaddr_t temp_ipaddr;
-    uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,1);
-    addr = &temp_ipaddr;
-    /*-- linklocal rplnodes mcast --*/
-    //uip_ipaddr_t temp_ipaddr;
-    //uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
-    //addr = &temp_ipaddr;
-    /*-- to default parent --*/
-    //addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent); 
-
-    /*--- sending ---*/ 
-    if(addr != NULL) {
-      static unsigned int message_number;
-      char buf[20];
+      /*--- sending ---*/ 
+      if(addr != NULL) {
+        static unsigned int message_number;
+        char buf[20];
 
 #ifdef WITH_LEAPFROG
-      sprintf(buf, "%c%cHello Tada %d", LEAPFROG_DATA_HEADER, leapfrog_data_counter + LEAPFROG_BEACON_OFFSET, message_number);
-      leapfrog_data_counter++;
-      if(leapfrog_data_counter > LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
+        sprintf(buf, "%c%cHello Tada %04d", LEAPFROG_DATA_HEADER, leapfrog_data_counter + LEAPFROG_BEACON_OFFSET, message_number);
+        leapfrog_data_counter++;
+        if(leapfrog_data_counter > LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
 #else
-      sprintf(buf, "Hello TadaMatz %d", message_number);
+        sprintf(buf, "Hello TadaMatz %d", message_number);
 #endif
-      printf("DATA: Sending unicast to ");
-      uip_debug_ipaddr_print(addr);
-      printf(" '");
-      printf(buf);
-      printf("'\n");
-      message_number++;
-      simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
-    } else {
-      printf("DATA: addr is NULL!!");
-    }
+        printf("DATA: Sending unicast to ");
+        uip_debug_ipaddr_print(addr);
+        printf(" '");
+        printf(buf);
+        printf("'\n");
+        message_number++;
+        simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
+      } else {
+        printf("DATA: addr is NULL!!");
+      }
+    } //if(tsch_is_associated)
   }
 
   PROCESS_END();

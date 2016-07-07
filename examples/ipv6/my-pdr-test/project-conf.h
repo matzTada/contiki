@@ -37,8 +37,14 @@
 
 //modified by TadaMatz 1/July/2016
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH
 //#define WITH_LEAPFROG
+//#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
+#define CONDUCT_ORCHESTRA
+#define WITH_POWERTRACE // for power trace
+
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
+//#define ORCHESTRA_CONF_COLLISION_FREE_HASH 1
 
 #ifdef WITH_LEAPFROG
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
@@ -48,10 +54,6 @@
 #define LEAPFROG_NUM_NEIGHBOR_NODE 8 //used for possible parent
 #define LEAPFROG_DATA_COUNTER_MAX 50 //since fixed value of header counter has limited value
 #define LEAPFROG_DATA_COUNTER_WIDTH 25 //sender node sends data with sequential number, but it happens that the order to arrive dst can be inversed. This number shows how many packet should be discarded compared to current number.
-
-//if defined, make the new timeslot for alt-parent
-#define WITH_LEAPFROG_TSCH
-
 #endif /*WITH_LEAPFROG*/
 //==added
 
