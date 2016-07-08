@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<simconf>
+<?xml version="1.0" ?><simconf>
   <project EXPORT="discard">[APPS_DIR]/mrm</project>
   <project EXPORT="discard">[APPS_DIR]/mspsim</project>
   <project EXPORT="discard">[APPS_DIR]/avrora</project>
@@ -15,7 +14,7 @@
       <transmitting_range>50.0</transmitting_range>
       <interference_range>100.0</interference_range>
       <success_ratio_tx>1.0</success_ratio_tx>
-      <success_ratio_rx>1.0</success_ratio_rx>
+      <success_ratio_rx>0.3</success_ratio_rx>
     </radiomedium>
     <events>
       <logoutput>40000</logoutput>
@@ -57,7 +56,7 @@
       <moteinterface>org.contikios.cooja.mspmote.interfaces.MspDebugOutput</moteinterface>
     </motetype>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>54.60333078034836</x>
@@ -75,7 +74,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>40.8713560698628</x>
@@ -93,7 +92,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>66.34829368965478</x>
@@ -111,7 +110,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>39.62047196146938</x>
@@ -129,7 +128,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>67.29308409145204</x>
@@ -147,7 +146,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>38.31178549771209</x>
@@ -165,7 +164,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>66.54010180998935</x>
@@ -183,7 +182,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>53.020861511069775</x>
@@ -229,8 +228,8 @@
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
       <filter>expire</filter>
-      <formatted_time />
-      <coloring />
+      <formatted_time/>
+      <coloring/>
     </plugin_config>
     <width>921</width>
     <z>2</z>
@@ -249,9 +248,9 @@
       <mote>5</mote>
       <mote>6</mote>
       <mote>7</mote>
-      <showRadioRXTX />
-      <showRadioHW />
-      <showLEDs />
+      <showRadioRXTX/>
+      <showRadioHW/>
+      <showLEDs/>
       <zoomfactor>2000.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
@@ -285,4 +284,3 @@
     <location_y>312</location_y>
   </plugin>
 </simconf>
-

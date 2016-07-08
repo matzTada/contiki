@@ -129,8 +129,13 @@ PROCESS(stable_timer_process, "Stable timer process");
 
 /*---------------------------------------------------------------------------*/
 #ifdef WITH_STABLETIMER
+#ifdef WITH_LEAPFROG
 PROCESS(node_process, "RPL Node sender leapfrog");
 AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_sender_process, &leapfrog_beaconing_process, &stable_timer_process);
+#else //WITH_LEAPFROG
+PROCESS(node_process, "RPL Node sender leapfrog");
+AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_sender_process, &stable_timer_process);
+#endif //WITH_LEAPFROG
 #else //WITH_STABLETIMER
 #ifdef WITH_LEAPFROG
 PROCESS(node_process, "RPL Node sender leapfrog");

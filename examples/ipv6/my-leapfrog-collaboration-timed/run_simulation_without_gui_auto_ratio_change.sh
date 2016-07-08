@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-for j in 60 50 40 30 20 10
+for j in 100 90 80 70 60 50 40 30 20 10
 do
   echo entering
   cd scenario
@@ -13,7 +13,7 @@ do
   pwd
 
   echo entering
-  cd ./result/leapfrog
+  cd ./result/normal
   pwd
 
   if [ -d "100-${j}" ]; then
