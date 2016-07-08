@@ -13,7 +13,7 @@ do
   pwd
 
   echo entering
-  cd ./result/normal
+  cd ./result/leapfrog
   pwd
 
   if [ -d "100-${j}" ]; then
@@ -38,7 +38,7 @@ do
     cd $i
     pwd
     echo execute simulation
-    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-leapfrog-collaboration-timed/scenario/ladder-sender-replicate.csc -contiki=$HOME/contiki/
+    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-leapfrog-collaboration-timed-bugfix/scenario/ladder-sender-replicate.csc -contiki=$HOME/contiki/
     echo return to upper directory
     cd ..
     pwd

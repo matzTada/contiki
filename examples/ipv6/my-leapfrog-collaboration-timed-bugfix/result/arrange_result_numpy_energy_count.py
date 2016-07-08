@@ -16,23 +16,41 @@ CURRENTS = {
     "power_idle_mA": 0.416,
 }
 
+NUM_NODES = 8 #the number of node in network
 
 def get_result_from_file(input_file_name): #get result from indicated file
 	input_file = open(input_file_name)
 	input_lines = input_file.readlines()
 	input_file.close
 
-	#for counting replication
-	replication_cnt_for_node = 0;
+	#for time
+	time_counted_start = 0.0
+	time_counted_end = 0.0
+
+	#for counting 
+	pdr = 0.0
+	send = 0.0
+	receive = 0.0
+	replication = 0.0
+	elimination = 0.0
+	replication_cnt_for_node = 0.0;
 
 	#Declaring other vars and arrays
 	TICKS_PER_SECOND = 32768
 	EnergyTable      = []  # Energy:cpu,lpm,rx,tx,idle
 	TmpTable         = []
-	AVG=TOT=Cpu=Lpm=Tx=Rx=TOTtx=AVGtx=TOTtx=TOTrx=0
+	AVG=TOT=Cpu=Lpm=Tx=Rx=TOTtx=AVGtx=TOTtx=TOTrx=0.0
 	tmp              = []
 
 	for line in input_lines: #reversed is important to speed up
+		#for time
+		if "Stable timer expired!!" in line:
+			tmp_split_line = line.split(" ")
+			time_counted_start = int(tmp_split_line[4])
+		elif "Simulation time expired" in line:
+			tmp_split_line = line.split(" ")
+			time_counted_end = int(tmp_split_line[4])
+
         	#for calculating energy
 		if line.find(" P ") > 0:       #Cooja powertrace output "PowerF" in this example generaly is "P"
 			tmp1 = line.split(" ")
@@ -41,35 +59,51 @@ def get_result_from_file(input_file_name): #get result from indicated file
 			Lpm=Lpm+int(tmp1[16])
 			Tx=Tx+int(tmp1[17])
 			Rx=Rx+int(tmp1[18])
+		
+		if "Hello Tada" in line:
+			if not (("Hello TadaMatz 0" in line) or ("Hello Tada 0000" in line)):
+				if "Sending" in line:
+					send += 1
+				elif "received" in line:
+					receive += 1
+		if "Replication" in line:
+			replication += 1
+		elif "Elimination" in line:
+			elimination += 1
 
 		#to calculate number of replication on specific node
-		if "ID: 8" in line and "Replication:" in line:
-			replication_cnt_for_node += 1
+		#if "Rep: ID: 6" in line:
+		#	replication_cnt_for_node += 1
 	
 		#read the line showing result
-		if "Simulation time expired" in line:
-			#print line,
-			data = line.split(" ")
-			pdr = 0.0
-			send = 0
-			receive = 0
-			replication = 0
-			elimination = 0
-			for i in range(0, len(data) - 1):
-				tmp = str(data[i+1])
-				if tmp == "NaN":
-					tmp = str(0)
+		#if "Simulation time expired" in line:
+		#	print line,
+		#	data = line.split(" ")
+		#	for i in range(0, len(data) - 1):
+		#		tmp = str(data[i+1])
+		#		if tmp == "NaN":
+		#			tmp = str(0)
+		#
+		#		if data[i] == "PDR":
+		#			pdr = float(tmp)
+		#		elif data[i] == "#send":
+		#			send = int(tmp)
+		#		elif data[i] == "#receive":
+		#			receive = int(tmp)
+		#		elif data[i] == "#replication":
+		#			replication = int(tmp)
+		#		elif data[i] == "#elimination":
+		#			elimination = int(tmp)
+	
+	#for time
+	counted_time_length_sec = (time_counted_end - time_counted_start) / 1000 / 1000
+	print "counted_time_length_sec", counted_time_length_sec
 
-				if data[i] == "PDR":
-					pdr = float(tmp)
-				elif data[i] == "#send":
-					send = int(tmp)
-				elif data[i] == "#receive":
-					receive = int(tmp)
-				elif data[i] == "#replication":
-					replication = int(tmp)
-				elif data[i] == "#elimination":
-					elimination = int(tmp)
+	#for communication
+	if send > 0:
+		pdr = receive / send
+	else:
+		pdr = 0
 	
 	#for energy
 	TmpTable.insert(0, Cpu)
@@ -90,13 +124,12 @@ def get_result_from_file(input_file_name): #get result from indicated file
 	    AVG = EnergyTable[i] + AVG
 	    TOT = EnergyTable[i] + TOT
 
-	NUM_NODES = 8
-	AVG=AVG/3600 #Calculating average power for n minutes of simulation here for 1 hour simulation(60-minutes)
+	AVG = AVG/counted_time_length_sec #Calculating average power for n minutes of simulation here for 1 hour simulation(60-minutes)
 
 	#print
 	print "pdr", pdr, "send", send, "receive", receive,"replication", replication, "elimination", elimination
 	print "TOT_NET(mj)", TOT, "AVG_NET(mW)", AVG, "TOT_NODE(mj)", TOT/NUM_NODES, "AVG_NODE(mW)", AVG/NUM_NODES
-	print "replication_cnt_for_node", replication_cnt_for_node
+	#print "replication_cnt_for_node", replication_cnt_for_node
 	return (pdr, send, receive, replication, elimination, TOT, AVG, TOT/NUM_NODES, AVG/NUM_NODES, replication_cnt_for_node)	
 
 def output_result_to_file(name, result_str):
@@ -115,7 +148,7 @@ tx_max = 100
 tx_min = 100
 tx_step = 10
 rx_max = 100
-rx_min = 10
+rx_min = 90
 rx_step = 10
 sim_cnt_max = 3
 sim_cnt_min = 1
