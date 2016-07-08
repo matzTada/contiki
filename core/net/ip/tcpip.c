@@ -782,7 +782,12 @@ tcpip_ipv6_output(void)
 #endif /*UIP_CONF_IPV6_QUEUE_PKT*/
 
 #ifdef WITH_LEAPFROG //Leap frog Replication forward packet by TadaMatz
-      if(leapfrog_alt_parent_id > 0){
+      //PRINTA("in tcpip.c attempt to replication  uip_buf[] = '%c' '%c' '%c' '%c' '%c' '%c' '%c' '%c' '%c'\n", uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4], uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 3], uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 2], uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 1], uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN], uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 1], uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 2], uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 3], uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN + 4]);
+      //PRINTA("in tcpip.c attempt to replication  uip_buf[] = '%c' '%c' '%c' '%c' '%c' '%c' '%c' '%c' '%c'\n", uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN - 4], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN - 3], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN - 2], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN - 1], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + 1], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + 2], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + 3], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + 4]);
+      //PRINTA("in tcpip.c attempt to replication  uip_buf[] = '%c' '%c' '%c' '%c' '%c' '%c' '%c' '%c' '%c'\n", uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len - 4], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len - 3], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len - 2], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len - 1], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 2], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 3], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 4]); 
+      //judge whether the packet is leapfrog beacon packet or not. 
+      //I am trying to solve not to use MAGIC_NUMBER
+      if((uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4] == LEAPFROG_DATA_HEADER) && (leapfrog_alt_parent_id > 0)){
         //try send packet everytime to default route
         //PRINTF("LEAPFROG: Replication to ID:%d\n", leapfrog_alt_parent_id);
         uip_ipaddr_t temp_ipaddr; 
