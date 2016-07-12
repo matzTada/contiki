@@ -13,7 +13,7 @@ do
   pwd
 
   echo entering
-  cd ./result/leapfrog
+  cd ./result/leapfrog_reTx_3
   pwd
 
   if [ -d "100-${j}" ]; then
