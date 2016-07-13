@@ -26,7 +26,7 @@ do
   cd "100-${j}"
   pwd
 
-  for i in 1 2 3 4 5
+  for i in 1 2 3
   do
     if [ -d $i ]; then
       echo dir already exist. remove $i

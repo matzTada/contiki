@@ -160,9 +160,9 @@ tx_max = 100
 tx_min = 100
 tx_step = 10
 rx_max = 100
-rx_min = 100
+rx_min =  80
 rx_step = 10
-sim_cnt_max = 5
+sim_cnt_max = 3
 sim_cnt_min = 1
 
 pdr_avg_str = "tx|rx->,"
