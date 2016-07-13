@@ -57,7 +57,7 @@ def get_result_from_file(input_file_name): #get result from indicated file
 			time_counted_end = int(tmp_split_line[4])
 
         	#for calculating energy
-		if line.find(" P ") > 0:       #Cooja powertrace output "PowerF" in this example generaly is "P"
+		if line.find("PWR") > 0:       #Cooja powertrace output "PowerF" in this example generaly is "P"
 			tmp1 = line.split(" ")
 			tmp1 = filter(None,tmp1)
 			Cpu=Cpu+int(tmp1[15])             
@@ -162,7 +162,7 @@ tx_step = 10
 rx_max = 100
 rx_min = 100
 rx_step = 10
-sim_cnt_max = 3
+sim_cnt_max = 5
 sim_cnt_min = 1
 
 pdr_avg_str = "tx|rx->,"

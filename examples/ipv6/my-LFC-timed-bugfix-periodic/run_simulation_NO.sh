@@ -7,13 +7,13 @@ do
   cd scenario
   pwd
   echo re-write csc file
-  python xml_re_writer.py ladder-sender-replicate.csc 100 $j
+  python xml_re_writer.py ladder_NO.csc 100 $j
   echo return tp upper directory
   cd ..
   pwd
 
   echo entering
-  cd ./result/leapfrog_reTx_3
+  cd ./result/normal
   pwd
 
   if [ -d "100-${j}" ]; then
@@ -26,7 +26,7 @@ do
   cd "100-${j}"
   pwd
 
-  for i in `seq 3`
+  for i in 1 2 3 4 5 6 7 8 9 10
   do
     if [ -d $i ]; then
       echo dir already exist. remove $i
@@ -38,7 +38,7 @@ do
     cd $i
     pwd
     echo execute simulation
-    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-leapfrog-collaboration-timed-bugfix/scenario/ladder-sender-replicate.csc -contiki=$HOME/contiki/
+    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-timed-bugfix-periodic/scenario/ladder_NO.csc -contiki=$HOME/contiki/
     echo return to upper directory
     cd ..
     pwd
