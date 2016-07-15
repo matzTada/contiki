@@ -92,6 +92,9 @@ PROCESS(unicast_sender_process, "Unicast sender example process");
 
 /* ----------------- leapfrog include and declaration start ----------------- */
 #ifdef WITH_LEAPFROG
+#define LEAPFROG_UDP_PORT 5678
+#define LEAPFROG_SEND_INTERVAL   (15 * CLOCK_SECOND)
+#define LEAPFROG_SEND_TIME   (random_rand() % (SEND_INTERVAL))
 //#define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
 //#define LEAPFROG_BEACON_OFFSET 48 //for avoid NULL character in data packet
 //#define LEAPFROG_DATA_HEADER 0xf2 //for sending data
@@ -559,22 +562,13 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
   simple_udp_register(&leapfrog_unicast_connection, LEAPFROG_UDP_PORT,
                       NULL, LEAPFROG_UDP_PORT, receiver);
 
-#ifdef WITH_PERIODIC
-  printf("periodic slide start node_id: %d\n", node_id);
-  etimer_set(&send_timer, CLOCK_SECOND * node_id);
-  PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
-  printf("periodic slide expired\n");
-#endif //wITH_PERIODIC
-
   etimer_set(&periodic_timer, LEAPFROG_SEND_INTERVAL);
   while(1) {
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
       etimer_reset(&periodic_timer);
-
-#ifndef WITH_PERIODIC
       etimer_set(&send_timer, LEAPFROG_SEND_TIME);
+
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
-#endif //ifndef WITH_PERIODIC
      
     if(tsch_is_associated){
       /*--- target address decision ---*/

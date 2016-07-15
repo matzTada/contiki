@@ -485,8 +485,10 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
                       NULL, LEAPFROG_UDP_PORT, receiver);
 
 #ifdef WITH_PERIODIC
-  etimer_set(&send_timer, CLOCK_SECOND * (int)(&linkaddr_node_addr.u8[7]));
+  printf("periodic slide start node_id: %d\n", node_id);
+  etimer_set(&send_timer, CLOCK_SECOND * node_id);
   PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
+  printf("periodic slide expired\n");
 #endif //wITH_PERIODIC
 
   etimer_set(&periodic_timer, LEAPFROG_SEND_INTERVAL);

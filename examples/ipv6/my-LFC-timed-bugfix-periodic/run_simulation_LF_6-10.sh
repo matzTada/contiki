@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-for j in 100 90 80 70 60
+for j in 90
 do
   echo entering
   cd scenario
@@ -17,16 +17,16 @@ do
   pwd
 
   if [ -d "100-${j}" ]; then
-    echo dir already exist. remove 100-${j}
-    rm -rf "100-${j}"
+    echo dir already exist. 
+  else
+    echo make directory 100-${j}
+    mkdir "100-${j}"
   fi
-  echo make directory 100-${j}
-  mkdir "100-${j}"
   echo entering
   cd "100-${j}"
   pwd
 
-  for i in 1 2 3 4 5 6 7 8 9 10
+  for i in 6 7 8 9 10
   do
     if [ -d $i ]; then
       echo dir already exist. remove $i

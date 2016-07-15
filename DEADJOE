@@ -1,0 +1,94 @@
+
+*** These modified files were found in JOE when it aborted on Wed Jul 13 09:56:50 2016
+*** JOE was aborted because the terminal closed
+
+*** Fichier '(Sans nom)'
+/homes/tmatsui/contiki/.git/COMMIT_EDITMSG
+
+*** Fichier '/homes/tmatsui/contiki/.git/COMMIT_EDITMSG'
+Merge branch 'master' of https://github.com/matzTada/contiki
+
+Conflicts:
+	examples/ipv6/my-leapfrog-collaboration-timed-bugfix/scenario/ladder-sender-replicate.csc
+#
+# Il semble que vous validiez une fusion.
+# Si ce n'est pas le cas, veuillez supprimer le fichier
+#	.git/MERGE_HEAD
+# et essayez à nouveau.
+
+
+# Veuillez saisir le message de validation qpour vos modifications. Les lignes
+# commençant par '#' seront ignorées, et un message vide abandonne la validation.
+#
+# Validateur : matzTada <tmatsui@pc-d16-04.rennes.enst-bretagne.fr>
+#
+# Sur la branche master
+# Votre branche et 'origin/master' ont divergé,
+# et ont 1 et 4 commits différents chacune respectivement.
+#   (utilisez "git pull" pour fusionner la branche distante dans la vôtre)
+#
+# Tous les conflits sont réglés mais la fusion n'est pas terminée.
+#
+# Modifications qui seront validées :
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/Makefile
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/README.md
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/makeBothReceiverSender.sh
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/node-receiver-leapfrog.c
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/node-sender-leapfrog-replicate.c
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/nodes_LF/node-receiver-leapfrog.z1
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/nodes_LF/node-sender-leapfrog-replicate.z1
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/nodes_NO/node-receiver-leapfrog.z1
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/nodes_NO/node-sender-leapfrog-replicate.z1
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/project-conf.h
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/result/arrange_result_numpy_energy_count_everyrep.py
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/result/leapfrog/result_arranged.csv
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/result/leapfrog/success_ratio_tx-rx
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/result/normal/result_arranged.csv
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/result/normal/success_ratio_tx-rx
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/run_simulation_LF.sh
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/run_simulation_NO.sh
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/scenario/ladder_LF.csc
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/scenario/ladder_NO.csc
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/scenario/run_cooja_without_gui.sh
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/scenario/script.js
+#	nouveau fichier: examples/ipv6/my-LFC-periodic-all/scenario/xml_re_writer.py
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/Makefile
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/README.md
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/makeBothReceiverSender.sh
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/node-receiver-leapfrog.c
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/node-sender-leapfrog-replicate.c
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/nodes_LF/node-receiver-leapfrog.z1
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/nodes_LF/node-sender-leapfrog-replicate.z1
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/nodes_NO/node-receiver-leapfrog.z1
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/nodes_NO/node-sender-leapfrog-replicate.z1
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/project-conf.h
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/result/arrange_result_numpy_energy_count_everyrep.py
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/result/leapfrog/result_arranged.csv
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/result/leapfrog/success_ratio_tx-rx
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/result/normal/result_arranged.csv
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/result/normal/success_ratio_tx-rx
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/run_simulation_LF_1-5.sh
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/run_simulation_LF_6-10.sh
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/run_simulation_NO.sh
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/scenario/ladder_LF_1-5.csc
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/scenario/ladder_LF_6-10.csc
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/scenario/ladder_NO.csc
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/scenario/run_cooja_without_gui.sh
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/scenario/script.js
+#	nouveau fichier: examples/ipv6/my-LFC-timed-bugfix-periodic/scenario/xml_re_writer.py
+#	renommé:         examples/ipv6/my-leapfrog-collaboration-timed-bugfix/result/arrange_result_numpy_energy_count.py -> examples/ipv6/my-leapfrog-collaboration-timed-bugfix/result/arrange_result_numpy_energy_count_everyrep.py
+#	nouveau fichier: examples/ipv6/my-leapfrog-collaboration-timed-bugfix/result/leapfrog/result_arranged.csv
+#	modifié:         examples/ipv6/my-leapfrog-collaboration-timed-bugfix/run_simulation_without_gui_auto_ratio_change.sh
+#	modifié:         examples/ipv6/my-leapfrog-collaboration-timed-bugfix/scenario/ladder-sender-replicate.csc
+#	nouveau fichier: examples/ipv6/my-leapfrog-collaboration-timed/result/arrange_result_numpy_energy_count_everyrep.py
+#	modifié:         examples/ipv6/my-leapfrog-collaboration-timed/result/normal/result_arranged.csv
+#	modifié:         examples/ipv6/my-leapfrog-collaboration-timed/run_simulation_without_gui_auto_ratio_change.sh
+#	modifié:         examples/ipv6/my-leapfrog-collaboration-timed/scenario/ladder-sender-replicate.csc
+#
+# Modifications qui ne seront pas validées :
+#	modifié:         tools/mspsim (contenu non suivi)
+#
+#
+# L'énumération des fichiers non suivis a duré 12.37 secondes. 'status -uno'
+# peut l'accélérer, mais vous devez alors faire attention à ne pas
+# oublier d'ajouter les nouveaux fichiers par vous-même (voir 'git help status').
