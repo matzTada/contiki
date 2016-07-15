@@ -81,7 +81,8 @@
 #define SERVICE_ID 190
 
 #define SEND_INTERVAL   (10 * CLOCK_SECOND)
-#define SEND_TIME   (random_rand() % (SEND_INTERVAL))
+//#define SEND_TIME   (random_rand() % (SEND_INTERVAL))
+#define SEND_TIME   (SEND_INTERVAL)
 
 static struct simple_udp_connection unicast_connection;
 
@@ -469,9 +470,8 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
   while(1) {
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
       etimer_reset(&periodic_timer);
-      etimer_set(&send_timer, SEND_TIME);
-
-      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
+//      etimer_set(&send_timer, SEND_TIME);
+//      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
     
     if(tsch_is_associated){
       /*--- target address decision ---*/
