@@ -75,10 +75,14 @@
 /********** Constants *********/
 
 /* Link options */
-#define LINK_OPTION_TX              1
-#define LINK_OPTION_RX              2
-#define LINK_OPTION_SHARED          4
-#define LINK_OPTION_TIME_KEEPING    8
+#define LINK_OPTION_TX              1 //b0
+#define LINK_OPTION_RX              2 //b1
+#define LINK_OPTION_SHARED          4 //b2
+#define LINK_OPTION_TIME_KEEPING    8 //b3
+//added by TadaMatz 27/July/2016
+#ifdef WITH_OVERHEARING
+#define LINK_OPTION_PROMISCUOUS_RX  16 //b4
+#endif //WITH_OVERHEARING
 
 /************ Types ***********/
 

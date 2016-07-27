@@ -285,6 +285,8 @@ receiver(struct simple_udp_connection *c,
         leapfrog_alt_parent_id = 0;
         printf("LEAPFROG: reset P GP AP\n");
       }
+
+
       //judge Grand Parent
       if(leapfrog_parent_id > 0 && leapfrog_parent_id == my_pid){ //judge Grand Parent
         if(temp_sid == my_pid){
@@ -344,9 +346,40 @@ receiver(struct simple_udp_connection *c,
       if(temp_aid != 0 && my_id == temp_aid){
         printf("LEAPFROG-TSCH: update rx s <- (alt)C %d\n", temp_sid);
 
-        orchestra_leapfrog_add_uc_rx_link(temp_sid);
+        orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX); //for alternate traffic
+#ifdef WITH_OVERHEARING
+        printf("OVERHEARING: update pro-rx <- (alt)C %d\n", temp_sid);
+        orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the normal traffic
+#endif //WITH_OVERHEARING
       }
-#endif /*WITH_LEAPFROG_TSCH*/      
+#endif /*WITH_LEAPFROG_TSCH*/    
+
+#ifdef WITH_OVERHEARING
+      //judge my child has the Alt parent
+      if(temp_aid != 0 && my_id == temp_pid){
+        printf("OVERHEARING: update pro-rx <- C %d\n", temp_sid);
+        orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the alt traffic
+      }
+
+      //judge Siblings
+      if(temp_pid > 0 && leapfrog_parent_id > 0 && temp_pid == leapfrog_parent_id){
+        //then temp_sid = sibling id
+        printf("OVERHEARING: update pro-rx <- sibling %d\n", temp_sid);
+        orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+        orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+      }else if(temp_pid > 0 && leapfrog_possible_parent_num > 0){ //compare sender's parent and own possible parents
+        for(temp_pps_itr = 0; temp_pps_itr < (int)leapfrog_possible_parent_num; temp_pps_itr++){
+          if(temp_pid == leapfrog_possible_parent_id_array[temp_pps_itr]){
+            //then temp_sid = sibling id
+            printf("OVERHEARING: update pro-rx <- sibling %d\n", temp_sid);
+            orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+            orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+            break;
+          }
+        }
+      }
+#endif //WITH_OVERHEARING
+
     }
   }
 
@@ -484,22 +517,22 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
   simple_udp_register(&leapfrog_unicast_connection, LEAPFROG_UDP_PORT,
                       NULL, LEAPFROG_UDP_PORT, receiver);
 
-#ifdef WITH_PERIODIC
-  printf("periodic slide start node_id: %d\n", node_id);
-  etimer_set(&send_timer, CLOCK_SECOND * node_id);
-  PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
-  printf("periodic slide expired\n");
-#endif //wITH_PERIODIC
+//#ifdef WITH_PERIODIC
+//  printf("periodic slide start node_id: %d\n", node_id);
+//  etimer_set(&send_timer, CLOCK_SECOND * node_id);
+//  PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
+//  printf("periodic slide expired\n");
+//#endif //wITH_PERIODIC
 
   etimer_set(&periodic_timer, LEAPFROG_SEND_INTERVAL);
   while(1) {
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
       etimer_reset(&periodic_timer);
 
-#ifndef WITH_PERIODIC
+//#ifndef WITH_PERIODIC
       etimer_set(&send_timer, LEAPFROG_SEND_TIME);
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
-#endif //ndef WITH_PERIODIC      
+//#endif //ndef WITH_PERIODIC      
 
     if(tsch_is_associated){
       /*--- target address decision ---*/

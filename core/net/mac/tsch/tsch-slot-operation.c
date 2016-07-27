@@ -72,6 +72,10 @@ extern char leapfrog_alt_parent_id;
 extern linkaddr_t alt_parent_linkaddr;
 #endif /*WITH_LEAPFROG_TSCH*/
 
+#ifdef WITH_OVERHEARING //added by TadaMatz 27/July/2016
+int is_promiscuous_listening_slot = 0;
+#endif 
+
 /* TSCH debug macros, i.e. to set LEDs or GPIOs on various TSCH
  * timeslot events */
 #ifndef TSCH_DEBUG_INIT
@@ -689,7 +693,6 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
   static int input_queue_drop = 0;
 
 #ifdef WITH_OVERHEARING
-  int is_overhearing_slot = 1;
   radio_value_t radio_rx_mode;
 #endif //WITH_OVERHEARING
 
@@ -698,7 +701,7 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
   TSCH_DEBUG_RX_EVENT();
 
 #ifdef WITH_OVERHEARING
-  if(is_overhearing_slot){
+  if(is_promiscuous_listening_slot){
     /* Entering promiscuous mode so that the radio accepts the enhanced ACK */
     NETSTACK_RADIO.get_value(RADIO_PARAM_RX_MODE, &radio_rx_mode);
     NETSTACK_RADIO.set_value(RADIO_PARAM_RX_MODE, radio_rx_mode & (~RADIO_RX_MODE_ADDRESS_FILTER));
@@ -799,8 +802,14 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
 #ifdef WITH_OVERHEARING //added by TadaMatz 27/July/2016
           if(linkaddr_cmp(&destination_address, &linkaddr_node_addr) //compare dst linkaddr and own linkaddr
              || linkaddr_cmp(&destination_address, &linkaddr_null)
-             || is_overhearing_slot) {
-            PRINTA("hear\n");
+             || is_promiscuous_listening_slot) {
+
+            if(linkaddr_cmp(&destination_address, &linkaddr_node_addr)
+               || linkaddr_cmp(&destination_address, &linkaddr_null)){
+              PRINTA("OVERHEARING: normalhearing packet <- %d\n", source_address.u8[7]);
+            }else{ //when dst linkaddr is NOT equal to own linkaddr, Overhearing occures.
+              PRINTA("OVERHEARING: overhearing packet <- %d\n", source_address.u8[7]);
+            }
 #else //WITH_OVERHEARING
           if(linkaddr_cmp(&destination_address, &linkaddr_node_addr)
              || linkaddr_cmp(&destination_address, &linkaddr_null)) {
@@ -897,7 +906,7 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
   }
 
 #ifdef WITH_OVERHEARING
-  if(is_overhearing_slot){
+  if(is_promiscuous_listening_slot){
     /* Leaving promiscuous mode */
     NETSTACK_RADIO.get_value(RADIO_PARAM_RX_MODE, &radio_rx_mode);
     NETSTACK_RADIO.set_value(RADIO_PARAM_RX_MODE, radio_rx_mode | RADIO_RX_MODE_ADDRESS_FILTER);
@@ -965,6 +974,13 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
 	#endif /*DEBUG_TADAMATZ*/
       } else if((current_link->link_options & LINK_OPTION_RX)) {
         /* Listen */
+#ifdef WITH_OVERHEARING
+        if((current_link->link_options & LINK_OPTION_PROMISCUOUS_RX)){
+          is_promiscuous_listening_slot = 1;
+        }else{
+          is_promiscuous_listening_slot = 0;
+        }
+#endif //WITH_OVERHEARING
         static struct pt slot_rx_pt;
         PT_SPAWN(&slot_operation_pt, &slot_rx_pt, tsch_rx_slot(&slot_rx_pt, t));
 	#ifdef DEBUG_TADAMATZ

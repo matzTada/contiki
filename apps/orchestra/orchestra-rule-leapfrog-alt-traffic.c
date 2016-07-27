@@ -78,8 +78,12 @@ static uint16_t
 get_node_timeslot_by_id(char id){
   if(id >= 0){
 #ifdef CONDUCT_ORCHESTRA
+#ifdef WITH_OVERHEARING
+    return (id - 1) % CONDUCT_ALT_OFFSET + CONDUCT_UNICAST_OFFSET + CONDUCT_EBSF_OFFSET + 1;
+#else //WITH_OVERHEARING
     return (id - 1 + CONDUCT_ALT_TRAFFIC_DRIFT_OFFSET) % (ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD - 1 - CONDUCT_EBSF_OFFSET) + CONDUCT_EBSF_OFFSET + 1;
-#else
+#endif //WITH_OVERHEARING
+#else//CONDUCT_ORECHESTRA
     return id % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD;
 #endif //CONDUCT_ORCHESTRA
   }else{
@@ -112,7 +116,7 @@ orchestra_leapfrog_add_uc_tx_link(char alt_parent_id)
 }
 /*---------------------------------------------------------------------------*/
 void
-orchestra_leapfrog_add_uc_rx_link(char child_id)
+orchestra_leapfrog_add_uc_rx_link(char child_id, uint8_t link_option)
 {
   uint16_t altparent_timeslot = 0;
   altparent_timeslot = get_node_timeslot_by_id(child_id);
@@ -125,7 +129,7 @@ orchestra_leapfrog_add_uc_rx_link(char child_id)
   }
   tsch_schedule_add_link(
     sf_lfat,
-    LINK_OPTION_RX,
+    link_option, //here should be LINK_OPTION_RX or LINK_OPTION_PROMISCUOUS_RX
     LINK_TYPE_NORMAL,
     &tsch_broadcast_address, //welcome everyone
     altparent_timeslot,

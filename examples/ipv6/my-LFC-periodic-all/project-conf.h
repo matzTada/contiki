@@ -37,13 +37,14 @@
 
 //modified by TadaMatz 1/July/2016
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH. This should be 0 when used with Leapfrog
 #define WITH_LEAPFROG
 #define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
 #define CONDUCT_ORCHESTRA
-#define WITH_POWERTRACE // for power trace
-#define WITH_STABLETIMER // for waiting application traffic until network stabilized
-#define WITH_PERIODIC //send beacon and application packet periodically
+//#define WITH_POWERTRACE // for power trace
+//#define WITH_STABLETIMER // for waiting application traffic until network stabilized
+#define WITH_PERIODIC //application packet periodically
+#define WITH_OVERHEARING //add promiscuous listening slot
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
 //#define ORCHESTRA_CONF_COLLISION_FREE_HASH 1
@@ -58,7 +59,7 @@
 #define LEAPFROG_DATA_COUNTER_WIDTH 25 //sender node sends data with sequential number, but it happens that the order to arrive dst can be inversed. This number shows how many packet should be discarded compared to current number.
 //for beacon
 #define LEAPFROG_UDP_PORT 5678
-#define LEAPFROG_SEND_INTERVAL   (20 * CLOCK_SECOND)
+#define LEAPFROG_SEND_INTERVAL   (10 * CLOCK_SECOND)
 #define LEAPFROG_SEND_TIME   (random_rand() % (SEND_INTERVAL))
 #endif /*WITH_LEAPFROG*/
 //==added

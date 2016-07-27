@@ -60,7 +60,11 @@ get_node_timeslot(const linkaddr_t *addr)
 {
   if(addr != NULL && ORCHESTRA_UNICAST_PERIOD > 0) {
 #ifdef CONDUCT_ORCHESTRA
-    return (ORCHESTRA_LINKADDR_HASH(addr) - 1) % (ORCHESTRA_UNICAST_PERIOD - 1 - CONDUCT_EBSF_OFFSET) + CONDUCT_EBSF_OFFSET + 1;
+#ifdef WITH_OVERHEARING
+    return (ORCHESTRA_LINKADDR_HASH(addr) - 1) % CONDUCT_UNICAST_OFFSET + CONDUCT_EBSF_OFFSET + 1; //to obey to the standard?
+#else //WITH_OVERHEARING
+    return (ORCHESTRA_LINKADDR_HASH(addr) - 1) % (ORCHESTRA_UNICAST_PERIOD - 1 - CONDUCT_EBSF_OFFSET) + CONDUCT_EBSF_OFFSET + 1; //for my proposal. frequent.
+#endif //WITH_OVERHEARING
 #else //CONDUCT_ORCHESTRA
     return ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_UNICAST_PERIOD;
 #endif
@@ -68,6 +72,21 @@ get_node_timeslot(const linkaddr_t *addr)
     return 0xffff;
   }
 }
+/*---------------------------------------------------------------------------*/
+#ifdef WITH_OVERHEARING
+static uint16_t
+get_node_timeslot_by_id(char id){
+  if(id >= 0){
+#ifdef CONDUCT_ORCHESTRA
+    return (id - 1) % CONDUCT_UNICAST_OFFSET + CONDUCT_EBSF_OFFSET + 1;
+#else//CONDUCT_ORECHESTRA
+    return id % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD;
+#endif //CONDUCT_ORCHESTRA
+  }else{
+    return 0xffff;
+  }
+}
+#endif //WITH_OVERHEARING
 /*---------------------------------------------------------------------------*/
 static int
 neighbor_has_uc_link(const linkaddr_t *linkaddr)
@@ -238,3 +257,27 @@ orchestra_conduct_add_uc_link(const linkaddr_t *linkaddr, uint8_t link_option)
     channel_offset); //should be modified to get correct channel_offset of link
 }
 #endif //CONDUCT_ORCHESTRA
+
+#ifdef WITH_OVERHEARING
+/*---------------------------------------------------------------------------*/
+void
+orchestra_unicast_add_uc_rx_link(char child_id, uint8_t link_option)
+{
+  uint16_t parent_timeslot = 0;
+  parent_timeslot = get_node_timeslot_by_id(child_id);
+  //altparent_timeslot = (child_id + CONDUCT_EBSF_OFFSET) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
+
+  struct tsch_link *parent_l;
+  parent_l = tsch_schedule_get_link_by_timeslot(sf_unicast, parent_timeslot);
+  if(parent_l != NULL) {
+    tsch_schedule_remove_link(sf_unicast, parent_l);
+  }
+  tsch_schedule_add_link(
+    sf_unicast,
+    link_option, //here should be LINK_OPTION_RX or LINK_OPTION_PROMISCUOUS_RX
+    LINK_TYPE_NORMAL,
+    &tsch_broadcast_address, //welcome everyone
+    parent_timeslot,
+    channel_offset); //should be modified to get correct channel_offset of link
+}
+#endif //WITH_OVERHEARING
