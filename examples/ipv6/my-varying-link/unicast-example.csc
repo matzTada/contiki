@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<simconf>
+<?xml version="1.0" ?><simconf>
   <project EXPORT="discard">[APPS_DIR]/mrm</project>
   <project EXPORT="discard">[APPS_DIR]/mspsim</project>
   <project EXPORT="discard">[APPS_DIR]/avrora</project>
@@ -17,7 +16,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>2</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.5</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -29,7 +28,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>3</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.5</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -41,7 +40,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>1</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.5</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -53,7 +52,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>2</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.5</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -111,7 +110,7 @@
       <moteinterface>org.contikios.cooja.mspmote.interfaces.SkyTemperature</moteinterface>
     </motetype>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>20.93897804437629</x>
@@ -129,7 +128,7 @@
       <motetype_identifier>sky1</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>56.491911650996705</x>
@@ -147,7 +146,7 @@
       <motetype_identifier>sky2</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>94.75424837128688</x>
@@ -191,9 +190,9 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter />
-      <formatted_time />
-      <coloring />
+      <filter/>
+      <formatted_time/>
+      <coloring/>
     </plugin_config>
     <width>738</width>
     <z>3</z>
@@ -207,8 +206,8 @@
       <mote>0</mote>
       <mote>1</mote>
       <mote>2</mote>
-      <showRadioRXTX />
-      <showRadioHW />
+      <showRadioRXTX/>
+      <showRadioHW/>
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
     <width>411</width>
@@ -226,4 +225,3 @@
     <location_y>443</location_y>
   </plugin>
 </simconf>
-

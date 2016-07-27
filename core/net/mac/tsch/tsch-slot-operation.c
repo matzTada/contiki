@@ -688,9 +688,22 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
   static int16_t input_index;
   static int input_queue_drop = 0;
 
+#ifdef WITH_OVERHEARING
+  int is_overhearing_slot = 1;
+  radio_value_t radio_rx_mode;
+#endif //WITH_OVERHEARING
+
   PT_BEGIN(pt);
 
   TSCH_DEBUG_RX_EVENT();
+
+#ifdef WITH_OVERHEARING
+  if(is_overhearing_slot){
+    /* Entering promiscuous mode so that the radio accepts the enhanced ACK */
+    NETSTACK_RADIO.get_value(RADIO_PARAM_RX_MODE, &radio_rx_mode);
+    NETSTACK_RADIO.set_value(RADIO_PARAM_RX_MODE, radio_rx_mode & (~RADIO_RX_MODE_ADDRESS_FILTER));
+  }
+#endif //WITH_OVERHEARING
 
   input_index = ringbufindex_peek_put(&input_ringbuf);
   if(input_index == -1) {
@@ -783,8 +796,15 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
 #endif /* LLSEC802154_ENABLED */
 
         if(frame_valid) {
+#ifdef WITH_OVERHEARING //added by TadaMatz 27/July/2016
+          if(linkaddr_cmp(&destination_address, &linkaddr_node_addr) //compare dst linkaddr and own linkaddr
+             || linkaddr_cmp(&destination_address, &linkaddr_null)
+             || is_overhearing_slot) {
+            PRINTA("hear\n");
+#else //WITH_OVERHEARING
           if(linkaddr_cmp(&destination_address, &linkaddr_node_addr)
              || linkaddr_cmp(&destination_address, &linkaddr_null)) {
+#endif //WITH_OVERHEARING
             int do_nack = 0;
             estimated_drift = ((int32_t)expected_rx_time - (int32_t)rx_start_time);
 
@@ -875,6 +895,14 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
       input_queue_drop = 0;
     }
   }
+
+#ifdef WITH_OVERHEARING
+  if(is_overhearing_slot){
+    /* Leaving promiscuous mode */
+    NETSTACK_RADIO.get_value(RADIO_PARAM_RX_MODE, &radio_rx_mode);
+    NETSTACK_RADIO.set_value(RADIO_PARAM_RX_MODE, radio_rx_mode | RADIO_RX_MODE_ADDRESS_FILTER);
+  }
+#endif //WITH_OVERHEARING
 
   TSCH_DEBUG_RX_EVENT();
 
