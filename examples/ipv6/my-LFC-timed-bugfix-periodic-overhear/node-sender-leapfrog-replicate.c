@@ -80,7 +80,7 @@
 #define UDP_PORT 1234
 #define SERVICE_ID 190
 
-#define SEND_INTERVAL   (10 * CLOCK_SECOND)
+#define SEND_INTERVAL   (60 * CLOCK_SECOND)
 //#define SEND_TIME   (random_rand() % (SEND_INTERVAL))
 #define SEND_TIME   (SEND_INTERVAL) //make it periodical
 
@@ -365,8 +365,42 @@ receiver(struct simple_udp_connection *c,
         printf("LEAPFROG-TSCH: update rx s <- (alt)C %d\n", temp_sid);
 
         orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX);
+
+#ifdef WITH_OVERHEARING
+        printf("OVERHEARING: update pro-rx <- (alt)C %d\n", temp_sid);
+        orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the normal traffic
+#endif //WITH_OVERHEARING
+
       }
 #endif /*WITH_LEAPFROG_TSCH*/      
+
+#ifdef WITH_OVERHEARING
+      //judge my child has the Alt parent
+      if(temp_aid != 0 && my_id == temp_pid){
+        printf("OVERHEARING: update pro-rx <- C %d\n", temp_sid);
+        orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the alt traffic
+      }
+
+      //judge Siblings
+      if(temp_pid > 0 && leapfrog_parent_id > 0 && temp_pid == leapfrog_parent_id){
+        //then temp_sid = sibling id
+        printf("OVERHEARING: update pro-rx <- sibling %d\n", temp_sid);
+        orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+        orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+      }else if(temp_pid > 0 && leapfrog_possible_parent_num > 0){ //compare sender's parent and own possible parents
+        for(temp_pps_itr = 0; temp_pps_itr < (int)leapfrog_possible_parent_num; temp_pps_itr++){
+          if(temp_pid == leapfrog_possible_parent_id_array[temp_pps_itr]){
+            //then temp_sid = sibling id
+            printf("OVERHEARING: update pro-rx <- sibling %d\n", temp_sid);
+            orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+            orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+            break;
+          }
+        }
+      }
+#endif //WITH_OVERHEARING
+
+
     }
   }
 
@@ -469,8 +503,8 @@ PROCESS_THREAD(node_process, ev, data)
 /*simple-udp-rpl---------------------------------------------------------------------------*/
 PROCESS_THREAD(unicast_sender_process, ev, data)
 {
-  static struct etimer periodic_timer;
-  static struct etimer send_timer;
+  static struct etimer uni_periodic_timer;
+//  static struct etimer send_timer;
   uip_ipaddr_t *addr;
 
 
@@ -483,10 +517,10 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
   simple_udp_register(&unicast_connection, UDP_PORT,
                       NULL, UDP_PORT, receiver);
 
-  etimer_set(&periodic_timer, SEND_INTERVAL);
+  etimer_set(&uni_periodic_timer, SEND_INTERVAL);
   while(1) {
-      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
-      etimer_reset(&periodic_timer);
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&uni_periodic_timer));
+      etimer_reset(&uni_periodic_timer);
 //      etimer_set(&send_timer, SEND_TIME);
 //      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
 
@@ -553,8 +587,8 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
 /* ----------------- leapfrog process start----------------- */
 PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
 {
-  static struct etimer periodic_timer;
-  static struct etimer send_timer;
+  static struct etimer lfb_periodic_timer;
+  static struct etimer lfb_send_timer;
   uip_ipaddr_t *addr;
 
   PROCESS_BEGIN();
@@ -562,14 +596,14 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
   simple_udp_register(&leapfrog_unicast_connection, LEAPFROG_UDP_PORT,
                       NULL, LEAPFROG_UDP_PORT, receiver);
 
-  etimer_set(&periodic_timer, LEAPFROG_SEND_INTERVAL);
+  etimer_set(&lfb_periodic_timer, LEAPFROG_SEND_INTERVAL);
+printf("timer periodic initiated\n");
   while(1) {
-      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
-      etimer_reset(&periodic_timer);
-      etimer_set(&send_timer, LEAPFROG_SEND_TIME);
-
-      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
-     
+      etimer_reset(&lfb_periodic_timer); //printf("timer periodic reset\n");
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&lfb_periodic_timer)); //printf("timer periodic expired\n");
+      //etimer_set(&lfb_periodic_timer, LEAPFROG_SEND_INTERVAL); printf("timer periodic initiated\n");
+      etimer_set(&lfb_send_timer, LEAPFROG_SEND_TIME); //printf("timer send initiated\n");
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&lfb_send_timer)); //printf("timer send expired\n");
     if(tsch_is_associated){
       /*--- target address decision ---*/
       /*-- linklocal rplnodes mcast --*/

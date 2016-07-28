@@ -434,7 +434,7 @@ tsch_schedule_print(void)
       printf("List of links:\n");
 
       while(l != NULL) {
-        printf("[Link] Options %02x, type %u, timeslot %u, channel offset %u, address %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n",
+        printf("[Link] Options %02d, type %u, timeslot %u, channel offset %u, address %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n",
                l->link_options, l->link_type, l->timeslot, l->channel_offset, 
 		l->addr.u8[0],
 		l->addr.u8[1],

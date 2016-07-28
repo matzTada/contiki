@@ -804,11 +804,12 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
              || linkaddr_cmp(&destination_address, &linkaddr_null)
              || is_promiscuous_listening_slot) {
 
-            if(linkaddr_cmp(&destination_address, &linkaddr_node_addr)
-               || linkaddr_cmp(&destination_address, &linkaddr_null)){
-              PRINTA("OVERHEARING: normalhearing packet <- %d\n", source_address.u8[7]);
-            }else{ //when dst linkaddr is NOT equal to own linkaddr, Overhearing occures.
-              PRINTA("OVERHEARING: overhearing packet <- %d\n", source_address.u8[7]);
+            if(linkaddr_cmp(&destination_address, &linkaddr_node_addr)){
+              PRINTA("OVERHEARING: normhear ID:%d <- ID:%d\n", destination_address.u8[7], source_address.u8[7]);
+            }else if(linkaddr_cmp(&destination_address, &linkaddr_null)){
+              PRINTA("OVERHEARING: normhear null <- ID:%d\n", source_address.u8[7]);
+            }else{ //when dst linkaddr is NOT equal to own linkaddr Overhearing occures.
+              PRINTA("OVERHEARING: overhear ID:%d <- ID:%d\n", destination_address.u8[7], source_address.u8[7]);
             }
 #else //WITH_OVERHEARING
           if(linkaddr_cmp(&destination_address, &linkaddr_node_addr)
