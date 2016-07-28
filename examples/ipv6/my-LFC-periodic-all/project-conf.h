@@ -44,7 +44,7 @@
 //#define WITH_POWERTRACE // for power trace
 //#define WITH_STABLETIMER // for waiting application traffic until network stabilized
 #define WITH_PERIODIC //application packet periodically
-#define WITH_OVERHEARING //add promiscuous listening slot
+//#define WITH_OVERHEARING //add promiscuous listening slot
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
 //#define ORCHESTRA_CONF_COLLISION_FREE_HASH 1

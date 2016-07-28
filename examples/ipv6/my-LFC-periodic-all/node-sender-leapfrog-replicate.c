@@ -80,7 +80,7 @@
 #define UDP_PORT 1234
 #define SERVICE_ID 190
 
-#define SEND_INTERVAL   (30 * CLOCK_SECOND)
+#define SEND_INTERVAL   (15 * CLOCK_SECOND)
 #ifdef WITH_PERIODIC
 #define SEND_TIME   (SEND_INTERVAL) //make it periodical
 #else //WITH_PERIODIC
