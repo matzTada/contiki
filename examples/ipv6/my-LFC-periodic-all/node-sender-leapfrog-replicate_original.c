@@ -80,13 +80,24 @@
 #define UDP_PORT 1234
 #define SERVICE_ID 190
 
+#define SEND_INTERVAL   (15 * CLOCK_SECOND)
+#ifdef WITH_PERIODIC
+#define SEND_TIME   (SEND_INTERVAL) //make it periodical
+#else //WITH_PERIODIC
+#define SEND_TIME   (random_rand() % (SEND_INTERVAL))
+#endif //WITH_PERIODIC
+
 static struct simple_udp_connection unicast_connection;
 
-PROCESS(unicast_receiver_process, "Unicast receiver example process");
+PROCESS(unicast_sender_process, "Unicast sender example process");
+// AUTOSTART_PROCESSES(&unicast_sender_process);
 /* ----------------- simple-udp-rpl include and declaration end ----------------- */
 
 /* ----------------- leapfrog include and declaration start ----------------- */
 #ifdef WITH_LEAPFROG
+//#define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
+//#define LEAPFROG_BEACON_OFFSET 48 //for avoid NULL character in data packet
+//#define LEAPFROG_DATA_HEADER 0xf2 //for sending data
 
 char leapfrog_parent_id = 0;
 char leapfrog_grand_parent_id = 0;
@@ -110,23 +121,39 @@ linkaddr_t alt_parent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, 0}};
 #endif //WITH_LEAPFROG
 /* ----------------- leapfrog include and declaration end ----------------- */
 
+/* ----------------- stable timer start ----------------- */
+#ifdef WITH_STABLETIMER
+int stable_flag = 0;
+PROCESS(stable_timer_process, "Stable timer process");
+#endif //WITH_STABLETIMER
+/* ----------------- stable timer end ----------------- */
 
 /*---------------------------------------------------------------------------*/
+#ifdef WITH_STABLETIMER
 #ifdef WITH_LEAPFROG
-PROCESS(node_process, "RPL Node receiver leapfrog");
+PROCESS(node_process, "RPL Node sender leapfrog");
+AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_sender_process, &leapfrog_beaconing_process, &stable_timer_process);
+#else //WITH_LEAPFROG
+PROCESS(node_process, "RPL Node sender leapfrog");
+AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_sender_process, &stable_timer_process);
+#endif //WITH_LEAPFROG
+#else //WITH_STABLETIMER
+#ifdef WITH_LEAPFROG
+PROCESS(node_process, "RPL Node sender leapfrog");
 #if CONFIG_VIA_BUTTON
-AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_receiver_process, &leapfrog_beaconing_process);
+AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_sender_process, &leapfrog_beaconing_process);
 #else /* CONFIG_VIA_BUTTON */
-AUTOSTART_PROCESSES(&node_process, &unicast_receiver_process, &leapfrog_beaconing_process);
+AUTOSTART_PROCESSES(&node_process, &unicast_sender_process, &leapfrog_beaconing_process);
 #endif /* CONFIG_VIA_BUTTON */
 #else /*WITH_LEAPFROG*/
-PROCESS(node_process, "RPL Node receiver leapfrog");
+PROCESS(node_process, "RPL Node sender leapfrog");
 #if CONFIG_VIA_BUTTON
-AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_receiver_process);
+AUTOSTART_PROCESSES(&node_process, &sensors_process, &unicast_sender_process);
 #else /* CONFIG_VIA_BUTTON */
-AUTOSTART_PROCESSES(&node_process, &unicast_receiver_process);
+AUTOSTART_PROCESSES(&node_process, &unicast_sender_process);
 #endif /* CONFIG_VIA_BUTTON */
 #endif /*WITH_LEAPFROG*/
+#endif // WITH_STABLETIMER
 /*---------------------------------------------------------------------------*/
 static void
 print_network_status(void)
@@ -205,6 +232,31 @@ receiver(struct simple_udp_connection *c,
          const uint8_t *data,
          uint16_t datalen)
 {
+// #ifdef WITH_LEAPFROG //for packet elimination
+//   int leapfrog_elimination_flag = 0;
+    
+//   if(data[0] == LEAPFROG_DATA_HEADER){
+//     char tmp_lf_pc = data[1] - LEAPFROG_BEACON_OFFSET;
+//     int tmp_sid = sender_addr->u8[15];
+//     char tmp_lf_an = leapfrog_elimination_id_array[tmp_sid];
+
+//     if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
+//       if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an ) <= tmp_lf_pc) leapfrog_elimination_flag = 1; 
+//     }else{
+//       if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
+//     }
+
+//     if(leapfrog_elimination_flag == 1){
+//       PRINTF("LEAPFROG: Elimination discard data\n");
+//     }else{
+//       PRINTF("LEAPFROG: ");
+//       leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
+//     }
+//   }
+
+//   if(leapfrog_elimination_flag != 1){
+// #endif /*WITH_LEAPFROG*/
+
   printf("DATA: received from ");
   uip_debug_ipaddr_print(sender_addr);
   printf(" on port %d from port %d with length %d: '%s'\n",
@@ -221,7 +273,7 @@ receiver(struct simple_udp_connection *c,
     temp_gid = data[4] - LEAPFROG_BEACON_OFFSET;
     temp_aid = data[6] - LEAPFROG_BEACON_OFFSET;
     char temp_pps_num;
-    char temp_pps_str[LEAPFROG_NUM_NEIGHBOR_NODE + 1];
+    char temp_pps_str[LEAPFROG_NUM_NEIGHBOR_NODE];
     int temp_pps_itr;
     temp_pps_num = data[8] - LEAPFROG_BEACON_OFFSET;
     for(temp_pps_itr = 0; temp_pps_itr < (int)temp_pps_num; temp_pps_itr++){ //do nothing if temp_pps_num = 0
@@ -243,6 +295,9 @@ receiver(struct simple_udp_connection *c,
     addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent);
     if(addr != NULL){
       char my_pid = addr->u8[15];
+//      if(leapfrog_parent_id == 0){ //registor parent
+//        leapfrog_parent_id = my_pid;
+//      }else 
       //new parent and reset P, GP, AP
       if(leapfrog_parent_id != my_pid){ //new parent and reset P, GP, AP
         leapfrog_parent_id = my_pid;
@@ -250,6 +305,7 @@ receiver(struct simple_udp_connection *c,
         leapfrog_alt_parent_id = 0;
         printf("LEAPFROG: reset P GP AP\n");
       }
+
       //judge Grand Parent
       if(leapfrog_parent_id > 0 && leapfrog_parent_id == my_pid){ //judge Grand Parent
         if(temp_sid == my_pid){
@@ -264,7 +320,20 @@ receiver(struct simple_udp_connection *c,
           leapfrog_alt_parent_id = temp_sid; //get alt parent
 #ifdef WITH_LEAPFROG_TSCH //add unicast tx link to AP based on own(child) ID
           linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
+          //alt_parent_linkaddr.u8[7] = leapfrog_alt_parent_id; //for tsch
+          //printf("LEAPFROG-TSCH: update AP %d %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n", 
+          //  leapfrog_alt_parent_id,
+          //  alt_parent_linkaddr.u8[0],
+          //  alt_parent_linkaddr.u8[1],
+          //  alt_parent_linkaddr.u8[2],
+          //  alt_parent_linkaddr.u8[3],
+          //  alt_parent_linkaddr.u8[4],
+          //  alt_parent_linkaddr.u8[5],
+          //  alt_parent_linkaddr.u8[6],
+          //  alt_parent_linkaddr.u8[7]);
+
           printf("LEAPFROG-TSCH: update alt tx normally -> AP %d\n", leapfrog_alt_parent_id);
+          
           orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
 #endif /*WITH_LEAPFROG_TSCH*/
         }
@@ -276,6 +345,7 @@ receiver(struct simple_udp_connection *c,
 #ifdef WITH_LEAPFROG_TSCH
               linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
               printf("LEAPFROG-TSCH: update alt tx by PP -> AP %d\n", leapfrog_alt_parent_id);
+          
               orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
 #endif //WITH_LEAPFROG_TSCH
               break;
@@ -290,17 +360,18 @@ receiver(struct simple_udp_connection *c,
       temp_pps_str[temp_pps_itr] = '\0';
       printf("LEAPFROG: own P %d GP %d AP %d PPs #%d %s\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id, leapfrog_possible_parent_num, temp_pps_str);
 
-#ifdef WITH_LEAPFROG_TSCH //judge I am sender's Alt Parent
       //judge I am sender's Alt Parent and prepare Rx link for alt child
+#ifdef WITH_LEAPFROG_TSCH //judge I am sender's Alt Parent
       if(temp_aid != 0 && my_id == temp_aid){
         printf("LEAPFROG-TSCH: update rx s <- (alt)C %d\n", temp_sid);
-        orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX); //for alternate traffic
+
+        orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX);//for alternate traffic
 #ifdef WITH_OVERHEARING
         printf("OVERHEARING: update pro-rx <- (alt)C %d\n", temp_sid);
         orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the normal traffic
 #endif //WITH_OVERHEARING
       }
-#endif /*WITH_LEAPFROG_TSCH*/    
+#endif /*WITH_LEAPFROG_TSCH*/
 
 #ifdef WITH_OVERHEARING
       //judge my child has the Alt parent
@@ -327,8 +398,13 @@ receiver(struct simple_udp_connection *c,
         }
       }
 #endif //WITH_OVERHEARING
+
     }
   }
+
+  // }else{
+  //   //receiving processes is skipped because of elimination
+  // }
 #endif /*WITH_LEAPFROG*/
 }
 /* ----------------- simple-udp-rpl functions end ----------------- */
@@ -404,7 +480,7 @@ PROCESS_THREAD(node_process, ev, data)
 
 #ifdef WITH_POWERTRACE
   powertrace_start(CLOCK_SECOND * 10);
-#endif //WITH_POWERTRACE
+#endif
   
   /* Print out routing tables every minute */
   etimer_set(&et, CLOCK_SECOND * 60);
@@ -422,37 +498,99 @@ PROCESS_THREAD(node_process, ev, data)
 /*---------------------------------------------------------------------------*/
 /* ----------------- simple-udp-rpl process start----------------- */
 /*simple-udp-rpl---------------------------------------------------------------------------*/
-PROCESS_THREAD(unicast_receiver_process, ev, data)
+/*simple-udp-rpl---------------------------------------------------------------------------*/
+PROCESS_THREAD(unicast_sender_process, ev, data)
 {
-  //uip_ipaddr_t *ipaddr;
+  static struct etimer periodic_timer;
+#ifndef WITH_PERIODIC
+  static struct etimer send_timer;
+#endif //ndef WITH_PERIODIC
+  uip_ipaddr_t *addr;
+
 
   PROCESS_BEGIN();
 
   //servreg_hack_init();
 
-  // ipaddr = set_global_address();
-  //ipaddr = &uip_ds6_if.addr_list[0].ipaddr; //oh... should be nice
-
-  // create_rpl_dag(ipaddr);
-
-  //servreg_hack_register(SERVICE_ID, ipaddr);
+  // set_global_address();
 
   simple_udp_register(&unicast_connection, UDP_PORT,
                       NULL, UDP_PORT, receiver);
 
+  etimer_set(&periodic_timer, SEND_INTERVAL);
   while(1) {
-    PROCESS_WAIT_EVENT();
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
+      etimer_reset(&periodic_timer);
+#ifndef WITH_PERIODIC
+      etimer_set(&send_timer, SEND_TIME);
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
+#endif //ndef WITH_PERIODIC
+
+#ifdef WITH_STABLETIMER    
+    if(stable_flag){
+#else //WITH_STABLETIMER
+    if(tsch_is_associated){
+#endif //WITH_STABLETIMER
+      /*--- target address decision ---*/
+      /*-- to registered target with servreg_hack --*/
+      //addr = servreg_hack_lookup(SERVICE_ID);
+      /*-- to default route --*/
+      //uip_ds6_defrt_t *default_route;
+      //default_route = uip_ds6_defrt_lookup(uip_ds6_defrt_choose());
+      //if(default_route != NULL) addr = &default_route->ipaddr;
+      //else addr = NULL;
+      /*-- decide by address directory--*/
+      uip_ipaddr_t temp_ipaddr;
+      uip_ip6addr(&temp_ipaddr,0xfd00,0,0,0,0xc30c,0,0,1);
+      addr = &temp_ipaddr;
+      /*-- linklocal rplnodes mcast --*/
+      //uip_ipaddr_t temp_ipaddr;
+      //uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
+      //addr = &temp_ipaddr;
+      /*-- to default parent --*/
+      //addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent); 
+
+      /*--- sending ---*/ 
+      if(addr != NULL) {
+        static unsigned int message_number;
+        char buf[20];
+
+#ifdef WITH_LEAPFROG
+        sprintf(buf, "%c%cHello Tada %04d", LEAPFROG_DATA_HEADER, leapfrog_data_counter + LEAPFROG_BEACON_OFFSET, message_number);
+        uip_ipaddr_t * my_addr;
+        my_addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
+        if(my_addr != NULL){
+          leapfrog_elimination_id_array[(int)addr->u8[15]] = leapfrog_data_counter;
+        }
+        leapfrog_data_counter++;
+        if(leapfrog_data_counter > LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
+#else
+        sprintf(buf, "NoHello Tada %04d", message_number);
+#endif
+        printf("DATA: Sending unicast to ");
+        uip_debug_ipaddr_print(addr);
+        printf(" '");
+        printf(buf);
+        printf("'\n");
+        message_number++;
+        simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
+      } else {
+        printf("DATA: addr is NULL!!");
+      }
+    } //if(tsch_is_associated)
   }
+
   PROCESS_END();
 }
+/* ----------------- simple-udp-rpl process end ----------------- */
 /* ----------------- simple-udp-rpl process end ----------------- */
 
 #ifdef WITH_LEAPFROG
 /* ----------------- leapfrog process start----------------- */
 PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
 {
-  static struct etimer periodic_timer;
-  static struct etimer send_timer;
+  static struct etimer lfb_periodic_timer;
+  static struct etimer lfb_send_timer;
   uip_ipaddr_t *addr;
 
   PROCESS_BEGIN();
@@ -467,17 +605,20 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
 //  printf("periodic slide expired\n");
 //#endif //wITH_PERIODIC
 
-  etimer_set(&periodic_timer, LEAPFROG_SEND_INTERVAL);
+  etimer_set(&lfb_periodic_timer, LEAPFROG_SEND_INTERVAL);
   while(1) {
-      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
-      etimer_reset(&periodic_timer);
+printf("in a loop 1\n");
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&lfb_periodic_timer));
+      etimer_reset(&lfb_periodic_timer);
 
 //#ifndef WITH_PERIODIC
-      etimer_set(&send_timer, LEAPFROG_SEND_TIME);
-      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&send_timer));
-//#endif //ndef WITH_PERIODIC      
-
+printf("in a loop 2\n");
+      etimer_set(&lfb_send_timer, LEAPFROG_SEND_TIME);
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&lfb_send_timer));
+//#endif //ifndef WITH_PERIODIC
+     
     if(tsch_is_associated){
+printf("in a loop 3\n");
       /*--- target address decision ---*/
       /*-- linklocal rplnodes mcast --*/
       uip_ipaddr_t temp_ipaddr;
@@ -491,14 +632,15 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
         char possible_parent_str[1 + LEAPFROG_NUM_NEIGHBOR_NODE];
 
         possible_parent_str[0] = leapfrog_possible_parent_num + LEAPFROG_BEACON_OFFSET;
+printf("in a loop 4\n");
         int i;
         for(i = 0; i < leapfrog_possible_parent_num; i++){
           possible_parent_str[1 + i] = leapfrog_possible_parent_id_array[i] + LEAPFROG_BEACON_OFFSET;
         }
 
         sprintf(buf, "%cP%cG%cA%cC%sN%d", 
-  	  LEAPFROG_BEACON_HEADER, 
-  	  leapfrog_parent_id + LEAPFROG_BEACON_OFFSET, 
+ 	  LEAPFROG_BEACON_HEADER, 
+	  leapfrog_parent_id + LEAPFROG_BEACON_OFFSET, 
 	  leapfrog_grand_parent_id + LEAPFROG_BEACON_OFFSET,
           leapfrog_alt_parent_id + LEAPFROG_BEACON_OFFSET,
           possible_parent_str, //C for candidate
@@ -514,10 +656,32 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
       } else {
         printf("LEAPFROG: addr is null!!");
       }
-    } //if tsch_is_associated
+    } //if(tsch_is_associated)
   }
 
   PROCESS_END();
 }
 /* ----------------- leapfrog process end ----------------- */
 #endif /*WITH_LEAPFROG*/
+
+#ifdef WITH_STABLETIMER
+/* ----------------- stable_timer process start ----------------- */
+PROCESS_THREAD(stable_timer_process, ev, data)
+{
+  static struct etimer stable_timer;
+
+  PROCESS_BEGIN();
+  etimer_set(&stable_timer, CLOCK_SECOND * 60 * 15); //15min
+  printf("Set Stable timer\n");
+  
+  PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&stable_timer));
+  etimer_stop(&stable_timer);
+   
+  stable_flag = 1;
+  printf("Stable timer expired!! Start to send application traffic\n");
+  PROCESS_EXIT();
+
+  PROCESS_END();
+}
+/* ----------------- stable_timer process end ----------------- */
+#endif //WITH_STABLE_TIMER
