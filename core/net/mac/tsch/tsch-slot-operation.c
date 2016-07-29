@@ -800,16 +800,25 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
 
         if(frame_valid) {
 #ifdef WITH_OVERHEARING //added by TadaMatz 27/July/2016
+          int received = 0;
           if(linkaddr_cmp(&destination_address, &linkaddr_node_addr) //compare dst linkaddr and own linkaddr
-             || linkaddr_cmp(&destination_address, &linkaddr_null)
-             || is_promiscuous_listening_slot) {
+             || linkaddr_cmp(&destination_address, &linkaddr_null)){
+            received = 1;
+          }else{
+            int is_data = header_len && frame.fcf.frame_type == FRAME802154_DATAFRAME;
+            if(is_data && is_promiscuous_listening_slot) {
+              
+              received = 1;
+            }
+          }
 
+          if(received){
             if(linkaddr_cmp(&destination_address, &linkaddr_node_addr)){
-              PRINTA("OVERHEARING: normhear ID:%d <- ID:%d\n", destination_address.u8[7], source_address.u8[7]);
+              PRINTA("OVERHEAR: norm uni ID:%d -> ID:%d\n", source_address.u8[7], destination_address.u8[7]);
             }else if(linkaddr_cmp(&destination_address, &linkaddr_null)){
-              PRINTA("OVERHEARING: normhear null <- ID:%d\n", source_address.u8[7]);
+              PRINTA("OVERHEAR: norm bro ID:%d -> null\n", source_address.u8[7]);
             }else{ //when dst linkaddr is NOT equal to own linkaddr Overhearing occures.
-              PRINTA("OVERHEARING: overhear ID:%d <- ID:%d\n", destination_address.u8[7], source_address.u8[7]);
+              PRINTA("OVERHEAR: overhear ID:%d -> ID:%d\n", source_address.u8[7], destination_address.u8[7]);
             }
 #else //WITH_OVERHEARING
           if(linkaddr_cmp(&destination_address, &linkaddr_node_addr)

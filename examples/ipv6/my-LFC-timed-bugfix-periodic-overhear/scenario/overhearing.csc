@@ -145,10 +145,10 @@
       <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
-      <viewport>3.2137648673819026 0.0 0.0 3.2137648673819026 82.38466424377735 58.73926848857193</viewport>
+      <viewport>3.2137648673819026 0.0 0.0 3.2137648673819026 40.384664243777344 95.73926848857192</viewport>
     </plugin_config>
     <width>400</width>
-    <z>4</z>
+    <z>3</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -156,7 +156,7 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter>Hello|normhear|overhear|Rep|Eli|def|Reg</filter>
+      <filter>Hello|norm uni|overhear|Rep|Eli|def|Reg|prepare</filter>
       <formatted_time />
       <coloring />
     </plugin_config>
@@ -179,7 +179,7 @@
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
-    <z>3</z>
+    <z>4</z>
     <height>166</height>
     <location_x>0</location_x>
     <location_y>987</location_y>
@@ -187,7 +187,7 @@
   <plugin>
     org.contikios.cooja.plugins.Notes
     <plugin_config>
-      <notes>Hello|normhear|overhear|Rep|Eli|def|Reg</notes>
+      <notes>Hello|norm uni|overhear|Rep|Eli|def|Reg|prepare</notes>
       <decorations>true</decorations>
     </plugin_config>
     <width>655</width>

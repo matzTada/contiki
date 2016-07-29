@@ -1234,6 +1234,20 @@ uip_process(uint8_t flag)
     uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1]);
 */        
     //start elimination judging process
+
+    //start elimination judging process
+    if(0 <= tmp_lf_an && tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH - 2){ //this is the case that we have to consider as if ring buffer
+      if((0 <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) 
+          || (LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - 1 - tmp_lf_an) <= tmp_lf_pc && tmp_lf_pc < LEAPFROG_DATA_COUNTER_MAX)){
+        leapfrog_elimination_flag = 1;
+      }
+    }else if(LEAPFROG_DATA_COUNTER_WIDTH - 1 <= tmp_lf_an && tmp_lf_an < LEAPFROG_DATA_COUNTER_MAX){
+      if(tmp_lf_an - (LEAPFROG_DATA_COUNTER_WIDTH - 1) <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an){
+        leapfrog_elimination_flag = 1;
+      }
+    }
+
+/*
     if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
       if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an) <= tmp_lf_pc){
         leapfrog_elimination_flag = 1;
@@ -1243,9 +1257,10 @@ uip_process(uint8_t flag)
         leapfrog_elimination_flag = 1;
       }
     }
+*/
 
     if(leapfrog_elimination_flag == 1){
-      PRINTA("LEAPFROG: Elimination sid:%d pc#%d drop packet\n", tmp_sid, tmp_lf_pc);
+      PRINTA("LEAPFROG: Elimination sid:%d pc#%d\n", tmp_sid, tmp_lf_pc);
       goto drop;
     }else{
       PRINTA("LEAPFROG: Register sid:%d pc#%d\n", tmp_sid, tmp_lf_pc);

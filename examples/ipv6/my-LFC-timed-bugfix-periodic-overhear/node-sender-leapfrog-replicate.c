@@ -104,10 +104,10 @@ char leapfrog_grand_parent_id = 0;
 char leapfrog_alt_parent_id = 0;
 
 char leapfrog_possible_parent_num = 0;
-char leapfrog_possible_parent_id_array[LEAPFROG_NUM_NEIGHBOR_NODE];
+char leapfrog_possible_parent_id_array[LEAPFROG_NUM_NEIGHBOR_NODE] = {0};
 
 char leapfrog_data_counter = 0;
-char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
+char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE] = {255};
 
 extern rpl_instance_t * default_instance;
 static struct simple_udp_connection leapfrog_unicast_connection;
@@ -258,9 +258,9 @@ receiver(struct simple_udp_connection *c,
 // #endif /*WITH_LEAPFROG*/
 
   printf("DATA: received from ");
-  uip_debug_ipaddr_print(sender_addr);
+  //uip_debug_ipaddr_print(sender_addr);
 //  printf(" on port %d from port %d with length %d: '%s'\n", receiver_port, sender_port, datalen, data);
-  printf(" length %d: '%s'\n", datalen, data); //make it shorter
+  printf("ID:%d length %d: '%s'\n", sender_addr->u8[15], datalen, data); //make it shorter
 
 #ifdef WITH_LEAPFROG //for beaconing
   if(data[0] == LEAPFROG_BEACON_HEADER){
@@ -367,7 +367,7 @@ receiver(struct simple_udp_connection *c,
         orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX);
 
 #ifdef WITH_OVERHEARING
-        printf("OVERHEARING: update pro-rx <- (alt)C %d\n", temp_sid);
+        printf("OVERHEAR: update pro-rx <- (alt)C %d\n", temp_sid);
         orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the normal traffic
 #endif //WITH_OVERHEARING
 
@@ -377,21 +377,21 @@ receiver(struct simple_udp_connection *c,
 #ifdef WITH_OVERHEARING
       //judge my child has the Alt parent
       if(temp_aid != 0 && my_id == temp_pid){
-        printf("OVERHEARING: update pro-rx <- C %d\n", temp_sid);
+        printf("OVERHEAR: update pro-rx <- C %d\n", temp_sid);
         orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the alt traffic
       }
 
       //judge Siblings
       if(temp_pid > 0 && leapfrog_parent_id > 0 && temp_pid == leapfrog_parent_id){
         //then temp_sid = sibling id
-        printf("OVERHEARING: update pro-rx <- sibling %d\n", temp_sid);
+        printf("OVERHEAR: update pro-rx <- sibling %d\n", temp_sid);
         orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
         orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
       }else if(temp_pid > 0 && leapfrog_possible_parent_num > 0){ //compare sender's parent and own possible parents
         for(temp_pps_itr = 0; temp_pps_itr < (int)leapfrog_possible_parent_num; temp_pps_itr++){
           if(temp_pid == leapfrog_possible_parent_id_array[temp_pps_itr]){
             //then temp_sid = sibling id
-            printf("OVERHEARING: update pro-rx <- sibling %d\n", temp_sid);
+            printf("OVERHEAR: update pro-rx <- sibling %d\n", temp_sid);
             orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
             orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
             break;
@@ -561,7 +561,7 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
 //          leapfrog_elimination_id_array[(int)addr->u8[15]] = leapfrog_data_counter;
 //        }
         leapfrog_elimination_id_array[node_id] = leapfrog_data_counter;
-        printf("LEAPFROG: prepare data own:%d '%c' #%d\n",node_id, leapfrog_data_counter, leapfrog_data_counter);
+        printf("LEAPFROG: prepare data own:%d pc#%d\n", node_id, leapfrog_data_counter);
         leapfrog_data_counter++;
         if(leapfrog_data_counter > LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
 #else
