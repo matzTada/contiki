@@ -1235,15 +1235,20 @@ uip_process(uint8_t flag)
 */        
     //start elimination judging process
     if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
-      if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an) <= tmp_lf_pc) leapfrog_elimination_flag = 1;
+      if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an) <= tmp_lf_pc){
+        leapfrog_elimination_flag = 1;
+      }
     }else{
-      if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
+      if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an){
+        leapfrog_elimination_flag = 1;
+      }
     }
 
     if(leapfrog_elimination_flag == 1){
-      PRINTA("LEAPFROG: Elimination discard data goto drop\n");
+      PRINTA("LEAPFROG: Elimination sid:%d pc#%d drop packet\n", tmp_sid, tmp_lf_pc);
       goto drop;
     }else{
+      PRINTA("LEAPFROG: Register sid:%d pc#%d\n", tmp_sid, tmp_lf_pc);
       leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
     }
   }

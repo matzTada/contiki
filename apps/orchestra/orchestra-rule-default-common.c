@@ -68,6 +68,7 @@ init(uint16_t sf_handle)
 {
   slotframe_handle = sf_handle;
   channel_offset = slotframe_handle;
+//  channel_offset = 0;
   /* Default slotframe: for broadcast or unicast to neighbors we
    * do not have a link to */
   struct tsch_slotframe *sf_common = tsch_schedule_add_slotframe(slotframe_handle, ORCHESTRA_COMMON_SHARED_PERIOD);

@@ -132,7 +132,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>3</z>
+    <z>2</z>
     <height>160</height>
     <location_x>59</location_x>
     <location_y>461</location_y>
@@ -145,7 +145,7 @@
       <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
-      <viewport>2.678137389484919 0.0 0.0 2.678137389484919 82.5983313142589 109.42161262936546</viewport>
+      <viewport>3.2137648673819026 0.0 0.0 3.2137648673819026 82.38466424377735 58.73926848857193</viewport>
     </plugin_config>
     <width>400</width>
     <z>4</z>
@@ -156,12 +156,12 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter>Hello|normhear me|overhear|Hello|Rep|Eli|def</filter>
+      <filter>Hello|normhear|overhear|Rep|Eli|def|Reg</filter>
       <formatted_time />
       <coloring />
     </plugin_config>
     <width>935</width>
-    <z>2</z>
+    <z>1</z>
     <height>964</height>
     <location_x>400</location_x>
     <location_y>1</location_y>
@@ -179,7 +179,7 @@
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
-    <z>5</z>
+    <z>3</z>
     <height>166</height>
     <location_x>0</location_x>
     <location_y>987</location_y>
@@ -187,11 +187,11 @@
   <plugin>
     org.contikios.cooja.plugins.Notes
     <plugin_config>
-      <notes>Hello|normhear me|overhear|Hello|Rep|Eli|def</notes>
+      <notes>Hello|normhear|overhear|Rep|Eli|def|Reg</notes>
       <decorations>true</decorations>
     </plugin_config>
     <width>655</width>
-    <z>1</z>
+    <z>0</z>
     <height>160</height>
     <location_x>43</location_x>
     <location_y>678</location_y>

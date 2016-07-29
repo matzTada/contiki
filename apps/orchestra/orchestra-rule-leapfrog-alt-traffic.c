@@ -60,6 +60,7 @@ init(uint16_t sf_handle)
 #ifdef WITH_LEAPFROG_TSCH
   slotframe_handle = sf_handle;
   channel_offset = sf_handle;
+//  channel_offset = 0;
   /* Slotframe for Leapfrog alt traffic */
   sf_lfat = tsch_schedule_add_slotframe(slotframe_handle, ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD);
 #endif //WITH_LEAPFROG_TSCH

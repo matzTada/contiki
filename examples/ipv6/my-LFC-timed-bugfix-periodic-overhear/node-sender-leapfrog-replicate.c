@@ -259,8 +259,8 @@ receiver(struct simple_udp_connection *c,
 
   printf("DATA: received from ");
   uip_debug_ipaddr_print(sender_addr);
-  printf(" on port %d from port %d with length %d: '%s'\n",
-         receiver_port, sender_port, datalen, data);
+//  printf(" on port %d from port %d with length %d: '%s'\n", receiver_port, sender_port, datalen, data);
+  printf(" length %d: '%s'\n", datalen, data); //make it shorter
 
 #ifdef WITH_LEAPFROG //for beaconing
   if(data[0] == LEAPFROG_BEACON_HEADER){
@@ -555,11 +555,13 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
 
 #ifdef WITH_LEAPFROG
         sprintf(buf, "%c%cHello Tada %04d", LEAPFROG_DATA_HEADER, leapfrog_data_counter + LEAPFROG_BEACON_OFFSET, message_number);
-        uip_ipaddr_t * my_addr;
-        my_addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
-        if(my_addr != NULL){
-          leapfrog_elimination_id_array[(int)addr->u8[15]] = leapfrog_data_counter;
-        }
+//        uip_ipaddr_t * my_addr;
+//        my_addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
+//        if(my_addr != NULL){
+//          leapfrog_elimination_id_array[(int)addr->u8[15]] = leapfrog_data_counter;
+//        }
+        leapfrog_elimination_id_array[node_id] = leapfrog_data_counter;
+        printf("LEAPFROG: prepare data own:%d '%c' #%d\n",node_id, leapfrog_data_counter, leapfrog_data_counter);
         leapfrog_data_counter++;
         if(leapfrog_data_counter > LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
 #else

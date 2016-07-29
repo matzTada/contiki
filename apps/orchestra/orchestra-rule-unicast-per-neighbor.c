@@ -213,6 +213,7 @@ init(uint16_t sf_handle)
 {
   slotframe_handle = sf_handle;
   channel_offset = sf_handle;
+//  channel_offset = 0;
   /* Slotframe for unicast transmissions */
   sf_unicast = tsch_schedule_add_slotframe(slotframe_handle, ORCHESTRA_UNICAST_PERIOD);
   uint16_t timeslot = get_node_timeslot(&linkaddr_node_addr);
