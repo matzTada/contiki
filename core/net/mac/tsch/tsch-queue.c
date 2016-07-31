@@ -252,6 +252,9 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
             orchestra_leapfrog_set_packetbuf_attr(leapfrog_alt_parent_id);
           }
 #endif /*WITH_LEAPFROG_TSCH*/
+#ifdef WITH_LEAPFROG_BEACON_SLOT
+
+#endif //WITH_LEAPFROG_BEACON_SLOT
           p->qb = queuebuf_new_from_packetbuf();
           if(p->qb != NULL) {
             p->sent = sent;

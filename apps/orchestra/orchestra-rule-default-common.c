@@ -58,7 +58,8 @@ select_packet(uint16_t *slotframe, uint16_t *timeslot)
     *slotframe = slotframe_handle;
   }
   if(timeslot != NULL) {
-    *timeslot = 0;
+//    *timeslot = 0;
+    *timeslot = CONDUCT_EBSF_OFFSET + CONDUCT_UNICAST_OFFSET + CONDUCT_ALT_OFFSET + 1;
   }
   return 1;
 }
@@ -71,11 +72,26 @@ init(uint16_t sf_handle)
 //  channel_offset = 0;
   /* Default slotframe: for broadcast or unicast to neighbors we
    * do not have a link to */
+
   struct tsch_slotframe *sf_common = tsch_schedule_add_slotframe(slotframe_handle, ORCHESTRA_COMMON_SHARED_PERIOD);
+
   tsch_schedule_add_link(sf_common,
       LINK_OPTION_RX | LINK_OPTION_TX | LINK_OPTION_SHARED,
       ORCHESTRA_COMMON_SHARED_TYPE, &tsch_broadcast_address,
       0, channel_offset);
+
+
+#ifdef WITH_LEAPFROG_BEACON_SLOT
+  //added to store Leapfrog Beacon timeslot 
+  tsch_schedule_add_link(
+      sf_common,
+      LINK_OPTION_RX | LINK_OPTION_TX | LINK_OPTION_SHARED,
+      LINK_TYPE_NORMAL,
+      &tsch_broadcast_address,
+      CONDUCT_EBSF_OFFSET + CONDUCT_UNICAST_OFFSET + CONDUCT_ALT_OFFSET + 1, //timeslot for Leapfrog beacon. After all the other timeslots  
+      channel_offset);
+#endif //WITH_LEAPFROG_BEACON_SLOT
+
 }
 /*---------------------------------------------------------------------------*/
 struct orchestra_rule default_common = {

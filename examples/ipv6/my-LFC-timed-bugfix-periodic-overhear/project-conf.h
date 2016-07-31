@@ -41,9 +41,10 @@
 #define WITH_LEAPFROG
 #define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
 #define CONDUCT_ORCHESTRA
+#define WITH_OVERHEARING
+#define WITH_LEAPFROG_BEACON_SLOT
 //#define WITH_POWERTRACE // for power trace
 //#define WITH_STABLETIMER // for waiting application traffic until network stabilized
-#define WITH_OVERHEARING
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
 //#define ORCHESTRA_CONF_COLLISION_FREE_HASH 1

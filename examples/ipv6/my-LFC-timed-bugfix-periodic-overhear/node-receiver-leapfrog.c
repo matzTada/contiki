@@ -243,7 +243,7 @@ receiver(struct simple_udp_connection *c,
   printf("DATA: received from ");
   //uip_debug_ipaddr_print(sender_addr);
   //printf(" on port %d from port %d with length %d: '%s'\n", receiver_port, sender_port, datalen, data);
-  printf(" ID:%d length %d: '%s'\n", sender_addr->u8[15], datalen, data); //make it shorter
+  printf("ID:%d length %d: '%s'\n", sender_addr->u8[15], datalen, data); //make it shorter
 
 #ifdef WITH_LEAPFROG //for beaconing
   if(data[0] == LEAPFROG_BEACON_HEADER){
@@ -264,7 +264,7 @@ receiver(struct simple_udp_connection *c,
     }
     temp_pps_str[temp_pps_itr] = '\0';
 
-    printf("LEAPFROG: receive beacon S %d P %d GP %d AP %d PPs #%d %s\n", temp_sid, temp_pid, temp_gid, temp_aid, temp_pps_num, temp_pps_str);
+    printf("LEAPFROG: receive beacon S%dP%dGP%dAP%d#%dPPs%s\n", temp_sid, temp_pid, temp_gid, temp_aid, temp_pps_num, temp_pps_str);
     
     //judge and registor parent, grandparent, alt parent 
     uip_ipaddr_t * addr;

@@ -281,7 +281,7 @@ receiver(struct simple_udp_connection *c,
     }
     temp_pps_str[temp_pps_itr] = '\0';
 
-    printf("LEAPFROG: receive beacon S %d P %d GP %d AP %d PPs #%d %s\n", temp_sid, temp_pid, temp_gid, temp_aid, temp_pps_num, temp_pps_str);
+    printf("LEAPFROG: receive beacon S%dP%dGP%dAP%d#%dPPs%s\n", temp_sid, temp_pid, temp_gid, temp_aid, temp_pps_num, temp_pps_str);
     
     //judge and registor parent, grandparent, alt parent 
     uip_ipaddr_t * addr;
@@ -568,7 +568,8 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
         sprintf(buf, "NoHello Tada %04d", message_number);
 #endif
         printf("DATA: Sending unicast to ");
-        uip_debug_ipaddr_print(addr);
+//        uip_debug_ipaddr_print(addr);
+        printf("ID:%d", addr->u8[15]);
         printf(" '");
         printf(buf);
         printf("'\n");

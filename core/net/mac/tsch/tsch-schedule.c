@@ -55,11 +55,12 @@
 #include "sys/rtimer.h"
 #include <string.h>
 
-#if TSCH_LOG_LEVEL >= 1
-#define DEBUG DEBUG_PRINT
-#else /* TSCH_LOG_LEVEL */
-#define DEBUG DEBUG_NONE
-#endif /* TSCH_LOG_LEVEL */
+//#if TSCH_LOG_LEVEL >= 1
+//#define DEBUG DEBUG_PRINT
+//#else /* TSCH_LOG_LEVEL */
+//#define DEBUG DEBUG_NONE
+//#endif /* TSCH_LOG_LEVEL */
+#define DEBUG DEBUG_PRINT //modified by TadaMatz 29/July/2016 to controll message file by file
 #include "net/ip/uip-debug.h"
 
 /* Pre-allocated space for links */
