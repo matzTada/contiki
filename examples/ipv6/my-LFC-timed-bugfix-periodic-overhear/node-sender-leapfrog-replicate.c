@@ -325,8 +325,10 @@ receiver(struct simple_udp_connection *c,
       printf("LEAPFROG-TSCH: update rx <- C %d\n", temp_sid);
       orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX); 
 #ifdef WITH_OVERHEARING  //if my child has alternate parent,
-      printf("OVERHEAR: update pro-rx <- (alt)C %d\n", temp_sid);
-      orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the alt traffic
+      if(temp_aid != 0){ //if sender has the Alt parent, store the promiscuous Rx slot to overhear the alt traffic
+        printf("OVERHEAR: update pro-rx <- (alt)C %d\n", temp_sid);
+        orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the alt traffic
+      }
 #endif //WITH_OVERHEARING
     }   
 #endif //WITH_LEAPFROG_TSCH
