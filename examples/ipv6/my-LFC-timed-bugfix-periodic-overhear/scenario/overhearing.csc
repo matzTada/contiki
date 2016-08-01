@@ -132,7 +132,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>0</z>
+    <z>2</z>
     <height>160</height>
     <location_x>59</location_x>
     <location_y>461</location_y>
@@ -161,7 +161,7 @@
       <coloring />
     </plugin_config>
     <width>935</width>
-    <z>2</z>
+    <z>1</z>
     <height>964</height>
     <location_x>400</location_x>
     <location_y>1</location_y>
@@ -188,11 +188,13 @@
     org.contikios.cooja.plugins.Notes
     <plugin_config>
       <notes>Hello|norm uni|overhear|Rep|Eli|def|Reg|prepare
-^(?=.*ID:1)(?=.*Link)|Network|(?=.*ID:1)(?=.*add_link)</notes>
+^(?=.*ID:1)(?=.*Link)|Network|(?=.*ID:1)(?=.*add_link)
+^(?=.*ID:1)(?=.*DAO)|(?=.*ID:1)(?=.*link 1 2)|drop
+^(?=.*ID:1)(?=.*beacon)|(?=.*ID:1)(?=.*update)</notes>
       <decorations>true</decorations>
     </plugin_config>
     <width>655</width>
-    <z>1</z>
+    <z>0</z>
     <height>160</height>
     <location_x>43</location_x>
     <location_y>678</location_y>

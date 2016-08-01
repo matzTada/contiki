@@ -227,13 +227,8 @@ struct orchestra_rule unicast_per_neighbor = {
   init,
   new_time_source,
   select_packet,
-//#ifdef CONDUCT_ORCHESTRA
-//  NULL,
-//  NULL,
-//#else //CONDUCT_ORCHESTRA
   child_added,
   child_removed,
-//#endif
 };
 /*---------------------------------------------------------------------------*/
 #ifdef CONDUCT_ORCHESTRA
@@ -259,7 +254,7 @@ orchestra_conduct_add_uc_link(const linkaddr_t *linkaddr, uint8_t link_option)
 }
 #endif //CONDUCT_ORCHESTRA
 
-#ifdef WITH_OVERHEARING
+#ifdef WITH_LEAPFROG_TSCH
 /*---------------------------------------------------------------------------*/
 void
 orchestra_unicast_add_uc_rx_link(char child_id, uint8_t link_option)

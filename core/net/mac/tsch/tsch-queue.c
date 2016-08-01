@@ -253,7 +253,16 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
           }
 #endif /*WITH_LEAPFROG_TSCH*/
 #ifdef WITH_LEAPFROG_BEACON_SLOT
-
+          //PRINTA("UIP_IPUDPH_LEN=%d UIP_LLH_LEN=%d\n", UIP_IPUDPH_LEN, UIP_LLH_LEN);
+          //int i = 0;
+          //for(i = 0; i < UIP_IPTCPH_LEN + UIP_LLH_LEN + 20; i++){
+          //  PRINTA("[%d] %c ", i, uip_buf[i]);
+          //}
+          //PRINTA("\n");
+          if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME && uip_buf[UIP_IPUDPH_LEN] == LEAPFROG_BEACON_HEADER){
+//            PRINTA("HIT BEACON!!!!!\n");
+            orchestra_leapfrog_beacon_set_packetbuf_attr();
+          }
 #endif //WITH_LEAPFROG_BEACON_SLOT
           p->qb = queuebuf_new_from_packetbuf();
           if(p->qb != NULL) {

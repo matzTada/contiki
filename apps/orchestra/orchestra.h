@@ -90,4 +90,8 @@ void orchestra_conduct_add_uc_link(const linkaddr_t *linkaddr, uint8_t link_opti
 void orchestra_unicast_add_uc_rx_link(char child_id, uint8_t link_option);
 #endif //WITH_OVERHEARING
 
+#ifdef WITH_LEAPFROG_BEACON_SLOT
+void orchestra_leapfrog_beacon_set_packetbuf_attr(void);
+#endif //WITH_LEAPFROG_BEACON_SLOT
+
 #endif /* __ORCHESTRA_H__ */

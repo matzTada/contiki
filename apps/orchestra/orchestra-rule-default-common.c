@@ -58,9 +58,9 @@ select_packet(uint16_t *slotframe, uint16_t *timeslot)
     *slotframe = slotframe_handle;
   }
   if(timeslot != NULL) {
-//    *timeslot = 0;
-    *timeslot = CONDUCT_EBSF_OFFSET + CONDUCT_UNICAST_OFFSET + CONDUCT_ALT_OFFSET + 1;
+    *timeslot = 0;
   }
+
   return 1;
 }
 /*---------------------------------------------------------------------------*/
@@ -101,3 +101,15 @@ struct orchestra_rule default_common = {
   NULL,
   NULL,
 };
+/*---------------------------------------------------------------------------*/
+#ifdef WITH_LEAPFROG_BEACON_SLOT
+void
+orchestra_leapfrog_beacon_set_packetbuf_attr()
+{
+  uint16_t timeslot = 0;
+  timeslot = CONDUCT_EBSF_OFFSET + CONDUCT_UNICAST_OFFSET + CONDUCT_ALT_OFFSET + 1;
+
+  packetbuf_set_attr(PACKETBUF_ATTR_TSCH_SLOTFRAME, slotframe_handle);
+  packetbuf_set_attr(PACKETBUF_ATTR_TSCH_TIMESLOT, timeslot);
+}
+#endif //WITH_LEAPFROG_BEACON_SLOT

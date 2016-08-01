@@ -260,17 +260,17 @@ receiver(struct simple_udp_connection *c,
   printf("DATA: received from ");
   //uip_debug_ipaddr_print(sender_addr);
 //  printf(" on port %d from port %d with length %d: '%s'\n", receiver_port, sender_port, datalen, data);
-  printf("ID:%d length %d: '%s'\n", sender_addr->u8[15], datalen, data); //make it shorter
+  printf("ID:%d l:%d '%s'\n", sender_addr->u8[15], datalen, data); //make it shorter
 
 #ifdef WITH_LEAPFROG //for beaconing
   if(data[0] == LEAPFROG_BEACON_HEADER){
     char temp_sid = 0; //sender id of packet
     char temp_pid = 0; //sender's parent id
-    char temp_gid = 0; //sender's grand parent id
+//    char temp_gid = 0; //sender's grand parent id
     char temp_aid = 0; //sender's alt parent id
     temp_sid = sender_addr->u8[15]; //get most least byte. must be modified to store whole address
     temp_pid = data[2] - LEAPFROG_BEACON_OFFSET;
-    temp_gid = data[4] - LEAPFROG_BEACON_OFFSET;
+//    temp_gid = data[4] - LEAPFROG_BEACON_OFFSET;
     temp_aid = data[6] - LEAPFROG_BEACON_OFFSET;
     char temp_pps_num;
     char temp_pps_str[LEAPFROG_NUM_NEIGHBOR_NODE];
@@ -281,16 +281,18 @@ receiver(struct simple_udp_connection *c,
     }
     temp_pps_str[temp_pps_itr] = '\0';
 
-    printf("LEAPFROG: receive beacon S%dP%dGP%dAP%d#%dPPs%s\n", temp_sid, temp_pid, temp_gid, temp_aid, temp_pps_num, temp_pps_str);
+    //printf("LEAPFROG: receive beacon S%dP%dGP%dAP%d#%dPPs%s\n", temp_sid, temp_pid, temp_gid, temp_aid, temp_pps_num, temp_pps_str);
+    printf("LEAPFROG: receive beacon '%s'\n", data);
     
     //judge and registor parent, grandparent, alt parent 
     uip_ipaddr_t * addr;
     #ifdef WITH_LEAPFROG_TSCH
-    char my_id = 0;
-    addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
-    if(addr != NULL){
-      my_id = addr->u8[15];
-    }
+    char my_id = node_id;
+//    char my_id = 0;
+//    addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
+//    if(addr != NULL){
+//      my_id = addr->u8[15];
+//    }
     #endif //WITH_LEAPFROG_TSCH
     addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent);
     if(addr != NULL){
@@ -359,20 +361,29 @@ receiver(struct simple_udp_connection *c,
       temp_pps_str[temp_pps_itr] = '\0';
       printf("LEAPFROG: own P %d GP %d AP %d PPs #%d %s\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id, leapfrog_possible_parent_num, temp_pps_str);
 
+      //judge I am sender's Parent and prepare Rx link for child
+#ifdef WITH_LEAPFROG_TSCH
+      if(my_id != 0 && temp_pid != 0 && my_id == temp_pid){ //if I am sender's parent, store Rx slot for child
+        printf("LEAPFROG-TSCH: update rx <- C %d\n", temp_sid);
+        orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX); 
+#ifdef WITH_OVERHEARING  //if my child has alternate parent,
+        printf("OVERHEAR: update pro-rx <- (alt)C %d\n", temp_sid);
+        orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the alt traffic
+#endif //WITH_OVERHEARING
+      }   
+#endif //WITH_LEAPFROG_TSCH
+
       //judge I am sender's Alt Parent and prepare Rx link for alt child
 #ifdef WITH_LEAPFROG_TSCH //judge I am sender's Alt Parent
-      if(temp_aid != 0 && my_id == temp_aid){
-        printf("LEAPFROG-TSCH: update rx s <- (alt)C %d\n", temp_sid);
-
+      if(my_id !=0 && temp_aid != 0 && my_id == temp_aid){
+        printf("LEAPFROG-TSCH: update rx <- (alt)C %d\n", temp_sid);
         orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX);
-
 #ifdef WITH_OVERHEARING
-        printf("OVERHEAR: update pro-rx <- (alt)C %d\n", temp_sid);
+        printf("OVERHEAR: update pro-rx <- C %d\n", temp_sid);
         orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the normal traffic
 #endif //WITH_OVERHEARING
-
-      }
-#endif /*WITH_LEAPFROG_TSCH*/      
+      }   
+#endif /*WITH_LEAPFROG_TSCH*/          
 
 #ifdef WITH_OVERHEARING
       //judge my child has the Alt parent
@@ -633,8 +644,8 @@ printf("timer periodic initiated\n");
           leapfrog_alt_parent_id + LEAPFROG_BEACON_OFFSET,
           possible_parent_str, //C for candidate
 	  message_number);
-        printf("LEAPFROG: Sending beacon to ");
-        uip_debug_ipaddr_print(addr);
+        printf("LEAPFROG: Sending beacon");
+//        uip_debug_ipaddr_print(addr);
         printf(" '");
         printf(buf);
         printf("'\n");
