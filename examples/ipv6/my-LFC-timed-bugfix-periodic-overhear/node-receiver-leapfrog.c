@@ -77,11 +77,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#define UDP_PORT 1234
-#define SERVICE_ID 190
+//#define UDP_PORT 1234
+//#define SERVICE_ID 190
 
-#define SEND_INTERVAL   (10 * CLOCK_SECOND)
-#define SEND_TIME   (random_rand() % (SEND_INTERVAL))
+//#define DATA_SEND_INTERVAL   (10 * CLOCK_SECOND)
+//#define DATA_SEND_TIME   (random_rand() % (DATA_SEND_INTERVAL))
 
 static struct simple_udp_connection unicast_connection;
 
@@ -91,9 +91,9 @@ PROCESS(unicast_receiver_process, "Unicast receiver example process");
 
 /* ----------------- leapfrog include and declaration start ----------------- */
 #ifdef WITH_LEAPFROG
-#define LEAPFROG_UDP_PORT 5678
-#define LEAPFROG_SEND_INTERVAL   (15 * CLOCK_SECOND)
-#define LEAPFROG_SEND_TIME   (random_rand() % (SEND_INTERVAL))
+//#define LEAPFROG_UDP_PORT 5678
+//#define LEAPFROG_SEND_INTERVAL   (15 * CLOCK_SECOND)
+//#define LEAPFROG_SEND_TIME   (random_rand() % (SEND_INTERVAL))
 //#define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
 //#define LEAPFROG_BEACON_OFFSET 48 //for avoid NULL character in data packet
 //#define LEAPFROG_DATA_HEADER 0xf2 //for sending data
@@ -119,7 +119,6 @@ linkaddr_t alt_parent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, 0}};
 
 #endif //WITH_LEAPFROG
 /* ----------------- leapfrog include and declaration end ----------------- */
-
 
 /*---------------------------------------------------------------------------*/
 #ifdef WITH_LEAPFROG
@@ -464,8 +463,8 @@ PROCESS_THREAD(unicast_receiver_process, ev, data)
 
   //servreg_hack_register(SERVICE_ID, ipaddr);
 
-  simple_udp_register(&unicast_connection, UDP_PORT,
-                      NULL, UDP_PORT, receiver);
+  simple_udp_register(&unicast_connection, DATA_UDP_PORT,
+                      NULL, DATA_UDP_PORT, receiver);
 
   while(1) {
     PROCESS_WAIT_EVENT();

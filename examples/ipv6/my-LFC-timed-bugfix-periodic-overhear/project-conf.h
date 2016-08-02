@@ -44,9 +44,16 @@
 #define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
 #define WITH_LEAPFROG_BEACON_SLOT
 #define WITH_OVERHEARING
-//#define WITH_OVERHEARING_SLEEP
+#define WITH_OVERHEARING_SLEEP
 //#define WITH_POWERTRACE // for power trace
 //#define WITH_STABLETIMER // for waiting application traffic until network stabilized
+
+//for data
+#define DATA_UDP_PORT 1234
+#define SERVICE_ID 190
+#define DATA_SEND_INTERVAL   (60 * CLOCK_SECOND)
+//#define SEND_TIME   (random_rand() % (SEND_INTERVAL))
+#define DATA_SEND_TIME   (SEND_INTERVAL) //make it periodical
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
 //#define ORCHESTRA_CONF_COLLISION_FREE_HASH 1
@@ -56,6 +63,9 @@
 #endif //WITH_DATA_SLOT
 
 #ifdef WITH_LEAPFROG
+#define LEAPFROG_UDP_PORT 5678
+#define LEAPFROG_SEND_INTERVAL   (15 * CLOCK_SECOND)
+#define LEAPFROG_SEND_TIME   (random_rand() % (LEAPFROG_SEND_INTERVAL))
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
 #define LEAPFROG_DATA_HEADER 0xf2 //for sending data
 #define LEAPFROG_BEACON_OFFSET 48 //for avoiding NULL character in data packet
@@ -65,6 +75,10 @@
 #define LEAPFROG_DATA_COUNTER_WIDTH 10 //sender node sends data with sequential number, but it happens that the order to arrive dst can be inversed. This number shows how many packet should be discarded compared to current number.
 #endif /*WITH_LEAPFROG*/
 //==added
+
+#ifdef WITH_OVERHEARING_SLEEP
+#define OVERHEARING_SLEEP_TIME (30 * CLOCK_SECOND) //should corresponding to the slotframe length
+#endif //WITH_OVERHEARING_SLEEP
 
 #define WITH_ORCHESTRA 1
 

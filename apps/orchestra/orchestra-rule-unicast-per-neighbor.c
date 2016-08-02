@@ -139,7 +139,11 @@ add_uc_link(const linkaddr_t *linkaddr)
     timeslot = get_node_timeslot_for_data(linkaddr); //timeslot dedicated for data traffic
     tsch_schedule_add_link(
         sf_unicast,
+#ifdef WITH_OVERHEARING_SLEEP
+        ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_RX | LINK_OPTION_DATA_RX : LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG,
+#else //WITH_OVERHEARING_SLEEP
         ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_RX : LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG,
+#endif //WITH_OVERHEARING_SLEEP
         LINK_TYPE_NORMAL, 
         &tsch_broadcast_address, //linkaddr,
         timeslot, 
@@ -294,7 +298,11 @@ orchestra_conduct_add_uc_link(const linkaddr_t *linkaddr, uint8_t link_option)
   }
   tsch_schedule_add_link(
     sf_unicast,
+#ifdef WITH_OVERHEARING_SLEEP
+    link_option | LINK_OPTION_DATA_RX,
+#else //WITH_OVERHEARING_SLEEP
     link_option,
+#endif //WITH_OVERHEARING_SLEEP
     LINK_TYPE_NORMAL,
     &tsch_broadcast_address, //&altparent_linkaddr, //dest linkaddr
     timeslot,
@@ -346,7 +354,11 @@ orchestra_unicast_add_uc_rx_link(char child_id, uint8_t link_option)
   }
   tsch_schedule_add_link(
     sf_unicast,
-    link_option, //here should be LINK_OPTION_RX or LINK_OPTION_PROMISCUOUS_RX
+#ifdef WITH_OVERHEARING_SLEEP
+    link_option | LINK_OPTION_DATA_RX, //here should be LINK_OPTION_RX or LINK_OPTION_PROMISCUOUS_RX
+#else //WITH_OVERHEARING_SLEEP
+    link_option,
+#endif //WITH_OVERHEARING_SLEEP
     LINK_TYPE_NORMAL,
     &tsch_broadcast_address, //welcome everyone
     timeslot,

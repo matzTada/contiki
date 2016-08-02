@@ -78,8 +78,7 @@ int is_overheard = 0;
 #endif
 #ifdef WITH_OVERHEARING_SLEEP
 int overhearing_sleep_flag = 0;
-static struct etimer et_overhearing_sleep;
-#define OVERHEARING_SLEEP_TIME (6 * CLOCK_SECOND) //should corresponding to the slotframe length
+struct etimer et_overhearing_sleep;
 #endif //WITH_OVERHEARING_SLEEP
 
 /* TSCH debug macros, i.e. to set LEDs or GPIOs on various TSCH
@@ -995,13 +994,20 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
         }
 #ifdef WITH_OVERHEARING_SLEEP
         //skipping the slot if already listen the packet 
-        if(is_promiscuous_listening_slot == 1 && overhearing_sleep_flag ==1){
+        if(overhearing_sleep_flag == 1 && etimer_expired(&et_overhearing_sleep)){
+          PRINTA("Expired\n");
+          overhearing_sleep_flag = 0;
+          etimer_stop(&et_overhearing_sleep);
+        }
+        int skip_flag = 0;
+        if(overhearing_sleep_flag == 1){
+          if(is_promiscuous_listening_slot == 1 || current_link->link_options & LINK_OPTION_DATA_RX){
           //do not listen. skip this slot
-          if(etimer_expired(&et_overhearing_sleep)){
-            overhearing_sleep_flag = 0;
-            etimer_stop(&et_overhearing_sleep);
+            skip_flag = 1;
+            PRINTA("skip slot\n");
           }
-        }else{ //listen
+        }
+        if(skip_flag == 0){ //listena
 #endif //WITH_OVERHEARING_SLEEP
 #endif //WITH_OVERHEARING
         static struct pt slot_rx_pt;

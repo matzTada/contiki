@@ -83,6 +83,9 @@
 #ifdef WITH_OVERHEARING
 #define LINK_OPTION_PROMISCUOUS_RX  16 //b4
 #endif //WITH_OVERHEARING
+#ifdef WITH_OVERHEARING_SLEEP
+#define LINK_OPTION_DATA_RX 32 //b5
+#endif //WITH_OVERHEARING_SLEEP
 
 /************ Types ***********/
 

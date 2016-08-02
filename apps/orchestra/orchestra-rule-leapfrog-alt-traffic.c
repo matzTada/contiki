@@ -131,7 +131,11 @@ orchestra_leapfrog_add_uc_rx_link(char child_id, uint8_t link_option)
   }
   tsch_schedule_add_link(
     sf_lfat,
-    link_option, //here should be LINK_OPTION_RX or LINK_OPTION_PROMISCUOUS_RX
+#ifdef WITH_OVERHEARING_SLEEP
+    link_option | LINK_OPTION_DATA_RX, //here should be LINK_OPTION_RX or LINK_OPTION_PROMISCUOUS_RX
+#else //WITH_OVERHEARING_SLEEP
+    link_option,
+#endif //WITH_OVERHEARING_SLEEP
     LINK_TYPE_NORMAL,
     &tsch_broadcast_address, //welcome everyone
     altparent_timeslot,

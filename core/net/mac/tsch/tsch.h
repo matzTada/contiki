@@ -130,6 +130,11 @@
 #define TSCH_AUTOSELECT_TIME_SOURCE 0
 #endif /* TSCH_CONF_EB_AUTOSELECT */
 
+//added by TadaMatz 1/Aug/2016
+#ifdef WITH_OVERHEARING_SLEEP
+extern struct etimer et_overhearing_sleep;
+#endif //WITH_OVERHEARING_SLEEP
+
 /*********** Callbacks *********/
 
 /* Called by TSCH when joining a network */
