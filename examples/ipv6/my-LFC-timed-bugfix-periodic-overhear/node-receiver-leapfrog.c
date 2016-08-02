@@ -106,7 +106,7 @@ char leapfrog_possible_parent_num = 0;
 char leapfrog_possible_parent_id_array[LEAPFROG_NUM_NEIGHBOR_NODE] = {0};
 
 char leapfrog_data_counter = 0;
-char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE] = {255};
+char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE]; //Do not forget the initialization
 
 extern rpl_instance_t * default_instance;
 static struct simple_udp_connection leapfrog_unicast_connection;
@@ -421,6 +421,13 @@ PROCESS_THREAD(node_process, ev, data)
 #if WITH_ORCHESTRA
   orchestra_init();
 #endif /* WITH_ORCHESTRA */
+
+#ifdef WITH_LEAPFROG
+  int i = 0;
+  for(i = 0; i < LEAPFROG_NUM_NODE; i++){
+    leapfrog_elimination_id_array[i] = LEAPFROG_DATA_COUNTER_MAX; //Do not forget the initialization
+  }
+#endif //WITH_LEAPFROG
 
 #ifdef WITH_POWERTRACE
   powertrace_start(CLOCK_SECOND * 10);

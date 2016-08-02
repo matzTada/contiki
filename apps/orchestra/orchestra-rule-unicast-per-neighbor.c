@@ -70,7 +70,7 @@ get_node_timeslot(const linkaddr_t *addr)
   }
 }
 /*---------------------------------------------------------------------------*/
-#ifdef WITH_OVERHEARING
+#ifdef WITH_LEAPFROG_TSCH
 static uint16_t
 get_node_timeslot_by_id(char id){
   if(id >= 0){
@@ -83,7 +83,7 @@ get_node_timeslot_by_id(char id){
     return 0xffff;
   }
 }
-#endif //WITH_OVERHEARING
+#endif //WITH_LEAPFROG_TSCH
 /*---------------------------------------------------------------------------*/
 #ifdef WITH_DATA_SLOT //should be used with CONDUCT_ORCHESTRA ohhhhhhhhhhhhhhhhh
 /*---------------------------------------------------------------------------*/

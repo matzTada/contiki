@@ -252,15 +252,34 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
           TSCH_CALLBACK_PACKET_READY();
 #endif
 #ifdef WITH_LEAPFROG_TSCH
-          if(leapfrog_alt_parent_id > 0 && n->addr.u8[7] == leapfrog_alt_parent_id){
-            //PRINTF("QsA\n");
+#ifdef WITH_DATA_SLOT
+          if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME 
+              && uip_buf[UIP_IPTCPH_LEN - 4] == LEAPFROG_DATA_HEADER){
+            //if leapfrog data packet, there should be two destination.
+            if(leapfrog_alt_parent_id > 0 && n->addr.u8[7] == leapfrog_alt_parent_id){
+              //for alternate parent
+              orchestra_leapfrog_set_packetbuf_attr(leapfrog_alt_parent_id);
+              PRINTA("set attr to ALT\n");
+            }else{
+              //for prefferd parent
+              orchestra_unicast_data_set_packetbuf_attr(); 
+              PRINTA("set attr to PRE\n");
+            }
+            //PRINTA("HIT DATA PAKCET!!\n");
+          }
+#else //WITH_DATA_SLOT
+          if(leapfrog_alt_parent_id > 0 && n->addr.u8[7] == leapfrog_alt_parent_id){ 
+            //if the destination of packet is alternate parent, making the packet use the alternate traffic slot.
             orchestra_leapfrog_set_packetbuf_attr(leapfrog_alt_parent_id);
           }
-#endif /*WITH_LEAPFROG_TSCH*/
+#endif //WITH_DATA_SLOT
+#endif //WITH_LEAPFROG_TSCH
 #ifdef WITH_DATA_SLOT
-          if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME && uip_buf[UIP_IPTCPH_LEN - 4] == APPLICATION_DATA_HEADER){ //oh,,, MAGIC_NUMBER again. I do not like it. 
-            orchestra_unicast_data_set_packetbuf_attr();
-            PRINTA("HIT DATA PAKCET!!\n");
+          if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME 
+              && uip_buf[UIP_IPTCPH_LEN - 4] == APPLICATION_DATA_HEADER){
+              //Application packet must have the header in the beginning of data payload. 
+              //oh,,, MAGIC_NUMBER again. I do not like it. 
+            orchestra_unicast_data_set_packetbuf_attr(); //PRINTA("HIT DATA PAKCET!!\n");
           }
 #endif //WITH_DATA_SLOT
 #ifdef WITH_LEAPFROG_BEACON_SLOT
@@ -270,7 +289,8 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
           //  PRINTA("[%d] %c ", i, uip_buf[i]);
           //}
           //PRINTA("\n");
-          if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME && uip_buf[UIP_IPUDPH_LEN] == LEAPFROG_BEACON_HEADER){
+          if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME 
+              && uip_buf[UIP_IPUDPH_LEN] == LEAPFROG_BEACON_HEADER){
 //            PRINTA("HIT BEACON!!!!!\n");
             orchestra_leapfrog_beacon_set_packetbuf_attr();
           }

@@ -107,7 +107,7 @@ char leapfrog_possible_parent_num = 0;
 char leapfrog_possible_parent_id_array[LEAPFROG_NUM_NEIGHBOR_NODE] = {0};
 
 char leapfrog_data_counter = 0;
-char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE] = {255};
+char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE] = {LEAPFROG_DATA_COUNTER_MAX};
 
 extern rpl_instance_t * default_instance;
 static struct simple_udp_connection leapfrog_unicast_connection;
@@ -442,7 +442,14 @@ PROCESS_THREAD(node_process, ev, data)
 #ifdef WITH_POWERTRACE
   powertrace_start(CLOCK_SECOND * 10);
 #endif
-  
+ 
+#ifdef WITH_LEAPFROG
+  int i = 0;
+  for(i = 0; i < LEAPFROG_NUM_NODE; i++){
+    leapfrog_elimination_id_array[i] = LEAPFROG_DATA_COUNTER_MAX; //Do not forget the initialization
+  }
+#endif //WITH_LEAPFROG
+ 
   /* Print out routing tables every minute */
   etimer_set(&et, CLOCK_SECOND * 60);
   //etimer_set(&et, CLOCK_SECOND * 10);
