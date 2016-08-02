@@ -306,6 +306,10 @@ extern char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
 extern int is_promiscuous_listening_slot;
 extern int is_overheard;
 #endif //WITH_OVERHEARING
+#ifdef WITH_OVERHEARING_SLEEP
+extern int overhearing_sleep_flag;
+extern struct etimer et_overhearing_sleep;
+#endif //WITH_OVERHEARING_SLEEP
 
 /*---------------------------------------------------------------------------*/
 /* Functions                                                                 */
@@ -1284,6 +1288,11 @@ uip_process(uint8_t flag)
     }else{
       PRINTA("LEAPFROG: Register sid:%d pc#%d\n", tmp_sid, tmp_lf_pc);
       leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
+
+#ifdef WITH_OVERHEARING_SLEEP
+      etimer_set(&et_overhearing_sleep, OVERHEARING_SLEEP_TIME);
+      overhearing_sleep_flag = 1; 
+#endif //WITH_OVERHEARING_SLEEP
     }
   }
   #endif //WITH_LEAPFROG

@@ -522,7 +522,7 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
         leapfrog_elimination_id_array[node_id] = leapfrog_data_counter;
         printf("LEAPFROG: prepare data own:%d pc#%d\n", node_id, leapfrog_data_counter);
         leapfrog_data_counter++;
-        if(leapfrog_data_counter > LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
+        if(leapfrog_data_counter >= LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
 #else
         sprintf(buf, "NoHello Tada %04d", message_number);
 #endif

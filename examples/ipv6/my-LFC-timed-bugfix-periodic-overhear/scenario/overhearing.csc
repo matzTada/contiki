@@ -114,8 +114,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>48.630021190274135</x>
-        <y>53.06320747524104</y>
+        <x>48.94580905359539</x>
+        <y>50.88541420542524</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -132,7 +132,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>2</z>
+    <z>1</z>
     <height>160</height>
     <location_x>59</location_x>
     <location_y>461</location_y>
@@ -145,10 +145,10 @@
       <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
-      <viewport>3.2137648673819026 0.0 0.0 3.2137648673819026 40.384664243777344 95.73926848857192</viewport>
+      <viewport>3.315847369748117 0.0 0.0 3.315847369748117 27.622917053651676 102.2658268633243</viewport>
     </plugin_config>
     <width>400</width>
-    <z>4</z>
+    <z>0</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -156,13 +156,13 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter />
+      <filter>Hello|norm uni|overhear|Rep|Eli|def|Reg|prepare</filter>
       <formatted_time />
       <coloring />
     </plugin_config>
     <width>935</width>
-    <z>1</z>
-    <height>964</height>
+    <z>2</z>
+    <height>908</height>
     <location_x>400</location_x>
     <location_y>1</location_y>
   </plugin>
@@ -180,9 +180,9 @@
     </plugin_config>
     <width>1335</width>
     <z>3</z>
-    <height>166</height>
+    <height>240</height>
     <location_x>0</location_x>
-    <location_y>987</location_y>
+    <location_y>913</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Notes
@@ -194,7 +194,7 @@
       <decorations>true</decorations>
     </plugin_config>
     <width>655</width>
-    <z>0</z>
+    <z>4</z>
     <height>160</height>
     <location_x>43</location_x>
     <location_y>678</location_y>

@@ -75,7 +75,12 @@ extern linkaddr_t alt_parent_linkaddr;
 #ifdef WITH_OVERHEARING //added by TadaMatz 27/July/2016
 int is_promiscuous_listening_slot = 0;
 int is_overheard = 0;
-#endif 
+#endif
+#ifdef WITH_OVERHEARING_SLEEP
+int overhearing_sleep_flag = 0;
+static struct etimer et_overhearing_sleep;
+#define OVERHEARING_SLEEP_TIME (6 * CLOCK_SECOND) //should corresponding to the slotframe length
+#endif //WITH_OVERHEARING_SLEEP
 
 /* TSCH debug macros, i.e. to set LEDs or GPIOs on various TSCH
  * timeslot events */
@@ -988,10 +993,23 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
         }else{
           is_promiscuous_listening_slot = 0;
         }
+#ifdef WITH_OVERHEARING_SLEEP
+        //skipping the slot if already listen the packet 
+        if(is_promiscuous_listening_slot == 1 && overhearing_sleep_flag ==1){
+          //do not listen. skip this slot
+          if(etimer_expired(&et_overhearing_sleep)){
+            overhearing_sleep_flag = 0;
+            etimer_stop(&et_overhearing_sleep);
+          }
+        }else{ //listen
+#endif //WITH_OVERHEARING_SLEEP
 #endif //WITH_OVERHEARING
         static struct pt slot_rx_pt;
         PT_SPAWN(&slot_operation_pt, &slot_rx_pt, tsch_rx_slot(&slot_rx_pt, t));
         //PRINTA("so RS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset); //added by TadaMatz 19/May/2016 to see packet sent or not
+#ifdef WITH_OVERHEARING_SLEEP
+        }
+#endif //WITH_OVERHEARING_SLEEP
       }
       TSCH_DEBUG_SLOT_END();
 

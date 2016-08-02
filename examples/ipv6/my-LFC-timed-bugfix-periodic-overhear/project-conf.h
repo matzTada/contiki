@@ -41,8 +41,9 @@
 #define CONDUCT_ORCHESTRA
 #define WITH_LEAPFROG
 #define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
-#define WITH_OVERHEARING
 #define WITH_LEAPFROG_BEACON_SLOT
+#define WITH_OVERHEARING
+//#define WITH_OVERHEARING_SLEEP
 //#define WITH_POWERTRACE // for power trace
 //#define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
@@ -55,8 +56,8 @@
 #define LEAPFROG_BEACON_OFFSET 48 //for avoiding NULL character in data packet
 #define LEAPFROG_NUM_NODE 32 //used for elimination
 #define LEAPFROG_NUM_NEIGHBOR_NODE 8 //used for possible parent
-#define LEAPFROG_DATA_COUNTER_MAX 50 //since fixed value of header counter has limited value
-#define LEAPFROG_DATA_COUNTER_WIDTH 25 //sender node sends data with sequential number, but it happens that the order to arrive dst can be inversed. This number shows how many packet should be discarded compared to current number.
+#define LEAPFROG_DATA_COUNTER_MAX 20 //since fixed value of header counter has limited value
+#define LEAPFROG_DATA_COUNTER_WIDTH 10 //sender node sends data with sequential number, but it happens that the order to arrive dst can be inversed. This number shows how many packet should be discarded compared to current number.
 #endif /*WITH_LEAPFROG*/
 //==added
 
