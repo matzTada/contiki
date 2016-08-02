@@ -1001,8 +1001,8 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
         }
         int skip_flag = 0;
         if(overhearing_sleep_flag == 1){
-          if(is_promiscuous_listening_slot == 1 || current_link->link_options & LINK_OPTION_DATA_RX){
-          //do not listen. skip this slot
+          if(current_link->link_options & LINK_OPTION_DATA_RX){
+          //if data-rx slot and skip_flag = 1, do not listen. skip this slot
             skip_flag = 1;
             PRINTA("skip slot\n");
           }

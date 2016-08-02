@@ -332,6 +332,7 @@ orchestra_unicast_add_uc_rx_link(char child_id, uint8_t link_option)
   uint16_t timeslot = 0;
   struct tsch_link *l;
 
+  //link for control traffic
   timeslot = get_node_timeslot_by_id(child_id);
   //altparent_timeslot = (child_id + CONDUCT_EBSF_OFFSET) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
   l = tsch_schedule_get_link_by_timeslot(sf_unicast, timeslot);
@@ -345,6 +346,7 @@ orchestra_unicast_add_uc_rx_link(char child_id, uint8_t link_option)
     &tsch_broadcast_address, //welcome everyone
     timeslot,
     channel_offset); //should be modified to get correct channel_offset of link
+
 #ifdef WITH_DATA_SLOT
   timeslot = get_node_timeslot_for_data_by_id(child_id);
   //altparent_timeslot = (child_id + CONDUCT_EBSF_OFFSET) % ORCHESTRA_LEAPFROG_ALT_TRAFFIC_PERIOD; //like ORCHESTRA_LINKADDR_HASH(linkaddr)%PERIOD
