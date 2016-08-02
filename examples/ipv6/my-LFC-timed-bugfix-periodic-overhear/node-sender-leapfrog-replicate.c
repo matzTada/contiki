@@ -524,7 +524,11 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
         leapfrog_data_counter++;
         if(leapfrog_data_counter >= LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
 #else
+#ifdef WITH_DATA_SLOT
+        sprintf(buf, "%cHello Tada %04d", APPLICATION_DATA_HEADER, message_number);
+#else //WITH_DATA_SLOT
         sprintf(buf, "NoHello Tada %04d", message_number);
+#endif //WITH_DATA_SLOT
 #endif
         printf("DATA: Sending unicast to ");
 //        uip_debug_ipaddr_print(addr);

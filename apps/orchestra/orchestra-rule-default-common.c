@@ -88,7 +88,11 @@ init(uint16_t sf_handle)
       LINK_OPTION_RX | LINK_OPTION_TX | LINK_OPTION_SHARED,
       LINK_TYPE_NORMAL,
       &tsch_broadcast_address,
+#ifdef WITH_DATA_SLOT
+      CONDUCT_EBSF_OFFSET + CONDUCT_UNICAST_OFFSET + CONDUCT_UNICAST_DATA_OFFSET + CONDUCT_ALT_OFFSET + 1, //timeslot for Leapfrog beacon. After all the other timeslots  
+#else //WITH_DATA_SLOT
       CONDUCT_EBSF_OFFSET + CONDUCT_UNICAST_OFFSET + CONDUCT_ALT_OFFSET + 1, //timeslot for Leapfrog beacon. After all the other timeslots  
+#endif //WITH_DATA_SLOT
       channel_offset);
 #endif //WITH_LEAPFROG_BEACON_SLOT
 
@@ -107,7 +111,11 @@ void
 orchestra_leapfrog_beacon_set_packetbuf_attr()
 {
   uint16_t timeslot = 0;
+#ifdef WITH_DATA_SLOT
+  timeslot = CONDUCT_EBSF_OFFSET + CONDUCT_UNICAST_OFFSET + + CONDUCT_UNICAST_DATA_OFFSET + CONDUCT_ALT_OFFSET + 1;
+#else //WITH_DATA_SLOT
   timeslot = CONDUCT_EBSF_OFFSET + CONDUCT_UNICAST_OFFSET + CONDUCT_ALT_OFFSET + 1;
+#endif //WITH_DATA_SLOT
 
   packetbuf_set_attr(PACKETBUF_ATTR_TSCH_SLOTFRAME, slotframe_handle);
   packetbuf_set_attr(PACKETBUF_ATTR_TSCH_TIMESLOT, timeslot);

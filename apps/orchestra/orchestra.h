@@ -86,6 +86,10 @@ void orchestra_leapfrog_set_packetbuf_attr(char child_id);
 void orchestra_conduct_add_uc_link(const linkaddr_t *linkaddr, uint8_t link_option);
 #endif //CONDUCT_ORCHESTRA
 
+#ifdef WITH_DATA_SLOT
+void orchestra_unicast_data_set_packetbuf_attr();
+#endif //WITH_DATA_SLOT
+
 #ifdef WITH_OVERHEARING
 void orchestra_unicast_add_uc_rx_link(char child_id, uint8_t link_option);
 #endif //WITH_OVERHEARING

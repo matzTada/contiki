@@ -39,16 +39,21 @@
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH. This should be 0 if used with Leapfrog Collaboration
 #define CONDUCT_ORCHESTRA
-#define WITH_LEAPFROG
-#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
-#define WITH_LEAPFROG_BEACON_SLOT
-#define WITH_OVERHEARING
+#define WITH_DATA_SLOT
+//#define WITH_LEAPFROG
+//#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
+//#define WITH_LEAPFROG_BEACON_SLOT
+//#define WITH_OVERHEARING
 //#define WITH_OVERHEARING_SLEEP
 //#define WITH_POWERTRACE // for power trace
 //#define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
 //#define ORCHESTRA_CONF_COLLISION_FREE_HASH 1
+
+#ifdef WITH_DATA_SLOT
+#define APPLICATION_DATA_HEADER 0xf3
+#endif //WITH_DATA_SLOT
 
 #ifdef WITH_LEAPFROG
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet

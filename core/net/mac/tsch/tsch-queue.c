@@ -83,6 +83,11 @@ struct tsch_neighbor *n_eb;
 extern char leapfrog_alt_parent_id;
 #endif /*WITH_LEAPFROG_TSCH*/
 
+//added by TadaMatz 2/Aug/2016
+#ifdef WITH_DATA_SLOT
+#include "orchestra.h"
+#endif //WITH_DATA_SLOT
+
 /*---------------------------------------------------------------------------*/
 /* Add a TSCH neighbor */
 struct tsch_neighbor *
@@ -252,6 +257,12 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
             orchestra_leapfrog_set_packetbuf_attr(leapfrog_alt_parent_id);
           }
 #endif /*WITH_LEAPFROG_TSCH*/
+#ifdef WITH_DATA_SLOT
+          if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME && uip_buf[UIP_IPTCPH_LEN - 4] == APPLICATION_DATA_HEADER){ //oh,,, MAGIC_NUMBER again. I do not like it. 
+            orchestra_unicast_data_set_packetbuf_attr();
+            PRINTA("HIT DATA PAKCET!!\n");
+          }
+#endif //WITH_DATA_SLOT
 #ifdef WITH_LEAPFROG_BEACON_SLOT
           //PRINTA("UIP_IPUDPH_LEN=%d UIP_LLH_LEN=%d\n", UIP_IPUDPH_LEN, UIP_LLH_LEN);
           //int i = 0;

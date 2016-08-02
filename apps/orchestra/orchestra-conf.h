@@ -62,8 +62,11 @@
 #endif /* ORCHESTRA_CONF_RULES */
 
 #ifdef CONDUCT_ORCHESTRA //change unicast slot feature for Leapfrog
-#define CONDUCT_EBSF_OFFSET 20//8
-#define CONDUCT_UNICAST_OFFSET 20//8
+#define CONDUCT_EBSF_OFFSET 10//8
+#define CONDUCT_UNICAST_OFFSET 10//8
+#ifdef WITH_DATA_SLOT
+#define CONDUCT_UNICAST_DATA_OFFSET 20 //for applicatoin traffic
+#endif //WITH_DATA_SLOT
 #define CONDUCT_ALT_OFFSET 20//8
 #define CONDUCT_ALT_TRAFFIC_DRIFT_OFFSET 20//3
 #endif //CONDUCT_ORCHESTRA
