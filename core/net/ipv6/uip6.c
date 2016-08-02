@@ -1258,7 +1258,7 @@ uip_process(uint8_t flag)
 */        
 
     //start elimination judging process
-    PRINTA("tmp_lf_an: %d\n", tmp_lf_an);
+    //PRINTA("tmp_lf_an: %d\n", tmp_lf_an);
     if(0 <= tmp_lf_an && tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH - 2){ //this is the case that we have to consider as if ring buffer
       if((0 <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) 
           || (LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - 1 - tmp_lf_an) <= tmp_lf_pc && tmp_lf_pc < LEAPFROG_DATA_COUNTER_MAX)){
