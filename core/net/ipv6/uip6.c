@@ -1292,7 +1292,7 @@ uip_process(uint8_t flag)
 #ifdef WITH_OVERHEARING_SLEEP
       etimer_set(&et_overhearing_sleep, OVERHEARING_SLEEP_TIME);
       overhearing_sleep_flag = 1;
-      PRINTA("Go to sleep\n");
+      //PRINTA("Go to sleep\n");
 #endif //WITH_OVERHEARING_SLEEP
     }
   }

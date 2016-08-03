@@ -114,8 +114,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>48.94580905359539</x>
-        <y>50.88541420542524</y>
+        <x>47.994956808229986</x>
+        <y>53.34322546629561</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -132,7 +132,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>1</z>
+    <z>0</z>
     <height>160</height>
     <location_x>59</location_x>
     <location_y>461</location_y>
@@ -145,10 +145,10 @@
       <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
-      <viewport>3.315847369748117 0.0 0.0 3.315847369748117 27.622917053651676 102.2658268633243</viewport>
+      <viewport>3.8776598082140668 0.0 0.0 3.8776598082140668 25.78102640189785 94.35793758143653</viewport>
     </plugin_config>
     <width>400</width>
-    <z>0</z>
+    <z>1</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -156,7 +156,7 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter>Hello|norm uni|overhear|Rep|Eli|def|Reg|prepare</filter>
+      <filter>Hello</filter>
       <formatted_time />
       <coloring />
     </plugin_config>
@@ -179,7 +179,7 @@
       <zoomfactor>2000.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
-    <z>3</z>
+    <z>4</z>
     <height>240</height>
     <location_x>0</location_x>
     <location_y>913</location_y>
@@ -194,7 +194,7 @@
       <decorations>true</decorations>
     </plugin_config>
     <width>655</width>
-    <z>4</z>
+    <z>3</z>
     <height>160</height>
     <location_x>43</location_x>
     <location_y>678</location_y>

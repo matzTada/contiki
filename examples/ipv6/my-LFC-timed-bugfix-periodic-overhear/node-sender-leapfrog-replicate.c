@@ -128,6 +128,13 @@ PROCESS(stable_timer_process, "Stable timer process");
 #endif //WITH_STABLETIMER
 /* ----------------- stable timer end ----------------- */
 
+/* ----------------- overhearing sleep ----------------- */
+#ifdef WITH_OVERHEARING_SLEEP 
+extern struct etimer et_overhearing_sleep;
+extern int overhearing_sleep_flag;
+#endif //WITH_OVERHEARING_SLEEP
+/* ----------------- overhearing sleep  end ----------------- */
+
 /*---------------------------------------------------------------------------*/
 #ifdef WITH_STABLETIMER
 #ifdef WITH_LEAPFROG
@@ -531,6 +538,10 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
         leapfrog_data_counter++;
         if(leapfrog_data_counter >= LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
 #else
+#ifdef WITH_OVERHEARING_SLEEP
+        etimer_set(&et_overhearing_sleep, OVERHEARING_SLEEP_TIME);
+        overhearing_sleep_flag = 1;
+#endif //WITH_OVERHEARING_SLEEP
 #ifdef WITH_DATA_SLOT
         sprintf(buf, "%cHello Tada %04d", APPLICATION_DATA_HEADER, message_number);
 #else //WITH_DATA_SLOT
