@@ -35,7 +35,7 @@
  *
  * \author Simon Duquennoy <simonduq@sics.se>
  *
- * \file sender 
+ * \file receiver
  * \modify enable application packet on RPL-TSCH by combining
  *  the rpl-tsch example and the simple-udp-rpl example
  * \author Tada Matz
@@ -116,6 +116,8 @@ PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
 // extern struct tsch_slotframe *sf_lfat; //leapfrog alt traffic
 linkaddr_t alt_parent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, 0}};
 #endif /*WITH_LEAPFROG_TSCH*/
+
+char leapfrog_layer = 0; //default for 0. sender should be 1
 
 #endif //WITH_LEAPFROG
 /* ----------------- leapfrog include and declaration end ----------------- */
@@ -225,16 +227,18 @@ receiver(struct simple_udp_connection *c,
     char temp_pid = 0; //sender's parent id
 //    char temp_gid = 0; //sender's grand parent id
     char temp_aid = 0; //sender's alt parent id
+    char temp_layer = 0; //sender's layer
     temp_sid = sender_addr->u8[15]; //get most least byte. must be modified to store whole address
     temp_pid = data[2] - LEAPFROG_BEACON_OFFSET;
 //    temp_gid = data[4] - LEAPFROG_BEACON_OFFSET;
     temp_aid = data[6] - LEAPFROG_BEACON_OFFSET;
+    temp_layer = data[8] - LEAPFROG_BEACON_OFFSET;
     char temp_pps_num;
     char temp_pps_str[LEAPFROG_NUM_NEIGHBOR_NODE];
     int temp_pps_itr;
-    temp_pps_num = data[8] - LEAPFROG_BEACON_OFFSET;
+    temp_pps_num = data[10] - LEAPFROG_BEACON_OFFSET;
     for(temp_pps_itr = 0; temp_pps_itr < (int)temp_pps_num; temp_pps_itr++){ //do nothing if temp_pps_num = 0
-      temp_pps_str[temp_pps_itr] = data[8 + 1 + temp_pps_itr];
+      temp_pps_str[temp_pps_itr] = data[10 + 1 + temp_pps_itr];
     }
     temp_pps_str[temp_pps_itr] = '\0';
 
@@ -281,7 +285,7 @@ receiver(struct simple_udp_connection *c,
     }else{ //get Alternate Parent by Possible Parent
       if(my_pid != temp_sid){
         for(temp_pps_itr = 0; temp_pps_itr < (int)temp_pps_num; temp_pps_itr++){ //do nothing if temp_pps_num = 0
-          if(leapfrog_grand_parent_id == data[8 + 1 + temp_pps_itr] - LEAPFROG_BEACON_OFFSET){
+          if(leapfrog_grand_parent_id == temp_pps_str[temp_pps_itr] - LEAPFROG_BEACON_OFFSET){
             leapfrog_alt_parent_id = temp_sid;
 #ifdef WITH_LEAPFROG_TSCH
             linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
@@ -294,16 +298,16 @@ receiver(struct simple_udp_connection *c,
       }
     }
 
-    //print calculated information
-    for(temp_pps_itr = 0; temp_pps_itr < leapfrog_possible_parent_num; temp_pps_itr++){
-      temp_pps_str[temp_pps_itr] = leapfrog_possible_parent_id_array[temp_pps_itr] + LEAPFROG_BEACON_OFFSET;
-    }
-    temp_pps_str[temp_pps_itr] = '\0';
-    printf("LEAPFROG: own P %d GP %d AP %d PPs #%d %s\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id, leapfrog_possible_parent_num, temp_pps_str);
-
     //judge I am sender's Parent and prepare Rx link for child
-#ifdef WITH_LEAPFROG_TSCH
     if(my_id != 0 && temp_pid != 0 && my_id == temp_pid){ //if I am sender's parent, store Rx slot for child
+      if(temp_layer > 0){
+        if(leapfrog_layer == 0){ //initialize
+          leapfrog_layer = temp_layer + 1;
+        }else if(leapfrog_layer > 0 && leapfrog_layer > temp_layer + 1){ //leapfrog_layer is minimum hop from bottom layer
+          leapfrog_layer = temp_layer + 1;
+        }
+      }
+#ifdef WITH_LEAPFROG_TSCH
       printf("LEAPFROG-TSCH: update rx <- C %d\n", temp_sid);
       orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX); 
 #ifdef WITH_OVERHEARING  //if my child has alternate parent,
@@ -312,20 +316,27 @@ receiver(struct simple_udp_connection *c,
         orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the alt traffic
       }
 #endif //WITH_OVERHEARING
-    }   
 #endif //WITH_LEAPFROG_TSCH
+    }   
 
     //judge I am sender's Alt Parent and prepare Rx link for alt child
-#ifdef WITH_LEAPFROG_TSCH //judge I am sender's Alt Parent
     if(my_id !=0 && temp_aid != 0 && my_id == temp_aid){
+      if(temp_layer > 0){
+        if(leapfrog_layer == 0){ //initialize
+          leapfrog_layer = temp_layer + 1;
+        }else if(leapfrog_layer > 0 && leapfrog_layer > temp_layer + 1){ //leapfrog_layer is minimum hop from bottom layer
+          leapfrog_layer = temp_layer + 1;
+        }
+      }
+#ifdef WITH_LEAPFROG_TSCH //judge I am sender's Alt Parent
       printf("LEAPFROG-TSCH: update rx <- (alt)C %d\n", temp_sid);
       orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX);
 #ifdef WITH_OVERHEARING
       printf("OVERHEAR: update pro-rx <- C %d\n", temp_sid);
       orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the normal traffic
 #endif //WITH_OVERHEARING
-    }   
 #endif /*WITH_LEAPFROG_TSCH*/          
+    }   
 
 #ifdef WITH_OVERHEARING
     //judge Siblings
@@ -345,8 +356,16 @@ receiver(struct simple_udp_connection *c,
         }
       }
     }
-#endif //WITH_OVERHEARING
+#endif //WITH_OVERHEARIN
+
     //end of judging process by beacon.
+    //print calculated information
+    for(temp_pps_itr = 0; temp_pps_itr < leapfrog_possible_parent_num; temp_pps_itr++){
+      temp_pps_str[temp_pps_itr] = leapfrog_possible_parent_id_array[temp_pps_itr] + LEAPFROG_BEACON_OFFSET;
+    }
+    temp_pps_str[temp_pps_itr] = '\0';
+    printf("LEAPFROG: own P%d GP%d AP%d PPs%d:%s L%d\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id, leapfrog_possible_parent_num, temp_pps_str, leapfrog_layer);
+
   } //if(data[0] == LEAPFROG_BEACON_HEADER)
 #endif /*WITH_LEAPFROG*/
 }
@@ -521,11 +540,12 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
           possible_parent_str[1 + i] = leapfrog_possible_parent_id_array[i] + LEAPFROG_BEACON_OFFSET;
         }
 
-        sprintf(buf, "%cP%cG%cA%cC%sN%d", 
+        sprintf(buf, "%cP%cG%cA%cL%cC%sN%d", 
   	  LEAPFROG_BEACON_HEADER, 
   	  leapfrog_parent_id + LEAPFROG_BEACON_OFFSET, 
 	  leapfrog_grand_parent_id + LEAPFROG_BEACON_OFFSET,
           leapfrog_alt_parent_id + LEAPFROG_BEACON_OFFSET,
+          leapfrog_layer + LEAPFROG_BEACON_OFFSET, //for layer
           possible_parent_str, //C for candidate
 	  message_number);
         printf("LEAPFROG: Sending beacon");
