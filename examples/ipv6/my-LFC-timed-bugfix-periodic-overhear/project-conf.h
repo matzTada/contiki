@@ -52,7 +52,7 @@
 //for data
 #define DATA_UDP_PORT 1234
 #define SERVICE_ID 190
-#define DATA_SEND_INTERVAL   (60 * CLOCK_SECOND)
+#define DATA_SEND_INTERVAL   (30 * CLOCK_SECOND)
 //#define SEND_TIME   (random_rand() % (SEND_INTERVAL))
 #define DATA_SEND_TIME   (SEND_INTERVAL) //make it periodical
 

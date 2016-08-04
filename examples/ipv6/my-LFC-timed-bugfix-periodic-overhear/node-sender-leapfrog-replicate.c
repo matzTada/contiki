@@ -556,11 +556,20 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
         printf("LEAPFROG: prepare data own:%d pc#%d\n", node_id, leapfrog_data_counter);
         leapfrog_data_counter++;
         if(leapfrog_data_counter >= LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
-#else
 #ifdef WITH_OVERHEARING_SLEEP
-        etimer_set(&et_overhearing_sleep, OVERHEARING_SLEEP_TIME);
+        clock_time_t sleep_time = OVERHEARING_SLEEP_TIME; //default
+#ifdef WITH_DETERMINISTIC_SLEEP
+        if(leapfrog_layer > 0){
+          clock_time_t dif = ((unsigned long)leapfrog_layer - 1) * ORCHESTRA_UNICAST_PERIOD * (TSCH_DEFAULT_TS_TIMESLOT_LENGTH / 1000) * CLOCK_SECOND / 1000;
+          sleep_time = DATA_SEND_INTERVAL - dif;
+          PRINTA("set timer SI:%ld st:%ld dif:%ld CS:%ld\n", DATA_SEND_INTERVAL, sleep_time, dif, CLOCK_SECOND);
+        }
+#endif //WITH_DETERMINISTIC_SLEEP
+        etimer_set(&et_overhearing_sleep, sleep_time);
         overhearing_sleep_flag = 1;
+        //PRINTA("Go to sleep\n");
 #endif //WITH_OVERHEARING_SLEEP
+#else //WITH_LEAPFROG
 #ifdef WITH_DATA_SLOT
         sprintf(buf, "%cHello Tada %04d", APPLICATION_DATA_HEADER, message_number);
 #else //WITH_DATA_SLOT
