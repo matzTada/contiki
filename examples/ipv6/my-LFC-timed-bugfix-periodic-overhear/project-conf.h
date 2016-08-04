@@ -45,6 +45,7 @@
 #define WITH_LEAPFROG_BEACON_SLOT
 #define WITH_OVERHEARING
 #define WITH_OVERHEARING_SLEEP
+#define WITH_DETERMINISTIC_SLEEP
 //#define WITH_POWERTRACE // for power trace
 //#define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
@@ -77,8 +78,8 @@
 //==added
 
 #ifdef WITH_OVERHEARING_SLEEP
+#define OVERHEARING_SLEEP_TIME (DATA_SEND_INTERVAL / 2) //default. should corresponding to the slotframe length
 //#define OVERHEARING_SLEEP_TIME ((LEAPFROG_SEND_INTERVAL) - (8 * 2 * CLOCK_SECOND)) //SEND_INTERVAL - NUM_of_nodes * Slotframe_length * Timeslot_time
-#define OVERHEARING_SLEEP_TIME (45 * CLOCK_SECOND) //should corresponding to the slotframe length
 #endif //WITH_OVERHEARING_SLEEP
 
 #define WITH_ORCHESTRA 1

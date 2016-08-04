@@ -995,7 +995,7 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
 #ifdef WITH_OVERHEARING_SLEEP
         //skipping the slot if already listen the packet 
         if(overhearing_sleep_flag == 1 && etimer_expired(&et_overhearing_sleep)){
-          //PRINTA("Expired\n");
+          PRINTA("Expired\n");
           overhearing_sleep_flag = 0;
           etimer_stop(&et_overhearing_sleep);
         }

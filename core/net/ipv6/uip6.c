@@ -310,6 +310,11 @@ extern int is_overheard;
 extern int overhearing_sleep_flag;
 extern struct etimer et_overhearing_sleep;
 #endif //WITH_OVERHEARING_SLEEP
+#ifdef WITH_DETERMINISTIC_SLEEP
+#include "orchestra.h"
+#include "net/mac/tsch/tsch.h"
+extern char leapfrog_layer;
+#endif //WITH_DETERMINISTIC_SLEEP
 
 /*---------------------------------------------------------------------------*/
 /* Functions                                                                 */
@@ -1290,7 +1295,15 @@ uip_process(uint8_t flag)
       leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
 
 #ifdef WITH_OVERHEARING_SLEEP
-      etimer_set(&et_overhearing_sleep, OVERHEARING_SLEEP_TIME);
+      clock_time_t sleep_time = OVERHEARING_SLEEP_TIME; //default
+#ifdef WITH_DETERMINISTIC_SLEEP
+      if(leapfrog_layer > 0){
+        clock_time_t dif = ((unsigned long)leapfrog_layer - 1) * ORCHESTRA_UNICAST_PERIOD * (TSCH_DEFAULT_TS_TIMESLOT_LENGTH / 1000) * CLOCK_SECOND / 1000;
+        sleep_time = DATA_SEND_INTERVAL - dif;
+        PRINTA("set timer SI:%ld st:%ld dif:%ld CS:%ld\n", DATA_SEND_INTERVAL, sleep_time, dif, CLOCK_SECOND);
+      }
+#endif //WITH_DETERMINISTIC_SLEEP
+      etimer_set(&et_overhearing_sleep, sleep_time);
       overhearing_sleep_flag = 1;
       //PRINTA("Go to sleep\n");
 #endif //WITH_OVERHEARING_SLEEP
