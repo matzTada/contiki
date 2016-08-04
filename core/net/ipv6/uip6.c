@@ -1228,7 +1228,7 @@ uip_process(uint8_t flag)
   if(is_promiscuous_listening_slot == 1 
      && is_overheard == 1
      && uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len] != LEAPFROG_DATA_HEADER){
-    PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
+    //PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
     goto drop;
   }
 #endif //WITH_OVERHEARING
@@ -1300,7 +1300,7 @@ uip_process(uint8_t flag)
       if(leapfrog_layer > 0){
         clock_time_t dif = ((unsigned long)leapfrog_layer - 1) * ORCHESTRA_UNICAST_PERIOD * (TSCH_DEFAULT_TS_TIMESLOT_LENGTH / 1000) * CLOCK_SECOND / 1000;
         sleep_time = DATA_SEND_INTERVAL - dif;
-        PRINTA("set timer SI:%ld st:%ld dif:%ld CS:%ld\n", DATA_SEND_INTERVAL, sleep_time, dif, CLOCK_SECOND);
+        //PRINTA("set timer SI:%ld st:%ld dif:%ld CS:%ld\n", DATA_SEND_INTERVAL, sleep_time, dif, CLOCK_SECOND);
       }
 #endif //WITH_DETERMINISTIC_SLEEP
       etimer_set(&et_overhearing_sleep, sleep_time);

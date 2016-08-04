@@ -46,8 +46,8 @@
 #define WITH_OVERHEARING
 #define WITH_OVERHEARING_SLEEP
 #define WITH_DETERMINISTIC_SLEEP
-//#define WITH_POWERTRACE // for power trace
-//#define WITH_STABLETIMER // for waiting application traffic until network stabilized
+#define WITH_POWERTRACE // for power trace
+#define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
 //for data
 #define DATA_UDP_PORT 1234

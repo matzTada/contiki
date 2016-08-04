@@ -259,11 +259,11 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
             if(leapfrog_alt_parent_id > 0 && n->addr.u8[7] == leapfrog_alt_parent_id){
               //for alternate parent
               orchestra_leapfrog_set_packetbuf_attr(leapfrog_alt_parent_id);
-              PRINTA("set attr to ALT\n");
+              //PRINTA("set attr to ALT\n");
             }else{
               //for prefferd parent
               orchestra_unicast_data_set_packetbuf_attr(); 
-              PRINTA("set attr to PRE\n");
+              //PRINTA("set attr to PRE\n");
             }
             //PRINTA("HIT DATA PAKCET!!\n");
           }
