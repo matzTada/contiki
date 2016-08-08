@@ -251,6 +251,7 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
 #ifdef TSCH_CALLBACK_PACKET_READY
           TSCH_CALLBACK_PACKET_READY();
 #endif
+
 #ifdef WITH_LEAPFROG_TSCH
 #ifdef WITH_DATA_SLOT
           if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME 
@@ -274,6 +275,7 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
           }
 #endif //WITH_DATA_SLOT
 #endif //WITH_LEAPFROG_TSCH
+
 #ifdef WITH_DATA_SLOT
           if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME 
               && uip_buf[UIP_IPTCPH_LEN - 4] == APPLICATION_DATA_HEADER){
@@ -282,6 +284,7 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
             orchestra_unicast_data_set_packetbuf_attr(); //PRINTA("HIT DATA PAKCET!!\n");
           }
 #endif //WITH_DATA_SLOT
+
 #ifdef WITH_LEAPFROG_BEACON_SLOT
           //PRINTA("UIP_IPUDPH_LEN=%d UIP_LLH_LEN=%d\n", UIP_IPUDPH_LEN, UIP_LLH_LEN);
           //int i = 0;

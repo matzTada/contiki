@@ -669,7 +669,7 @@ PROCESS_THREAD(stable_timer_process, ev, data)
   static struct etimer stable_timer;
 
   PROCESS_BEGIN();
-  etimer_set(&stable_timer, CLOCK_SECOND * 60 * 15); //15min
+  etimer_set(&stable_timer, CLOCK_SECOND * 60 * 30); //30min
   printf("Set Stable timer\n");
   
   PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&stable_timer));
