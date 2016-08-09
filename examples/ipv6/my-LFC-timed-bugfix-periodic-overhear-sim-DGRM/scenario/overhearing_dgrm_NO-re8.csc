@@ -379,7 +379,7 @@
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z11</identifier>
       <description>Z1 Mote Type receiver</description>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-timed-bugfix-periodic-overhear-sim/nodes_NO-re8/node-receiver-leapfrog.z1</firmware>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-timed-bugfix-periodic-overhear-sim-DGRM/nodes_NO-re8/node-receiver-leapfrog.z1</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -397,7 +397,7 @@
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z12</identifier>
       <description>Z1 Mote Type sender</description>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-timed-bugfix-periodic-overhear-sim/nodes_NO-re8/node-sender-leapfrog-replicate.z1</firmware>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-timed-bugfix-periodic-overhear-sim-DGRM/nodes_NO-re8/node-sender-leapfrog-replicate.z1</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -641,7 +641,7 @@ Hello|Expire|set timer
   <plugin>
     org.contikios.cooja.plugins.ScriptRunner
     <plugin_config>
-      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-timed-bugfix-periodic-overhear-sim/scenario/script.js</scriptfile>
+      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-timed-bugfix-periodic-overhear-sim-DGRM/scenario/script.js</scriptfile>
       <active>false</active>
     </plugin_config>
     <width>698</width>

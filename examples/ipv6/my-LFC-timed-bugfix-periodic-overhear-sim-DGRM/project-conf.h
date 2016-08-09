@@ -37,15 +37,15 @@
 
 //modified by TadaMatz 1/July/2016
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 8//here can controll the number of re-transmission in TSCH. This should be 0 if used with Leapfrog Collaboration
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH. This should be 0 if used with Leapfrog Collaboration
 #define CONDUCT_ORCHESTRA
 #define WITH_DATA_SLOT
-//#define WITH_LEAPFROG
-//#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
-//#define WITH_LEAPFROG_BEACON_SLOT
-//#define WITH_OVERHEARING
-//#define WITH_OVERHEARING_SLEEP
-//#define WITH_DETERMINISTIC_SLEEP
+#define WITH_LEAPFROG
+#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
+#define WITH_LEAPFROG_BEACON_SLOT
+#define WITH_OVERHEARING
+#define WITH_OVERHEARING_SLEEP
+#define WITH_DETERMINISTIC_SLEEP
 #define WITH_POWERTRACE // for power trace
 #define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
@@ -62,6 +62,10 @@
 #ifdef WITH_DATA_SLOT
 #define APPLICATION_DATA_HEADER 0xf3
 #endif //WITH_DATA_SLOT
+
+#ifdef WITH_STABLETIMER
+#define STABLE_START_TIME (30 * 60 * CLOCK_SECOND)
+#endif //WITH_STABLETIMER
 
 #ifdef WITH_LEAPFROG
 #define LEAPFROG_UDP_PORT 5678
