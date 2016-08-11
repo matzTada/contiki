@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<simconf>
+<?xml version="1.0" ?><simconf>
   <project EXPORT="discard">[APPS_DIR]/mrm</project>
   <project EXPORT="discard">[APPS_DIR]/mspsim</project>
   <project EXPORT="discard">[APPS_DIR]/avrora</project>
@@ -17,7 +16,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>3</radio>
-          <ratio>0.96</ratio>
+          <ratio>0.9</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -41,7 +40,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>5</radio>
-          <ratio>0.93</ratio>
+          <ratio>0.88</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -53,7 +52,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>2</radio>
-          <ratio>0.96</ratio>
+          <ratio>0.9</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -65,7 +64,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>4</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.97</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -77,7 +76,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>5</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.95</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -101,7 +100,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>3</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.97</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -113,7 +112,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>5</radio>
-          <ratio>0.36</ratio>
+          <ratio>1.0</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -125,7 +124,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>6</radio>
-          <ratio>0.98</ratio>
+          <ratio>0.93</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -137,7 +136,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>7</radio>
-          <ratio>0.99</ratio>
+          <ratio>0.87</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -149,7 +148,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>2</radio>
-          <ratio>0.93</ratio>
+          <ratio>0.88</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -161,7 +160,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>3</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.95</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -173,7 +172,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>4</radio>
-          <ratio>0.36</ratio>
+          <ratio>1.0</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -185,7 +184,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>6</radio>
-          <ratio>0.15</ratio>
+          <ratio>0.92</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -197,7 +196,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>7</radio>
-          <ratio>0.36</ratio>
+          <ratio>0.64</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -209,7 +208,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>4</radio>
-          <ratio>0.98</ratio>
+          <ratio>0.93</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -221,7 +220,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>5</radio>
-          <ratio>0.15</ratio>
+          <ratio>0.92</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -233,7 +232,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>7</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.85</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -245,7 +244,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>8</radio>
-          <ratio>0.95</ratio>
+          <ratio>1.0</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -257,6 +256,42 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>4</radio>
+          <ratio>0.87</ratio>
+          <signal>-10.0</signal>
+          <lqi>105</lqi>
+          <delay>0</delay>
+          <channel>-1</channel>
+        </dest>
+      </edge>
+      <edge>
+        <source>7</source>
+        <dest>
+          org.contikios.cooja.radiomediums.DGRMDestinationRadio
+          <radio>5</radio>
+          <ratio>0.64</ratio>
+          <signal>-10.0</signal>
+          <lqi>105</lqi>
+          <delay>0</delay>
+          <channel>-1</channel>
+        </dest>
+      </edge>
+      <edge>
+        <source>7</source>
+        <dest>
+          org.contikios.cooja.radiomediums.DGRMDestinationRadio
+          <radio>6</radio>
+          <ratio>0.85</ratio>
+          <signal>-10.0</signal>
+          <lqi>105</lqi>
+          <delay>0</delay>
+          <channel>-1</channel>
+        </dest>
+      </edge>
+      <edge>
+        <source>7</source>
+        <dest>
+          org.contikios.cooja.radiomediums.DGRMDestinationRadio
+          <radio>8</radio>
           <ratio>0.99</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
@@ -265,19 +300,7 @@
         </dest>
       </edge>
       <edge>
-        <source>7</source>
-        <dest>
-          org.contikios.cooja.radiomediums.DGRMDestinationRadio
-          <radio>5</radio>
-          <ratio>0.36</ratio>
-          <signal>-10.0</signal>
-          <lqi>105</lqi>
-          <delay>0</delay>
-          <channel>-1</channel>
-        </dest>
-      </edge>
-      <edge>
-        <source>7</source>
+        <source>8</source>
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>6</radio>
@@ -289,35 +312,11 @@
         </dest>
       </edge>
       <edge>
-        <source>7</source>
-        <dest>
-          org.contikios.cooja.radiomediums.DGRMDestinationRadio
-          <radio>8</radio>
-          <ratio>0.77</ratio>
-          <signal>-10.0</signal>
-          <lqi>105</lqi>
-          <delay>0</delay>
-          <channel>-1</channel>
-        </dest>
-      </edge>
-      <edge>
-        <source>8</source>
-        <dest>
-          org.contikios.cooja.radiomediums.DGRMDestinationRadio
-          <radio>6</radio>
-          <ratio>0.95</ratio>
-          <signal>-10.0</signal>
-          <lqi>105</lqi>
-          <delay>0</delay>
-          <channel>-1</channel>
-        </dest>
-      </edge>
-      <edge>
         <source>8</source>
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>7</radio>
-          <ratio>0.77</ratio>
+          <ratio>0.99</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -329,7 +328,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>9</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.88</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -341,7 +340,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>9</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.93</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -353,7 +352,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>9</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.97</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -365,7 +364,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>1</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.88</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -377,7 +376,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>2</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.93</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -389,7 +388,7 @@
         <dest>
           org.contikios.cooja.radiomediums.DGRMDestinationRadio
           <radio>3</radio>
-          <ratio>1.0</ratio>
+          <ratio>0.97</ratio>
           <signal>-10.0</signal>
           <lqi>105</lqi>
           <delay>0</delay>
@@ -437,7 +436,7 @@
       <moteinterface>org.contikios.cooja.mspmote.interfaces.MspDebugOutput</moteinterface>
     </motetype>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>51.640089306703096</x>
@@ -455,7 +454,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>32.799044314885705</x>
@@ -473,7 +472,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>64.72472047881189</x>
@@ -491,7 +490,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>33.88970748818505</x>
@@ -509,7 +508,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>62.65207707529782</x>
@@ -527,7 +526,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>34.78628705571584</x>
@@ -545,7 +544,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>63.1184351700309</x>
@@ -563,7 +562,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>49.50588230298993</x>
@@ -581,7 +580,7 @@
       <motetype_identifier>z12</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>50.433977310333546</x>
@@ -626,8 +625,8 @@
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
       <filter>Hello|Expire|set timer</filter>
-      <formatted_time />
-      <coloring />
+      <formatted_time/>
+      <coloring/>
     </plugin_config>
     <width>935</width>
     <z>6</z>
@@ -647,9 +646,9 @@
       <mote>6</mote>
       <mote>7</mote>
       <mote>8</mote>
-      <showRadioRXTX />
-      <showRadioHW />
-      <showLEDs />
+      <showRadioRXTX/>
+      <showRadioHW/>
+      <showLEDs/>
       <zoomfactor>2000.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
@@ -695,4 +694,3 @@ Hello|Expire|set timer
     <location_y>275</location_y>
   </plugin>
 </simconf>
-
