@@ -509,6 +509,12 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
   simple_udp_register(&unicast_connection, DATA_UDP_PORT,
                       NULL, DATA_UDP_PORT, receiver);
 
+  //slide time added 10/Aug/2016
+  etimer_set(&uni_periodic_timer, DATA_SEND_INTERVAL/2);
+  while(!etimer_expired(&uni_periodic_timer)){
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&uni_periodic_timer));
+  }
+
   etimer_set(&uni_periodic_timer, DATA_SEND_INTERVAL);
   while(1) {
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&uni_periodic_timer));
