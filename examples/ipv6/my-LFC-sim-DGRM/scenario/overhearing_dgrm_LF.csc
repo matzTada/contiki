@@ -685,7 +685,7 @@ Hello|Expire|set timer
   <plugin>
     org.contikios.cooja.plugins.ScriptRunner
     <plugin_config>
-      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-timed-bugfix-periodic-overhear-sim-DGRM/scenario/script.js</scriptfile>
+      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-sim-DGRM/scenario/script.js</scriptfile>
       <active>false</active>
     </plugin_config>
     <width>698</width>

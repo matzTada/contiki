@@ -38,7 +38,7 @@ do
     cd $i
     pwd
     echo execute simulation
-    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-timed-bugfix-periodic-overhear-sim-UDGM/scenario/overhearing_udgm_LF.csc -contiki=$HOME/contiki/
+    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-sim-UDGM/scenario/overhearing_udgm_LF.csc -contiki=$HOME/contiki/
     echo return to upper directory
     cd ..
     pwd

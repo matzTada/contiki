@@ -6,7 +6,7 @@ import numpy as np
 
 INPUT_FILE_NAME = "soda_pdr.sql"
 OUTPUT_FILE_NAME = "pdr_for_simulation.csv"
-NUMBER_OF_LINK = 15
+NUMBER_OF_LINK = 16
 
 input_file = open(INPUT_FILE_NAME)
 

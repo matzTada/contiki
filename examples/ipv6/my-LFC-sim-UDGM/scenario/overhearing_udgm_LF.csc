@@ -42,7 +42,7 @@
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z12</identifier>
       <description>Z1 Mote sender-replicate</description>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-timed-bugfix-periodic-overhear-sim-UDGM/nodes_LF/node-sender-leapfrog-replicate.z1</firmware>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-sim-UDGM/nodes_LF/node-sender-leapfrog-replicate.z1</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -294,7 +294,7 @@
   <plugin>
     org.contikios.cooja.plugins.ScriptRunner
     <plugin_config>
-      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-timed-bugfix-periodic-overhear-sim-UDGM/scenario/script.js</scriptfile>
+      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-sim-UDGM/scenario/script.js</scriptfile>
       <active>false</active>
     </plugin_config>
     <width>698</width>

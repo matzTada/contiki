@@ -24,7 +24,7 @@ do
   cd $i
   pwd
   echo execute simulation
-  java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-timed-bugfix-periodic-overhear-sim-DGRM/scenario/overhearing_dgrm_NO-re2.csc -contiki=$HOME/contiki/
+  java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-sim-DGRM/scenario/overhearing_dgrm_NO-re2.csc -contiki=$HOME/contiki/
   echo return to upper directory
   cd ..
   pwd
