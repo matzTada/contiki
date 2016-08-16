@@ -1298,7 +1298,7 @@ uip_process(uint8_t flag)
       clock_time_t sleep_time = OVERHEARING_SLEEP_TIME; //default
 #ifdef WITH_DETERMINISTIC_SLEEP
       if(leapfrog_layer > 0){
-        clock_time_t dif = ((unsigned long)leapfrog_layer - 1) * ORCHESTRA_UNICAST_PERIOD * (TSCH_DEFAULT_TS_TIMESLOT_LENGTH / 1000) * CLOCK_SECOND / 1000;
+        clock_time_t dif = ((unsigned long)leapfrog_layer) * ORCHESTRA_UNICAST_PERIOD * (TSCH_DEFAULT_TS_TIMESLOT_LENGTH / 1000) * CLOCK_SECOND / 1000;
         sleep_time = DATA_SEND_INTERVAL - dif;
         //PRINTA("set timer SI:%ld st:%ld dif:%ld CS:%ld\n", DATA_SEND_INTERVAL, sleep_time, dif, CLOCK_SECOND);
       }
