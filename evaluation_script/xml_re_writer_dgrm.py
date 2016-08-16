@@ -66,6 +66,7 @@ for i in range(0, len(LINK_ARRAY)):
 		print adjancency_pdr_matrix[i][j],
 	print ""
 
+#xml file specially csc
 try:
 	xdoc = minidom.parse(xmlfile)
 except:
@@ -92,6 +93,7 @@ for e in xdoc.getElementsByTagName('edge'):
 	ele_dst_ratio.childNodes[0].data = next_rx
 	print 'ratio:', ele_dst_ratio.childNodes[0].data
 
+#re-write into file with same name
 try:
 	output = open(xmlfile, 'w')
 	output.write(xdoc.toxml())
