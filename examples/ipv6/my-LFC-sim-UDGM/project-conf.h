@@ -37,22 +37,22 @@
 
 //modified by TadaMatz 1/July/2016
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH. This should be 0 if used with Leapfrog Collaboration
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 6//here can controll the number of re-transmission in TSCH. This should be 0 if used with Leapfrog Collaboration
 #define CONDUCT_ORCHESTRA
 #define WITH_DATA_SLOT
-#define WITH_LEAPFROG
-#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
-#define WITH_LEAPFROG_BEACON_SLOT
-#define WITH_OVERHEARING
-#define WITH_OVERHEARING_SLEEP
-#define WITH_DETERMINISTIC_SLEEP
-#define WITH_POWERTRACE // for power trace
+//#define WITH_LEAPFROG
+//#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
+//#define WITH_LEAPFROG_BEACON_SLOT
+//#define WITH_OVERHEARING
+//#define WITH_OVERHEARING_SLEEP
+//#define WITH_DETERMINISTIC_SLEEP
+//#define WITH_POWERTRACE // for power trace
 #define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
 //for data
 #define DATA_UDP_PORT 1234
 #define SERVICE_ID 190
-#define DATA_SEND_INTERVAL   (60 * CLOCK_SECOND)
+#define DATA_SEND_INTERVAL   (30 * CLOCK_SECOND)
 //#define SEND_TIME   (random_rand() % (SEND_INTERVAL))
 #define DATA_SEND_TIME   (SEND_INTERVAL) //make it periodical
 
@@ -135,7 +135,7 @@
 /* TSCH logging. 0: disabled. 1: basic log. 2: with delayed
  * log messages from interrupt */
 #undef TSCH_LOG_CONF_LEVEL
-#define TSCH_LOG_CONF_LEVEL 0
+#define TSCH_LOG_CONF_LEVEL 2
 
 /* IEEE802.15.4 PANID */
 #undef IEEE802154_CONF_PANID
