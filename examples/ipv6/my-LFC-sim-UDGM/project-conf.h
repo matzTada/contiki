@@ -37,7 +37,7 @@
 
 //modified by TadaMatz 1/July/2016
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 6//here can controll the number of re-transmission in TSCH. This should be 0 if used with Leapfrog Collaboration
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 2//here can controll the number of re-transmission in TSCH. This should be 0 if used with Leapfrog Collaboration
 #define CONDUCT_ORCHESTRA
 #define WITH_DATA_SLOT
 //#define WITH_LEAPFROG
@@ -52,7 +52,7 @@
 //for data
 #define DATA_UDP_PORT 1234
 #define SERVICE_ID 190
-#define DATA_SEND_INTERVAL   (30 * CLOCK_SECOND)
+#define DATA_SEND_INTERVAL   (60 * CLOCK_SECOND)
 //#define SEND_TIME   (random_rand() % (SEND_INTERVAL))
 #define DATA_SEND_TIME   (SEND_INTERVAL) //make it periodical
 
