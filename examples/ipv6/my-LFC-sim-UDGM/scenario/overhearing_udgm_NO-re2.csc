@@ -7,14 +7,14 @@
   <project EXPORT="discard">[APPS_DIR]/powertracker</project>
   <simulation>
     <title>My simulation</title>
-    <randomseed>generated</randomseed>
+    <randomseed>1</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
       org.contikios.cooja.radiomediums.UDGMConstantLoss
       <transmitting_range>50.0</transmitting_range>
       <interference_range>100.0</interference_range>
       <success_ratio_tx>1.0</success_ratio_tx>
-      <success_ratio_rx>0.3</success_ratio_rx>
+      <success_ratio_rx>1.0</success_ratio_rx>
     </radiomedium>
     <events>
       <logoutput>40000</logoutput>

@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-for j in 100 90 80 70 60 50 40 30 20 10
+for j in 100
 do
   echo entering
   cd scenario
