@@ -37,7 +37,7 @@
 
 //modified by TadaMatz 1/July/2016
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 8//here can controll the number of re-transmission in TSCH. This should be 0 if used with Leapfrog Collaboration
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 6//here can controll the number of re-transmission in TSCH. This should be 0 if used with Leapfrog Collaboration
 #define CONDUCT_ORCHESTRA
 #define WITH_DATA_SLOT
 //#define WITH_LEAPFROG
