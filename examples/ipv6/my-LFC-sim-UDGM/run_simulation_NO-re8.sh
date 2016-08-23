@@ -1,13 +1,15 @@
 #! /bin/bash
 
 
-for j in 100
+for j in 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 do
   echo entering
   cd scenario
   pwd
   echo re-write csc file
-  python xml_re_writer.py overhearing_udgm_NO-re8.csc 100 $j
+#  python xml_re_writer.py overhearing_udgm_NO-re8.csc 100 $j
+  python xml_re_writer_seed_decide.py overhearing_udgm_NO-re8.csc $j
+  python xml_re_writer.py overhearing_udgm_NO-re8.csc 100 100
   echo return tp upper directory
   cd ..
   pwd
@@ -26,7 +28,7 @@ do
   cd "100-${j}"
   pwd
 
-  for i in 1 2 3 4 5 6 7 8 9 10
+  for i in 1
   do
     if [ -d $i ]; then
       echo dir already exist. remove $i
