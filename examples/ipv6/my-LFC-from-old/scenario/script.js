@@ -32,13 +32,15 @@ while(true){
       }else if(msg.match(/^(?=.*P)(?=.*radio)/)){
         log.log("PWR: ID: " + id + " time " + time + " " + msg + "\n");
       }else if(msg.match(/Replication/)){
-        log.log("Rep: ID: " + id  + " time " + time + " " + msg + "\n");
+        log.log("Rep: ID: " + id + " time " + time + " " + msg + "\n");
         replication_count++;
       }else if(msg.match(/Elimination/)){
-        log.log("Eli: ID: " + id  + " time " + time + " " + msg + "\n");
+        log.log("Eli: ID: " + id + " time " + time + " " + msg + "\n");
         elimination_count++;
+      }else if(msg.match(/LEAPFROG: default route/)){
+        log.log("Def: ID: " + id + " time " + time + " " + msg + "\n");
       }else{
-        log.log("Oth: ID: " + id  + " time " + time + " " + msg + "\n");
+	log.log("Oth: ID: " + id + " time " + time + " " + msg + "\n");
       }
     }
     if(msg.match(/Starting/)){

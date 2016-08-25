@@ -1,27 +1,27 @@
 #! /bin/bash
 
 
-for j in 100 
+for j in 10 20 30 40 50 60
 do
   echo entering
   cd scenario
   pwd
   echo re-write csc file
-  python xml_re_writer.py ladder-sender-replicate.csc 100 $j
+  python xml_re_writer.py ladder_NO-re2.csc 100 $j
   echo return tp upper directory
   cd ..
   pwd
 
   echo entering
-  cd ./result/normal
+  cd ./result/normal-re2
   pwd
 
   if [ -d "100-${j}" ]; then
-    echo dir already exist. remove 100-${j}
-    rm -rf "100-${j}"
+    echo dir already exist. 
+  else
+    echo make directory 100-${j}
+    mkdir "100-${j}"
   fi
-  echo make directory 100-${j}
-  mkdir "100-${j}"
   echo entering
   cd "100-${j}"
   pwd
@@ -38,7 +38,7 @@ do
     cd $i
     pwd
     echo execute simulation
-    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-leapfrog-collaboration-timed-bugfix/scenario/ladder-sender-replicate.csc -contiki=$HOME/contiki/
+    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-tb-periodic-Normal-ReTx/scenario/ladder_NO-re2.csc -contiki=$HOME/contiki/
     echo return to upper directory
     cd ..
     pwd

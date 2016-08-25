@@ -7,7 +7,7 @@ do
   cd scenario
   pwd
   echo re-write csc file
-  python xml_re_writer.py ladder-sender-replicate.csc 100 $j
+  python xml_re_writer.py ladder_NO.csc 100 $j
   echo return tp upper directory
   cd ..
   pwd
@@ -17,11 +17,11 @@ do
   pwd
 
   if [ -d "100-${j}" ]; then
-    echo dir already exist. remove 100-${j}
-    rm -rf "100-${j}"
+    echo dir already exist. 
+  else
+    echo make directory 100-${j}
+    mkdir "100-${j}"
   fi
-  echo make directory 100-${j}
-  mkdir "100-${j}"
   echo entering
   cd "100-${j}"
   pwd
@@ -38,7 +38,7 @@ do
     cd $i
     pwd
     echo execute simulation
-    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-leapfrog-collaboration-timed-bugfix/scenario/ladder-sender-replicate.csc -contiki=$HOME/contiki/
+    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/ladder_NO.csc -contiki=$HOME/contiki/
     echo return to upper directory
     cd ..
     pwd
