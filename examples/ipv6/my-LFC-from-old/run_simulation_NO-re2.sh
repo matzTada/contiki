@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-for j in 10 20 30 40 50 60
+for j in 100
 do
   echo entering
   cd scenario
@@ -26,7 +26,7 @@ do
   cd "100-${j}"
   pwd
 
-  for i in 1 2 3 4 5 6 7 8 9 10
+  for i in `seq 20`
   do
     if [ -d $i ]; then
       echo dir already exist. remove $i
@@ -38,7 +38,7 @@ do
     cd $i
     pwd
     echo execute simulation
-    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-tb-periodic-Normal-ReTx/scenario/ladder_NO-re2.csc -contiki=$HOME/contiki/
+    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/ladder_NO-re2.csc -contiki=$HOME/contiki/
     echo return to upper directory
     cd ..
     pwd
