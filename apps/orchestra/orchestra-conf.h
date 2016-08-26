@@ -66,13 +66,34 @@
 #define CONDUCT_ALT_TRAFFIC_DRIFT_OFFSET 3 //recommended 3
 #endif //CONDUCT_ORCHESTRA
 
+#ifdef SEPARATE_ORCHESTRA //Every slotframe has the same slot frame lengths. added by TadaMatz 26/Aug/2016
+
+#define SEPARATE_PERIOD 101
+#define SEPARATE_EBSF_OFFSET 10
+#define SEPARATE_UNICAST_OFFSET 10
+//set all slotframe has same length
+#define ORCHESTRA_CONF_EBSF_PERIOD SEPARATE_PERIOD
+#define ORCHESTRA_CONF_COMMON_SHARED_PERIOD SEPARATE_PERIOD
+#define ORCHESTRA_CONF_UNICAST_PERIOD SEPARATE_PERIOD
+
+#ifdef WITH_DATA_SLOT
+#define SEPARATE_UNICAST_DATA_OFFSET 20
+#endif //WITH_DATA_SLOT
+
+#ifdef WITH_LEAPFROG_TSCH
+#define SEPARATE_ALT_DATA_OFFSET 20 //for alternate path
+#define ORCHESTRA_CONF_LEAPFROG_ALT_TRAFFIC_PERIOD SEPARATE_PERIOD
+#endif //WITH_LEAPFROG_TSCH
+
+#endif //SEPARATE_ORCHESTRA
+
 /* Length of the various slotframes. Tune to balance network capacity,
  * contention, energy, latency. */
 #ifdef ORCHESTRA_CONF_EBSF_PERIOD
 #define ORCHESTRA_EBSF_PERIOD                     ORCHESTRA_CONF_EBSF_PERIOD
 #else /* ORCHESTRA_CONF_EBSF_PERIOD */
 #ifdef CONDUCT_ORCHESTRA //by TadaMatz 2/July/2016
-#define ORCHESTRA_EBSF_PERIOD                     300 //recommended 360
+#define ORCHESTRA_EBSF_PERIOD                     300 //recommended 360. must be multiple of unicast period
 #else //CONDUCT_ORCHESTRA
 #define ORCHESTRA_EBSF_PERIOD                     397
 #endif //CONDUCT_ORCHESTRA
@@ -82,7 +103,7 @@
 #define ORCHESTRA_COMMON_SHARED_PERIOD            ORCHESTRA_CONF_COMMON_SHARED_PERIOD
 #else /* ORCHESTRA_CONF_COMMON_SHARED_PERIOD */
 #ifdef CONDUCT_ORCHESTRA //by TadaMatz 2/July/2016
-#define ORCHESTRA_COMMON_SHARED_PERIOD            30 //recommended 36
+#define ORCHESTRA_COMMON_SHARED_PERIOD            30 //recommended 36. must be multiple of unicast period
 #else //CONDUCT_ORCHESTRA
 #define ORCHESTRA_COMMON_SHARED_PERIOD            31
 #endif //CONDUCT_ORCHESTRA
@@ -92,7 +113,7 @@
 #define ORCHESTRA_UNICAST_PERIOD                  ORCHESTRA_CONF_UNICAST_PERIOD
 #else /* ORCHESTRA_CONF_UNICAST_PERIOD */
 #ifdef CONDUCT_ORCHESTRA //by TadaMatz 2/July/2016
-#define ORCHESTRA_UNICAST_PERIOD                  15 //recommended 18
+#define ORCHESTRA_UNICAST_PERIOD                  15 //recommended 18. basis of conduct orchestra
 #else //CONDUCT_ORCHESTRA
 #define ORCHESTRA_UNICAST_PERIOD                  17
 #endif //CONDUCT_ORCHESTRA

@@ -51,7 +51,9 @@ get_node_timeslot(const linkaddr_t *addr)
 #if ORCHESTRA_EBSF_PERIOD > 0
 #ifdef CONDUCT_ORCHESTRA //added by TadaMatz 2/July/2016
   return (ORCHESTRA_LINKADDR_HASH(addr) - 1) % CONDUCT_EBSF_OFFSET + 1;
-#else //CONDUCT_ORCHESTRA
+#elif defined SEPARATE_ORCHESTRA //added by TadaMatz 26/Aug/2016
+  return (ORCHESTRA_LINKADDR_HASH(addr) - 1) % SEPARATE_EBSF_OFFSET + 1;
+#else //CONDUCT_ORCHESTRA, SEPARATE_ORCHESTRA
   return ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_EBSF_PERIOD;
 #endif //CONDUCT_ORCHESTRA
 #else
