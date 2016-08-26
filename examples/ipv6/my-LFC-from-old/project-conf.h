@@ -40,7 +40,8 @@
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 8//here can controll the number of re-transmission in TSCH
 //#define WITH_LEAPFROG
 //#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
-#define CONDUCT_ORCHESTRA
+//#define CONDUCT_ORCHESTRA //Scheduling based on Orchestra idea. Each slotframe has different lengths
+#define SEPARATE_ORCHESTRA //Schduling based on Orchestra idea. All slotframes have same slotframe lengths
 #define WITH_POWERTRACE // for power trace
 #define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
