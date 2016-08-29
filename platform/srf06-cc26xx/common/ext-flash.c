@@ -40,6 +40,9 @@
 #include "ext-flash.h"
 #include "ti-lib.h"
 #include "board-spi.h"
+
+#include <stdint.h>
+#include <stdbool.h>
 /*---------------------------------------------------------------------------*/
 /* Instruction codes */
 
@@ -73,6 +76,7 @@
 #define BLS_DEVICE_ID_W25X20CL    0x11
 #define BLS_DEVICE_ID_W25X40CL    0x12
 #define BLS_DEVICE_ID_MX25R8035F  0x14
+#define BLS_DEVICE_ID_MX25R1635F  0x15
 
 #define BLS_WINBOND_MID           0xEF
 #define BLS_MACRONIX_MID          0xC2
@@ -90,7 +94,7 @@
 static void
 select_on_bus(void)
 {
-  ti_lib_gpio_pin_write(BOARD_FLASH_CS, 0);
+  ti_lib_gpio_clear_dio(BOARD_IOID_FLASH_CS);
 }
 /*---------------------------------------------------------------------------*/
 /**
@@ -99,7 +103,7 @@ select_on_bus(void)
 static void
 deselect(void)
 {
-  ti_lib_gpio_pin_write(BOARD_FLASH_CS, 1);
+  ti_lib_gpio_set_dio(BOARD_IOID_FLASH_CS);
 }
 /*---------------------------------------------------------------------------*/
 /**
@@ -179,7 +183,8 @@ verify_part(void)
 
   if((rbuf[0] != BLS_WINBOND_MID && rbuf[0] != BLS_MACRONIX_MID) ||
      (rbuf[1] != BLS_DEVICE_ID_W25X20CL && rbuf[1] != BLS_DEVICE_ID_W25X40CL
-      && rbuf[1] != BLS_DEVICE_ID_MX25R8035F)) {
+      && rbuf[1] != BLS_DEVICE_ID_MX25R8035F
+      && rbuf[1] != BLS_DEVICE_ID_MX25R1635F)) {
     return VERIFY_PART_POWERED_DOWN;
   }
   return VERIFY_PART_OK;

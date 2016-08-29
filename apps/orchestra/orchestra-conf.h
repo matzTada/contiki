@@ -46,19 +46,17 @@
  * - a sender-based or receiver-based slotframe for unicast to RPL parents and children
  * - a common shared slotframe for any other traffic (mostly broadcast)
  *  */
+
 //added by TadaMatz 15/June/2016
 #ifdef WITH_LEAPFROG_TSCH
-#define ORCHESTRA_RULES { &eb_per_time_source, \
-                          &unicast_per_neighbor, \
-                          &default_common, \
-                          &leapfrog_alt_traffic, \
-                        }
-#else /*WITH_LEAPFROG_TSCH*/
-#define ORCHESTRA_RULES { &eb_per_time_source, \
-                          &unicast_per_neighbor, \
-                          &default_common, \
-                        }
-#endif /*WITH_LEAPFROG_TSCH*/
+#define ORCHESTRA_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common, &leapfrog_alt_traffic }
+#else //WITH_LEAPFROG_TSCH
+#define ORCHESTRA_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common }
+#endif //WITH_LEAPFROG_TSCH
+
+/* Example configuration for RPL non-storing mode: */
+/* #define ORCHESTRA_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_ns, &default_common } */
+
 #endif /* ORCHESTRA_CONF_RULES */
 
 #ifdef CONDUCT_ORCHESTRA //change unicast slot feature for Leapfrog

@@ -46,6 +46,17 @@
 #endif /* WITH_SECURITY */
 
 /*******************************************************/
+/********* Enable RPL non-storing mode *****************/
+/*******************************************************/
+
+#undef UIP_CONF_MAX_ROUTES
+#define UIP_CONF_MAX_ROUTES 0 /* No need for routes */
+#undef RPL_CONF_MOP
+#define RPL_CONF_MOP RPL_MOP_NON_STORING /* Mode of operation*/
+#undef ORCHESTRA_CONF_RULES
+#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_ns, &default_common } /* Orchestra in non-storing */
+
+/*******************************************************/
 /********************* Enable TSCH *********************/
 /*******************************************************/
 
@@ -67,13 +78,19 @@
 #define TSCH_CALLBACK_JOINING_NETWORK tsch_rpl_callback_joining_network
 #define TSCH_CALLBACK_LEAVING_NETWORK tsch_rpl_callback_leaving_network
 
+/* Needed for CC2538 platforms only */
+/* For TSCH we have to use the more accurate crystal oscillator
+ * by default the RC oscillator is activated */
+#undef SYS_CTRL_CONF_OSC32K_USE_XTAL
+#define SYS_CTRL_CONF_OSC32K_USE_XTAL 1
+
 /* Needed for cc2420 platforms only */
 /* Disable DCO calibration (uses timerB) */
 #undef DCOSYNCH_CONF_ENABLED
-#define DCOSYNCH_CONF_ENABLED            0
+#define DCOSYNCH_CONF_ENABLED 0
 /* Enable SFD timestamps (uses timerB) */
 #undef CC2420_CONF_SFD_TIMESTAMPS
-#define CC2420_CONF_SFD_TIMESTAMPS       1
+#define CC2420_CONF_SFD_TIMESTAMPS 1
 
 /*******************************************************/
 /******************* Configure TSCH ********************/
@@ -133,9 +150,9 @@
 #undef UIP_CONF_TCP
 #define UIP_CONF_TCP 0
 #undef QUEUEBUF_CONF_NUM
-#define QUEUEBUF_CONF_NUM 4
-#undef UIP_CONF_MAX_ROUTES
-#define UIP_CONF_MAX_ROUTES  8
+#define QUEUEBUF_CONF_NUM 3
+#undef RPL_NS_CONF_LINK_NUM
+#define RPL_NS_CONF_LINK_NUM  8
 #undef NBR_TABLE_CONF_MAX_NEIGHBORS
 #define NBR_TABLE_CONF_MAX_NEIGHBORS 8
 #undef UIP_CONF_ND6_SEND_NA
@@ -157,5 +174,11 @@
 #endif /* WITH_SECURITY */
 
 #endif /* CONTIKI_TARGET_Z1 */
+
+#if CONTIKI_TARGET_CC2538DK || CONTIKI_TARGET_ZOUL || \
+  CONTIKI_TARGET_OPENMOTE_CC2538
+#define TSCH_CONF_HW_FRAME_FILTERING    0
+#endif /* CONTIKI_TARGET_CC2538DK || CONTIKI_TARGET_ZOUL \
+       || CONTIKI_TARGET_OPENMOTE_CC2538 */
 
 #endif /* __PROJECT_CONF_H__ */
