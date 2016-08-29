@@ -185,7 +185,7 @@ new_time_source(const struct tsch_neighbor *old, const struct tsch_neighbor *new
 //#ifdef CONDUCT_ORCHESTRA
 //    orchestra_conduct_add_uc_link(&linkaddr_node_addr, LINK_OPTION_TX);
 //#else //CONDUCT_ORCHESTRA
-    remove_uc_link(new_addr);
+    remove_uc_link(old_addr);
     add_uc_link(new_addr);
 //#endif //CONDUCT_ORCHESTRA
   }
