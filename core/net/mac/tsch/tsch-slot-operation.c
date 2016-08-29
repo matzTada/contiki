@@ -1003,36 +1003,6 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
         current_link = backup_link;
         current_packet = get_packet_and_neighbor_for_link(current_link, &current_neighbor);
       }
-<<<<<<< HEAD
-      /* Hop channel */
-      current_channel = tsch_calculate_channel(&current_asn, current_link->channel_offset);
-      NETSTACK_RADIO.set_value(RADIO_PARAM_CHANNEL, current_channel);
-      /* Reset drift correction */
-      drift_correction = 0;
-      is_drift_correction_used = 0;
-      /* Decide whether it is a TX/RX/IDLE or OFF slot */
-      /* Actual slot operation */
-      if(current_packet != NULL) {
-        /* We have something to transmit, do the following:
-         * 1. send
-         * 2. update_backoff_state(current_neighbor)
-         * 3. post tx callback
-         **/
-        static struct pt slot_tx_pt;
-        PT_SPAWN(&slot_operation_pt, &slot_tx_pt, tsch_tx_slot(&slot_tx_pt, t));
-	#ifdef DEBUG_TADAMATZ
-	      //added by TadaMatz 19/May/2016 to see packet sent or not
-	      PRINTF("so TS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
-	#endif /*DEBUG_TADAMATZ*/
-      } else if((current_link->link_options & LINK_OPTION_RX)) {
-        /* Listen */
-        static struct pt slot_rx_pt;
-        PT_SPAWN(&slot_operation_pt, &slot_rx_pt, tsch_rx_slot(&slot_rx_pt, t));
-	#ifdef DEBUG_TADAMATZ
-	      //added by TadaMatz 19/May/2016 to see packet sent or not
-	      PRINTF("so RS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
-	#endif /*DEBUG_TADAMATZ*/
-=======
       is_active_slot = current_packet != NULL || (current_link->link_options & LINK_OPTION_RX);
       if(is_active_slot) {
         /* Hop channel */
@@ -1050,12 +1020,15 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
            **/
           static struct pt slot_tx_pt;
           PT_SPAWN(&slot_operation_pt, &slot_tx_pt, tsch_tx_slot(&slot_tx_pt, t));
+	  //added by TadaMatz 19/May/2016 to see packet sent or not
+	  //PRINTA("so TS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
         } else {
           /* Listen */
           static struct pt slot_rx_pt;
           PT_SPAWN(&slot_operation_pt, &slot_rx_pt, tsch_rx_slot(&slot_rx_pt, t));
+	  //added by TadaMatz 19/May/2016 to see packet sent or not
+	  //PRINTA("so RS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
         }
->>>>>>> bc2ff5b3528a3bdfd7f8660e384c0742db2438db
       }
       TSCH_DEBUG_SLOT_END();
 
