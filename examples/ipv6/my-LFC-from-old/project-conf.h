@@ -37,16 +37,16 @@
 
 //modified by TadaMatz 1/July/2016
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH
-#define WITH_LEAPFROG
-#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 8//here can controll the number of re-transmission in TSCH
+//#define WITH_LEAPFROG
+//#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
 //#define CONDUCT_ORCHESTRA //Scheduling based on Orchestra idea. Each slotframe has different lengths
 #define SEPARATE_ORCHESTRA //Schduling based on Orchestra idea. All slotframes have same slotframe lengths
 //#define WITH_DATA_SLOT //make timeslot dedicated for application traffic. must be used with SEPARATE_ORCHESTRA
 #define WITH_POWERTRACE // for power trace
 #define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
+//#define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
 //#define ORCHESTRA_CONF_COLLISION_FREE_HASH 1
 
 //udp data
@@ -121,7 +121,7 @@
 /* TSCH logging. 0: disabled. 1: basic log. 2: with delayed
  * log messages from interrupt */
 #undef TSCH_LOG_CONF_LEVEL
-#define TSCH_LOG_CONF_LEVEL 1
+#define TSCH_LOG_CONF_LEVEL 2
 
 /* IEEE802.15.4 PANID */
 #undef IEEE802154_CONF_PANID

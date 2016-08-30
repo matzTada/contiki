@@ -11,9 +11,9 @@ send_count = 0;
 receive_count = 0;
 replication_count = 0;
 elimination_count = 0;
-stable_flag = 0; //if 0 useing stable timer, 1 always log
+stable_flag = 1; //if 0 useing stable timer, 1 always log
 
-TIMEOUT(4500000, log.log("Simulation time expired Time " + time + " PDR " + (receive_count / send_count) + " #send " + send_count +  " #receive " + receive_count + " #replication " + replication_count + " #elimination " + elimination_count +  "\n")); /* milliseconds. print last msg at timeout */
+TIMEOUT(5400000, log.log("Simulation time expired Time " + time + " PDR " + (receive_count / send_count) + " #send " + send_count +  " #receive " + receive_count + " #replication " + replication_count + " #elimination " + elimination_count +  "\n")); /* milliseconds. print last msg at timeout */
 
 log.log("Simulation starts\n");
 
