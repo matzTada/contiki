@@ -80,10 +80,6 @@
 #define UDP_PORT 1234
 #define SERVICE_ID 190
 
-#define SEND_INTERVAL   (30 * CLOCK_SECOND)
-//#define SEND_TIME   (random_rand() % (SEND_INTERVAL))
-#define SEND_TIME   (SEND_INTERVAL) //make it periodical
-
 static struct simple_udp_connection unicast_connection;
 
 PROCESS(unicast_sender_process, "Unicast sender example process");
@@ -92,12 +88,6 @@ PROCESS(unicast_sender_process, "Unicast sender example process");
 
 /* ----------------- leapfrog include and declaration start ----------------- */
 #ifdef WITH_LEAPFROG
-#define LEAPFROG_UDP_PORT 5678
-#define LEAPFROG_SEND_INTERVAL   (15 * CLOCK_SECOND)
-#define LEAPFROG_SEND_TIME   (random_rand() % (SEND_INTERVAL))
-//#define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
-//#define LEAPFROG_BEACON_OFFSET 48 //for avoid NULL character in data packet
-//#define LEAPFROG_DATA_HEADER 0xf2 //for sending data
 
 char leapfrog_parent_id = 0;
 char leapfrog_grand_parent_id = 0;
@@ -447,7 +437,7 @@ PROCESS_THREAD(node_process, ev, data)
 #endif /* WITH_ORCHESTRA */
 
 #ifdef WITH_POWERTRACE
-  powertrace_start(CLOCK_SECOND * 10);
+  powertrace_start(CLOCK_SECOND * 15);
 #endif
   
   /* Print out routing tables every minute */
@@ -483,7 +473,11 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
   simple_udp_register(&unicast_connection, UDP_PORT,
                       NULL, UDP_PORT, receiver);
 
-  etimer_set(&data_periodic_timer, SEND_INTERVAL);
+  //slide timer added 31/Aug/2016 avoid collision with network print
+  etimer_set(&data_periodic_timer, DATA_SEND_INTERVAL / 2);
+  PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&data_periodic_timer));
+
+  etimer_set(&data_periodic_timer, DATA_SEND_INTERVAL);
   while(1) {
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&data_periodic_timer));
       etimer_reset(&data_periodic_timer);
@@ -622,7 +616,7 @@ PROCESS_THREAD(stable_timer_process, ev, data)
   static struct etimer stable_timer;
 
   PROCESS_BEGIN();
-  etimer_set(&stable_timer, CLOCK_SECOND * 60 * 15); //15min
+  etimer_set(&stable_timer, STABLE_TIME); //15min
   printf("Set Stable timer\n");
   
   PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&stable_timer));
