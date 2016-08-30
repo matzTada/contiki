@@ -37,9 +37,9 @@
 
 //modified by TadaMatz 1/July/2016
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 8//here can controll the number of re-transmission in TSCH
-//#define WITH_LEAPFROG
-//#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH
+#define WITH_LEAPFROG
+#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
 //#define CONDUCT_ORCHESTRA //Scheduling based on Orchestra idea. Each slotframe has different lengths
 #define SEPARATE_ORCHESTRA //Schduling based on Orchestra idea. All slotframes have same slotframe lengths
 //#define WITH_DATA_SLOT //make timeslot dedicated for application traffic. must be used with SEPARATE_ORCHESTRA
@@ -49,7 +49,19 @@
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
 //#define ORCHESTRA_CONF_COLLISION_FREE_HASH 1
 
+//udp data
+#define DATA_SEND_INTERVAL   (60 * CLOCK_SECOND)
+//#define DATA_SEND_TIME   (random_rand() % (DATA_SEND_INTERVAL))
+#define DATA_SEND_TIME   (DATA_SEND_INTERVAL) //make it periodical
+
+#ifdef WITH_STABLETIMER
+#define STABLE_TIME (1800 * CLOCK_SECOND)
+#endif //WITH_STABLETIMER
+
 #ifdef WITH_LEAPFROG
+#define LEAPFROG_UDP_PORT 5678
+#define LEAPFROG_SEND_INTERVAL   (15 * CLOCK_SECOND)
+#define LEAPFROG_SEND_TIME   (random_rand() % (LEAPFROG_SEND_INTERVAL))
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
 #define LEAPFROG_DATA_HEADER 0xf2 //for sending data
 #define LEAPFROG_BEACON_OFFSET 48 //for avoiding NULL character in data packet
@@ -109,7 +121,7 @@
 /* TSCH logging. 0: disabled. 1: basic log. 2: with delayed
  * log messages from interrupt */
 #undef TSCH_LOG_CONF_LEVEL
-#define TSCH_LOG_CONF_LEVEL 2
+#define TSCH_LOG_CONF_LEVEL 1
 
 /* IEEE802.15.4 PANID */
 #undef IEEE802154_CONF_PANID
