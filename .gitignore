@@ -11,7 +11,7 @@
 *.redbee-econotag
 *.econotag 
 *.native
-#*.z1
+*.z1
 *.minimal-net
 *.sky
 *.wismote
