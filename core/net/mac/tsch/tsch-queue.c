@@ -83,6 +83,11 @@ struct tsch_neighbor *n_eb;
 extern char leapfrog_alt_parent_id;
 #endif /*WITH_LEAPFROG_TSCH*/
 
+//added by TadaMatz 31/Aug/2016
+#ifdef WITH_DATA_SLOT
+#include "orchestra.h"
+#endif //WITH_DATA_SLOT
+
 /*---------------------------------------------------------------------------*/
 /* Add a TSCH neighbor */
 struct tsch_neighbor *
@@ -246,12 +251,13 @@ tsch_queue_add_packet(const linkaddr_t *addr, mac_callback_t sent, void *ptr)
 #ifdef TSCH_CALLBACK_PACKET_READY
           TSCH_CALLBACK_PACKET_READY();
 #endif
-#ifdef WITH_LEAPFROG_TSCH
+#ifdef WITH_LEAPFROG_TSCH //this is for alternate traffic. There only Application data
           if(leapfrog_alt_parent_id > 0 && n->addr.u8[7] == leapfrog_alt_parent_id){
             //PRINTF("QsA\n");
             orchestra_leapfrog_set_packetbuf_attr(leapfrog_alt_parent_id);
           }
-#endif /*WITH_LEAPFROG_TSCH*/
+#endif /*WITH_LEAPFROG_TSCH*/      
+
           p->qb = queuebuf_new_from_packetbuf();
           if(p->qb != NULL) {
             p->sent = sent;

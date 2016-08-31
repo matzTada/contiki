@@ -47,10 +47,16 @@
  * - a common shared slotframe for any other traffic (mostly broadcast)
  *  */
 
-//added by TadaMatz 15/June/2016
+//modifieds by TadaMatz 31/Aug/2016. Sequence of rules is related to priority of rule.
 #ifdef WITH_LEAPFROG_TSCH
-#define ORCHESTRA_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common, &leapfrog_alt_traffic }
+ #ifdef WITH_DATA_SLOT
+#define ORCHESTRA_RULES { &eb_per_time_source, &unicast_appdata_traffic, &leapfrog_alt_traffic, &unicast_per_neighbor_rpl_storing, &default_common}
+ #endif //WITH_DATASLOT
+#define ORCHESTRA_RULES { &eb_per_time_source, &leapfrog_alt_traffic, &unicast_per_neighbor_rpl_storing, &default_common}
 #else //WITH_LEAPFROG_TSCH
+ #ifdef WITH_DATA_SLOT
+#define ORCHESTRA_RULES { &eb_per_time_source, &unicast_appdata_traffic, &unicast_per_neighbor_rpl_storing, &default_common} 
+ #endif //WITH_DATASLOT
 #define ORCHESTRA_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common }
 #endif //WITH_LEAPFROG_TSCH
 

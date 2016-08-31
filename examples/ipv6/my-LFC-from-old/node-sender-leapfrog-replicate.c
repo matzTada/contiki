@@ -522,7 +522,9 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
         }
         leapfrog_data_counter++;
         if(leapfrog_data_counter > LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
-#else
+#elif defined APPLICATION_DATA_HEADER
+        sprintf(buf, "%cHello Tada %04d", APPLICATION_DATA_HEADER, message_number);
+#else 
         sprintf(buf, "NoHello Tada %04d", message_number);
 #endif
         printf("DATA: Sending unicast to ");
