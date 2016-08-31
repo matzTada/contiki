@@ -42,8 +42,8 @@
 //#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
 //#define CONDUCT_ORCHESTRA //Scheduling based on Orchestra idea. Each slotframe has different lengths
 #define SEPARATE_ORCHESTRA //Schduling based on Orchestra idea. All slotframes have same slotframe lengths
-//#define WITH_DATA_SLOT //make timeslot dedicated for application traffic. must be used with SEPARATE_ORCHESTRA
-#define WITH_POWERTRACE // for power trace
+#define WITH_DATA_SLOT //make timeslot dedicated for application traffic. must be used with SEPARATE_ORCHESTRA
+//#define WITH_POWERTRACE // for power trace
 #define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
 //#define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
