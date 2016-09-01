@@ -52,6 +52,9 @@
 #ifdef WITH_POWERTRACE
 #include "powertrace.h"
 #endif //WITH_POWERTRACE
+#ifdef WITH_THUNDER
+#include "thunder.h"
+#endif //WITH_THUNDER
 
 #define DEBUG DEBUG_PRINT
 #include "net/ip/uip-debug.h"
@@ -435,6 +438,11 @@ PROCESS_THREAD(node_process, ev, data)
 #if WITH_ORCHESTRA
   orchestra_init();
 #endif /* WITH_ORCHESTRA */
+
+
+#ifdef WITH_THUNDER //added by TadaMatz 1/Sep/2016
+  thunder_init();
+#endif //WITH_THUNDER
 
 #ifdef WITH_POWERTRACE
   powertrace_start(CLOCK_SECOND * 15);
