@@ -55,6 +55,12 @@ get_node_timeslot(const uint16_t src_id, const uint16_t dst_id)
   return (src_id - 1) * THUNDER_NUM_NODE + (dst_id - 1);
 }
 /*---------------------------------------------------------------------------*/
+static uint16_t
+get_eb_timeslot(const uint16_t src_id)
+{
+  return (src_id - 1) + THUNDER_NUM_NODE * THUNDER_NUM_NODE;
+}
+/*---------------------------------------------------------------------------*/
 void
 thunder_callback_packet_ready(void)
 {
@@ -63,7 +69,7 @@ thunder_callback_packet_ready(void)
 
   /* Judge packet and assign specified link */ 
   if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_BEACONFRAME) {   /* EBs should be sent in Broadcast slot. Because virtual neighbor EB addr is {0}*/
-    timeslot = get_node_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr), THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
+    timeslot = get_eb_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
   }
   else if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME && !linkaddr_cmp(dst_addr, &linkaddr_null)) { /* Unicast data*/
     timeslot = get_node_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr), THUNDER_LINKADDR_HASH(dst_addr));
@@ -90,12 +96,35 @@ thunder_init(void)
   /* Initialize Thunder  */
   PRINTF("Thunder: initializing\n");
 
+  //EB Tx slots
+  timeslot = get_eb_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr)); //after all unicast and broadcast slot
+  tsch_schedule_add_link(sf_thunder, 
+    LINK_OPTION_TX, 
+    LINK_TYPE_ADVERTISING_ONLY, 
+    &tsch_broadcast_address,
+    timeslot, 
+    channel_offset);
+
+
+  //EB Rx slots
+  for(i = 1; i < THUNDER_NUM_NODE + 1; i++){
+    if(THUNDER_LINKADDR_HASH(&linkaddr_node_addr) != i){ //when I am a sender, skip
+      timeslot = get_eb_timeslot(i); 
+      tsch_schedule_add_link(sf_thunder, 
+       LINK_OPTION_RX, 
+       LINK_TYPE_ADVERTISING_ONLY, 
+       &tsch_broadcast_address,
+       timeslot, 
+       channel_offset);
+    }
+  }
+
   //Tx slots
   for(i = 1; i < THUNDER_NUM_NODE + 1; i++){
     timeslot = get_node_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr), i); //(src = &linkaddr_node_addr = own linkaddr, dst = neighbor)
     tsch_schedule_add_link(sf_thunder, 
      LINK_OPTION_TX, 
-     LINK_TYPE_ADVERTISING | LINK_TYPE_NORMAL, 
+     LINK_TYPE_NORMAL, 
      &tsch_broadcast_address,
      timeslot, 
      channel_offset);    
@@ -107,7 +136,7 @@ thunder_init(void)
       timeslot = get_node_timeslot(i, THUNDER_LINKADDR_HASH(&linkaddr_node_addr)); //(src = neighbor, dst = &linkaddr_node_addr = own linkaddr)
       tsch_schedule_add_link(sf_thunder, 
        LINK_OPTION_RX, 
-       LINK_TYPE_ADVERTISING | LINK_TYPE_NORMAL, 
+       LINK_TYPE_NORMAL, 
        &tsch_broadcast_address,
        timeslot, 
        channel_offset);
@@ -120,7 +149,7 @@ thunder_init(void)
       timeslot = get_node_timeslot(i, i); //(src = neighbor, dst = neighbor) i.e. Broadcast (1-1)*8+(1-1) for ID:1, (2-1)*8+(2-1) for ID:2, (3-1)*8+(3-1) for ID:3
       tsch_schedule_add_link(sf_thunder, 
        LINK_OPTION_RX, 
-       LINK_TYPE_ADVERTISING | LINK_TYPE_NORMAL, 
+       LINK_TYPE_NORMAL, 
        &tsch_broadcast_address,
        timeslot, 
        channel_offset);
