@@ -168,9 +168,12 @@ select_packet(uint16_t *slotframe, uint16_t *timeslot)
   /* Select data packets we have a unicast link to */
   const linkaddr_t *dest = packetbuf_addr(PACKETBUF_ADDR_RECEIVER);
   if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME
-     && neighbor_has_uc_link(dest) //when this is true, which means that this node has parent or routes.
-     && (uip_buf[UIP_IPTCPH_LEN - 4] == APPLICATION_DATA_HEADER //without Leapfrog
-         || (uip_buf[UIP_IPTCPH_LEN - 4] == LEAPFROG_DATA_HEADER && linkaddr_cmp(&orchestra_parent_linkaddr, dest))) { //with Leapfrog and the packet for Preffered Parent
+     && neighbor_has_uc_link(dest) //when this is true, which means that this node has parent or routes.i
+     && (uip_buf[UIP_IPTCPH_LEN - 4] == APPLICATION_DATA_HEADER //with appdata slot
+     #ifdef WITH_LEAPFROG_TSCH
+        || (uip_buf[UIP_IPTCPH_LEN - 4] == LEAPFROG_DATA_HEADER && linkaddr_cmp(&orchestra_parent_linkaddr, dest)) //with Leapfrog and the packet for Preffered Parent
+     #endif //WITH_LEAPFROG_TSCH
+     )) { 
     if(slotframe != NULL) {
       *slotframe = slotframe_handle;
     }
@@ -212,7 +215,7 @@ init(uint16_t sf_handle)
             timeslot, channel_offset);
 }
 /*---------------------------------------------------------------------------*/
-struct orchestra_rule appdata_traffic = {
+struct orchestra_rule unicast_appdata_traffic = {
   init,
   new_time_source,
   select_packet,

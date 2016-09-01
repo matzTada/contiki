@@ -52,12 +52,15 @@ struct orchestra_rule {
   void (* child_removed)(const linkaddr_t *addr);
 };
 
+
 struct orchestra_rule eb_per_time_source;
 struct orchestra_rule unicast_per_neighbor_rpl_storing;
 struct orchestra_rule unicast_per_neighbor_rpl_ns;
 struct orchestra_rule default_common;
-//added by TadaMatz 15/June/2016
-#ifdef WITH_LEAPFROG_TSCH
+#ifdef WITH_DATA_SLOT //added by TadaMatz 31/Aug/2016
+struct orchestra_rule unicast_appdata_traffic;
+#endif /*WITH_LEAPFROG_TSCH*/
+#ifdef WITH_LEAPFROG_TSCH //added by TadaMatz 15/June/2016
 struct orchestra_rule leapfrog_alt_traffic;
 #endif /*WITH_LEAPFROG_TSCH*/
 

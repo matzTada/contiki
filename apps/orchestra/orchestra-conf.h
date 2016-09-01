@@ -51,13 +51,15 @@
 #ifdef WITH_LEAPFROG_TSCH
  #ifdef WITH_DATA_SLOT
 #define ORCHESTRA_RULES { &eb_per_time_source, &unicast_appdata_traffic, &leapfrog_alt_traffic, &unicast_per_neighbor_rpl_storing, &default_common}
- #endif //WITH_DATASLOT
+ #else //WITH_DATASLOT
 #define ORCHESTRA_RULES { &eb_per_time_source, &leapfrog_alt_traffic, &unicast_per_neighbor_rpl_storing, &default_common}
+ #endif //WITH_DATASLOT
 #else //WITH_LEAPFROG_TSCH
  #ifdef WITH_DATA_SLOT
 #define ORCHESTRA_RULES { &eb_per_time_source, &unicast_appdata_traffic, &unicast_per_neighbor_rpl_storing, &default_common} 
- #endif //WITH_DATASLOT
+ #else //WITH_DATASLOT
 #define ORCHESTRA_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common }
+ #endif //WITH_DATASLOT
 #endif //WITH_LEAPFROG_TSCH
 
 /* Example configuration for RPL non-storing mode: */
