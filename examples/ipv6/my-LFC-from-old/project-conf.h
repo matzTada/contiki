@@ -172,6 +172,8 @@
 
 #define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 /* No 6TiSCH minimal schedule */
 #define TSCH_CONF_WITH_LINK_SELECTOR 1 /* requires per-packet link selection */
+/* Thunder callbacks */
+#define TSCH_CALLBACK_PACKET_READY thunder_callback_packet_ready //set timeslot and frame to packefbuf attributes
 
 #endif //WITH_THUNDER
 /*******************************************************/
