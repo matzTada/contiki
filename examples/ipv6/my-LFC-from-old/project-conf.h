@@ -37,7 +37,7 @@
 
 //modified by TadaMatz 1/July/2016
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 8//here can controll the number of re-transmission in TSCH
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH
 //#define WITH_LEAPFROG
 
 //#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
