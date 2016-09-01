@@ -39,10 +39,14 @@
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 8//here can controll the number of re-transmission in TSCH
 //#define WITH_LEAPFROG
+
 //#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
 //#define CONDUCT_ORCHESTRA //Scheduling based on Orchestra idea. Each slotframe has different lengths
 //#define SEPARATE_ORCHESTRA //Schduling based on Orchestra idea. All slotframes have same slotframe lengths
 //#define WITH_DATA_SLOT //make timeslot dedicated for application traffic. must be used with SEPARATE_ORCHESTRA
+
+#define WITH_THUNDER //do not use Orchestra. Fixed TSCH schedule
+
 //#define WITH_POWERTRACE // for power trace
 #define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
@@ -72,7 +76,7 @@
 #endif /*WITH_LEAPFROG*/
 //==added
 
-#define WITH_ORCHESTRA 1
+#define WITH_ORCHESTRA 0 //if 1, enable Orchestra
 
 /* Set to run orchestra */
 #ifndef WITH_ORCHESTRA
@@ -163,6 +167,13 @@
 
 #endif /* WITH_ORCHESTRA */
 
+//added by TadaMatz 2016/Sep/1
+#ifdef WITH_THUNDER
+
+#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 /* No 6TiSCH minimal schedule */
+#define TSCH_CONF_WITH_LINK_SELECTOR 1 /* requires per-packet link selection */
+
+#endif //WITH_THUNDER
 /*******************************************************/
 /************* Other system configuration **************/
 /*******************************************************/

@@ -11,6 +11,7 @@ MAKE_WITH_SECURITY ?= 0 # force Security from command line
 APPS += orchestra
 APPS += servreg-hack #now not used. for simple-udp
 APPS += powertrace #for power trace
+APPS += thunder #for manual configuration of TSCH schedule
 MODULES += core/net/mac/tsch
 
 ifeq ($(MAKE_WITH_ORCHESTRA),1)
