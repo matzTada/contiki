@@ -103,18 +103,20 @@ thunder_init(void)
 
   //Rx slots
   for(i = 1; i < THUNDER_NUM_NODE + 1; i++){
-    timeslot = get_node_timeslot(i, THUNDER_LINKADDR_HASH(&linkaddr_node_addr)); //(src = neighbor, dst = &linkaddr_node_addr = own linkaddr)
-    tsch_schedule_add_link(sf_thunder, 
-     LINK_OPTION_RX, 
-     LINK_TYPE_ADVERTISING | LINK_TYPE_NORMAL, 
-     &tsch_broadcast_address,
-     timeslot, 
-     channel_offset);    
+    if(THUNDER_LINKADDR_HASH(&linkaddr_node_addr) != i){ //when I am a sender, skip
+      timeslot = get_node_timeslot(i, THUNDER_LINKADDR_HASH(&linkaddr_node_addr)); //(src = neighbor, dst = &linkaddr_node_addr = own linkaddr)
+      tsch_schedule_add_link(sf_thunder, 
+       LINK_OPTION_RX, 
+       LINK_TYPE_ADVERTISING | LINK_TYPE_NORMAL, 
+       &tsch_broadcast_address,
+       timeslot, 
+       channel_offset);
+    }
   }
 
   //Rx slots for broadcasting
   for(i = 1; i < THUNDER_NUM_NODE + 1; i++){
-    if(THUNDER_LINKADDR_HASH(&linkaddr_node_addr) != i){ //when I am a sender.
+    if(THUNDER_LINKADDR_HASH(&linkaddr_node_addr) != i){ //when I am a sender, skip
       timeslot = get_node_timeslot(i, i); //(src = neighbor, dst = neighbor) i.e. Broadcast (1-1)*8+(1-1) for ID:1, (2-1)*8+(2-1) for ID:2, (3-1)*8+(3-1) for ID:3
       tsch_schedule_add_link(sf_thunder, 
        LINK_OPTION_RX, 
