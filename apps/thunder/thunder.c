@@ -85,7 +85,7 @@ thunder_init(void)
   uint16_t timeslot = 0xffff;
 
   /* Only one slotframe*/
-  struct tsch_slotframe *sf_thunder = tsch_schedule_add_slotframe(slotframe_handle, THUNDER_SLOTFRAME_LENGTH);
+  sf_thunder = tsch_schedule_add_slotframe(slotframe_handle, THUNDER_SLOTFRAME_LENGTH);
 
   /* Initialize Thunder  */
   PRINTF("Thunder: initializing\n");
