@@ -50,7 +50,7 @@ void thunder_init(void);
 void thunder_callback_packet_ready(void);
 #ifdef WITH_THUNDER_ADAPTIVE_EB_SLOT
 /* Set with #define TSCH_CALLBACK_NEW_TIME_SOURCE thunder_callback_new_time_source */
-void thunder_callback_new_time_source(void);
+void thunder_callback_new_time_source(const struct tsch_neighbor *old, const struct tsch_neighbor *new);
 #endif //WITH_THUNDER_ADAPTIVE_EB_SLOT
 
 #endif /* __THUNDER_H__ */
