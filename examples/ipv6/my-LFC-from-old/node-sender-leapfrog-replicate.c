@@ -103,7 +103,7 @@ char leapfrog_data_counter = 0;
 char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE] = {LEAPFROG_DATA_COUNTER_MAX};
 
 extern rpl_instance_t * default_instance;
-// static struct simple_udp_connection leapfrog_unicast_connection;
+static struct simple_udp_connection leapfrog_unicast_connection;
 PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
 
 #ifdef WITH_LEAPFROG_TSCH
@@ -466,7 +466,6 @@ PROCESS_THREAD(node_process, ev, data)
   powertrace_start(CLOCK_SECOND * 15);
 #endif
 
-  simple_udp_register(&unicast_connection, UDP_PORT, NULL, UDP_PORT, receiver);
   
   /* Print out routing tables every minute */
   etimer_set(&et, CLOCK_SECOND * 60);
@@ -498,6 +497,8 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
 
   // set_global_address();
 
+  simple_udp_register(&unicast_connection, UDP_PORT, NULL, UDP_PORT, receiver);
+  
   //slide timer added 31/Aug/2016 avoid collision with network print
   etimer_set(&data_periodic_timer, DATA_SEND_INTERVAL / 2);
   PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&data_periodic_timer));
@@ -578,7 +579,7 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
 
   PROCESS_BEGIN();
 
-  // simple_udp_register(&leapfrog_unicast_connection, LEAPFROG_UDP_PORT, NULL, LEAPFROG_UDP_PORT, receiver);
+  simple_udp_register(&leapfrog_unicast_connection, LEAPFROG_UDP_PORT, NULL, LEAPFROG_UDP_PORT, receiver);
 
   etimer_set(&lf_beacon_periodic_timer, LEAPFROG_SEND_INTERVAL);
   while(1) {
@@ -594,11 +595,12 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
       // uip_ipaddr_t *addr;
       uip_ipaddr_t temp_ipaddr;
       // uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
-      uip_create_linklocal_allnodes_mcast(&temp_ipaddr);  //refer to contiki/examples/ipv6/simple-udp-rpl/broadcast-example.c
+      //uip_create_linklocal_allnodes_mcast(&temp_ipaddr);  //refer to contiki/examples/ipv6/simple-udp-rpl/broadcast-example.c
+      uip_create_linklocal_allrouters_mcast(&temp_ipaddr); //refer to core/net/ip/uip.h#L2027. Usually, all nodes are Routers in TSCH network, at least in my understanding
       // addr = &temp_ipaddr;
 
       /*--- sending ---*/ 
-      if(&temp_ipaddr != NULL) {
+//      if(&temp_ipaddr != NULL) {
         static unsigned int message_number;
         char buf[20];
         char possible_parent_str[1 + LEAPFROG_NUM_NEIGHBOR_NODE];
@@ -627,9 +629,9 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
         // simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
         simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, &temp_ipaddr);
         //simple_udp_sendto(&unicast_connection, buf, cnt, addr);
-      } else {
-        printf("LEAPFROG: addr is null!!");
-      }
+//      } else {
+//        printf("LEAPFROG: addr is null!!");
+//      }
     } //if tsch_is_associated
   }
 

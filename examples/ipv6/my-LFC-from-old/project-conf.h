@@ -50,8 +50,8 @@
 #define WITH_THUNDER //do not use Orchestra. Fixed TSCH schedule
 #define WITH_THUNDER_ADAPTIVE_EB_SLOT //make EB slot can be changed based on network
 
-#define WITH_POWERTRACE // for power trace
-#define WITH_STABLETIMER // for waiting application traffic until network stabilized
+//#define WITH_POWERTRACE // for power trace
+//#define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
 //#define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
 //#define ORCHESTRA_CONF_COLLISION_FREE_HASH 1
@@ -66,7 +66,7 @@
 #endif //WITH_STABLETIMER
 
 #ifdef WITH_LEAPFROG
-// #define LEAPFROG_UDP_PORT 5678
+#define LEAPFROG_UDP_PORT 5678
 #define LEAPFROG_SEND_INTERVAL   (15 * CLOCK_SECOND)
 #define LEAPFROG_SEND_TIME   (random_rand() % (LEAPFROG_SEND_INTERVAL))
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
