@@ -61,6 +61,14 @@ get_eb_timeslot(const uint16_t src_id)
   return (src_id - 1) + THUNDER_NUM_NODE * THUNDER_NUM_NODE;
 }
 /*---------------------------------------------------------------------------*/
+#ifdef WITH_LEAPFROG
+static uint16_t
+get_leapfrog_beacon_timeslot(const uint16_t src_id)
+{
+  return (src_id - 1) + THUNDER_NUM_NODE * THUNDER_NUM_NODE + THUNDER_NUM_NODE; //just after Enhanced beacon
+}
+#endif //WITH_LEAPFROG
+/*---------------------------------------------------------------------------*/
 void
 thunder_callback_packet_ready(void)
 {
@@ -71,7 +79,14 @@ thunder_callback_packet_ready(void)
   if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_BEACONFRAME) {   /* EBs should be sent in Broadcast slot. Because virtual neighbor EB addr is {0}*/
     timeslot = get_eb_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
   }
-  else if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME && !linkaddr_cmp(dst_addr, &linkaddr_null)) { /* Unicast data*/
+#ifdef WITH_LEAPFROG
+  else if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME
+           && uip_buf[UIP_IPTCPH_LEN - 4] == LEAPFROG_BEACON_HEADER) { /* Leapfrog Beacon*/
+    timeslot = get_leapfrog_beacon_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
+  }
+#endif //WITH_LEAPFROG
+  else if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME 
+           && !linkaddr_cmp(dst_addr, &linkaddr_null)) { /* Unicast data*/
     timeslot = get_node_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr), THUNDER_LINKADDR_HASH(dst_addr));
   }
   else{ /* Any other slots are sent in broadcast slot*/
@@ -82,6 +97,8 @@ thunder_callback_packet_ready(void)
   packetbuf_set_attr(PACKETBUF_ATTR_TSCH_SLOTFRAME, slotframe_handle); //we have only one slotframe
   packetbuf_set_attr(PACKETBUF_ATTR_TSCH_TIMESLOT, timeslot);
 #endif
+
+  printf("packet ready timeslot: %d\n");
 }
 /*---------------------------------------------------------------------------*/
 void
@@ -155,6 +172,31 @@ thunder_init(void)
        channel_offset);
     }
   }
+
+#ifdef WITH_LEAPFROG
+  //Leapfrog Beacon Tx slots
+  timeslot = get_leapfrog_beacon_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr)); //after all unicast and broadcast slot
+  tsch_schedule_add_link(sf_thunder, 
+    LINK_OPTION_TX, 
+    LINK_TYPE_NORMAL,
+    &tsch_broadcast_address,
+    timeslot,
+    channel_offset);
+
+
+  //Leapfrog Beacon Rx slots
+  for(i = 1; i < THUNDER_NUM_NODE + 1; i++){
+    if(THUNDER_LINKADDR_HASH(&linkaddr_node_addr) != i){ //when I am a sender, skip
+      timeslot = get_leapfrog_beacon_timeslot(i);
+      tsch_schedule_add_link(sf_thunder,
+       LINK_OPTION_RX,
+       LINK_TYPE_NORMAL,
+       &tsch_broadcast_address,
+       timeslot,
+       channel_offset);
+    }
+  }
+#endif //WITH_LEAPFROG
 
   PRINTF("Thunder: initialization done\n");
 }
