@@ -61,13 +61,13 @@ get_eb_timeslot(const uint16_t src_id)
   return (src_id - 1) + THUNDER_NUM_NODE * THUNDER_NUM_NODE;
 }
 /*---------------------------------------------------------------------------*/
-#ifdef WITH_LEAPFROG
+#ifdef WITH_LEAPFROG_BEACON_SLOT
 static uint16_t
 get_leapfrog_beacon_timeslot(const uint16_t src_id)
 {
   return (src_id - 1) + THUNDER_NUM_NODE * THUNDER_NUM_NODE + THUNDER_NUM_NODE; //just after Enhanced beacon
 }
-#endif //WITH_LEAPFROG
+#endif //WITH_LEAPFROG_BEACON_SLOT
 /*---------------------------------------------------------------------------*/
 void
 thunder_callback_packet_ready(void)
@@ -87,20 +87,19 @@ thunder_callback_packet_ready(void)
   }
 */
 
-
   printf("THUNDER: p r slot:");
   /* Judge packet and assign specified link */ 
   if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_BEACONFRAME) {   /* EBs should be sent in Broadcast slot. Because virtual neighbor EB addr is {0}*/
     timeslot = get_eb_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
     printf("%d EB", timeslot);
   }
-#ifdef WITH_LEAPFROG
+#ifdef WITH_LEAPFROG_BEACON_SLOT
   else if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME
            && uip_buf[UIP_IPUDPH_LEN] == LEAPFROG_BEACON_HEADER) { //Leapfrog Beacon. Hey!!!!!!!! Magic number
     timeslot = get_leapfrog_beacon_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
     printf("%d LB", timeslot);
   }
-#endif //WITH_LEAPFROG
+#endif //WITH_LEAPFROG_BEACON_SLOT
   else if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME 
            && !linkaddr_cmp(dst_addr, &linkaddr_null)) { /* Unicast data*/
     timeslot = get_node_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr), THUNDER_LINKADDR_HASH(dst_addr));
@@ -190,7 +189,7 @@ thunder_init(void)
     }
   }
 
-#ifdef WITH_LEAPFROG
+#ifdef WITH_LEAPFROG_BEACON_SLOT
   //Leapfrog Beacon Tx slots
   timeslot = get_leapfrog_beacon_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr)); //after all unicast and broadcast slot
   tsch_schedule_add_link(sf_thunder, 
@@ -213,7 +212,7 @@ thunder_init(void)
        channel_offset);
     }
   }
-#endif //WITH_LEAPFROG
+#endif //WITH_LEAPFROG_BEACON_SLOT
 
   PRINTF("Thunder: initialization done\n");
 }

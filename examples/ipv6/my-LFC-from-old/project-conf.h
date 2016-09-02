@@ -40,6 +40,7 @@
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH
 
 #define WITH_LEAPFROG
+#define WITH_LEAPFROG_BEACON_SLOT
 
 //#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
 //#define CONDUCT_ORCHESTRA //Scheduling based on Orchestra idea. Each slotframe has different lengths
@@ -64,7 +65,7 @@
 #endif //WITH_STABLETIMER
 
 #ifdef WITH_LEAPFROG
-#define LEAPFROG_UDP_PORT 5678
+// #define LEAPFROG_UDP_PORT 5678
 #define LEAPFROG_SEND_INTERVAL   (15 * CLOCK_SECOND)
 #define LEAPFROG_SEND_TIME   (random_rand() % (LEAPFROG_SEND_INTERVAL))
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
