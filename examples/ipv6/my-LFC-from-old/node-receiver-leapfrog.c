@@ -519,7 +519,7 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
       // addr = &temp_ipaddr;
 
       /*--- sending ---*/ 
-      if(addr != NULL) {
+      if(&temp_ipaddr != NULL) {
         static unsigned int message_number;
         char buf[20];
         char possible_parent_str[1 + LEAPFROG_NUM_NEIGHBOR_NODE];
@@ -540,13 +540,13 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
           message_number);
         printf("LEAPFROG: Sending beacon to ");
         // uip_debug_ipaddr_print(addr);
-        uip_debug_ipaddr_print(&temp_addr);
+        uip_debug_ipaddr_print(&temp_ipaddr);
         printf(" '");
         printf(buf);
         printf("'\n");
         message_number++;
         // simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
-        simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, &temp_addr);
+        simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, &temp_ipaddr);
         //simple_udp_sendto(&unicast_connection, buf, cnt, addr);
       } else {
         printf("LEAPFROG: addr is null!!");

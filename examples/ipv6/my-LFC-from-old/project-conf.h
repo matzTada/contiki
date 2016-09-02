@@ -40,7 +40,7 @@
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can controll the number of re-transmission in TSCH
 
 #define WITH_LEAPFROG
-#define WITH_LEAPFROG_BEACON_SLOT
+//#define WITH_LEAPFROG_BEACON_SLOT
 
 //#define WITH_LEAPFROG_TSCH //if defined, make the new timeslot for alt-parent
 //#define CONDUCT_ORCHESTRA //Scheduling based on Orchestra idea. Each slotframe has different lengths
@@ -127,7 +127,7 @@
 /* TSCH logging. 0: disabled. 1: basic log. 2: with delayed
  * log messages from interrupt */
 #undef TSCH_LOG_CONF_LEVEL
-#define TSCH_LOG_CONF_LEVEL 0
+#define TSCH_LOG_CONF_LEVEL 2
 
 /* IEEE802.15.4 PANID */
 #undef IEEE802154_CONF_PANID
