@@ -75,30 +75,47 @@ thunder_callback_packet_ready(void)
   uint16_t timeslot = 0xffff;
   const linkaddr_t *dst_addr = packetbuf_addr(PACKETBUF_ADDR_RECEIVER);
 
+/*
+  int i = 0;
+  printf("IPTCPH");
+  for(i = -10; i < 10; i++){
+    printf("- i:%d c:%c x:%x -, ", i, uip_buf[UIP_IPTCPH_LEN + i], uip_buf[UIP_IPTCPH_LEN + i]);
+  }
+  printf("IPUDPH");
+  for(i = -10; i < 10; i++){
+    printf("-i:%dc:%cx:%x-", i, uip_buf[UIP_IPUDPH_LEN + i], uip_buf[UIP_IPUDPH_LEN + i]);
+  }
+*/
+
+
+  printf("THUNDER: p r slot:");
   /* Judge packet and assign specified link */ 
   if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_BEACONFRAME) {   /* EBs should be sent in Broadcast slot. Because virtual neighbor EB addr is {0}*/
     timeslot = get_eb_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
+    printf("%d EB", timeslot);
   }
 #ifdef WITH_LEAPFROG
   else if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME
-           && uip_buf[UIP_IPTCPH_LEN - 4] == LEAPFROG_BEACON_HEADER) { /* Leapfrog Beacon*/
+           && uip_buf[UIP_IPUDPH_LEN] == LEAPFROG_BEACON_HEADER) { //Leapfrog Beacon. Hey!!!!!!!! Magic number
     timeslot = get_leapfrog_beacon_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
+    printf("%d LB", timeslot);
   }
 #endif //WITH_LEAPFROG
   else if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME 
            && !linkaddr_cmp(dst_addr, &linkaddr_null)) { /* Unicast data*/
     timeslot = get_node_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr), THUNDER_LINKADDR_HASH(dst_addr));
+    printf("%d Uni", timeslot);
   }
   else{ /* Any other slots are sent in broadcast slot*/
     timeslot = get_node_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr), THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
+    printf("%d Bro", timeslot);
   }
+  printf("\n");
 
 #if TSCH_WITH_LINK_SELECTOR
   packetbuf_set_attr(PACKETBUF_ATTR_TSCH_SLOTFRAME, slotframe_handle); //we have only one slotframe
   packetbuf_set_attr(PACKETBUF_ATTR_TSCH_TIMESLOT, timeslot);
 #endif
-
-  printf("packet ready timeslot: %d\n");
 }
 /*---------------------------------------------------------------------------*/
 void
