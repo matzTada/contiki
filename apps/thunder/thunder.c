@@ -118,7 +118,7 @@ thunder_callback_packet_ready(void)
 }
 /*---------------------------------------------------------------------------*/
 #ifdef WITH_THUNDER_ADAPTIVE_EB_SLOT
-static void
+void
 thunder_callback_new_time_source(const struct tsch_neighbor *old, const struct tsch_neighbor *new)
 {
   uint16_t old_ts = old != NULL ? get_eb_timeslot(THUNDER_LINKADDR_HASH(&old->addr)) : 0xffff;
@@ -140,7 +140,7 @@ thunder_callback_new_time_source(const struct tsch_neighbor *old, const struct t
         channel_offset);
     } else {
       /* Remove slot */
-      tsch_schedule_remove_link_by_timeslot(sf_eb, old_ts);
+      tsch_schedule_remove_link_by_timeslot(sf_thunder, old_ts);
     }
   }
   if(new_ts != 0xffff) {
