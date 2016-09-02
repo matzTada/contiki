@@ -87,35 +87,78 @@ thunder_callback_packet_ready(void)
   }
 */
 
-  printf("THUNDER: p r slot:");
+  PRINTF("THUNDER: p r slot:");
   /* Judge packet and assign specified link */ 
   if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_BEACONFRAME) {   /* EBs should be sent in Broadcast slot. Because virtual neighbor EB addr is {0}*/
     timeslot = get_eb_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
-    printf("%d EB", timeslot);
+    PRINTF("%d EB", timeslot);
   }
 #ifdef WITH_LEAPFROG_BEACON_SLOT
   else if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME
            && uip_buf[UIP_IPUDPH_LEN] == LEAPFROG_BEACON_HEADER) { //Leapfrog Beacon. Hey!!!!!!!! Magic number
     timeslot = get_leapfrog_beacon_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
-    printf("%d LB", timeslot);
+    PRINTF("%d LB", timeslot);
   }
 #endif //WITH_LEAPFROG_BEACON_SLOT
   else if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_DATAFRAME 
            && !linkaddr_cmp(dst_addr, &linkaddr_null)) { /* Unicast data*/
     timeslot = get_node_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr), THUNDER_LINKADDR_HASH(dst_addr));
-    printf("%d Uni", timeslot);
+    PRINTF("%d Uni", timeslot);
   }
   else{ /* Any other slots are sent in broadcast slot*/
     timeslot = get_node_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr), THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
-    printf("%d Bro", timeslot);
+    PRINTF("%d Bro", timeslot);
   }
-  printf("\n");
+  PRINTF("\n");
 
 #if TSCH_WITH_LINK_SELECTOR
   packetbuf_set_attr(PACKETBUF_ATTR_TSCH_SLOTFRAME, slotframe_handle); //we have only one slotframe
   packetbuf_set_attr(PACKETBUF_ATTR_TSCH_TIMESLOT, timeslot);
 #endif
 }
+/*---------------------------------------------------------------------------*/
+#ifdef WITH_THUNDER_ADAPTIVE_EB_SLOT
+static void
+thunder_callback_new_time_source(const struct tsch_neighbor *old, const struct tsch_neighbor *new)
+{
+  uint16_t old_ts = old != NULL ? get_eb_timeslot(THUNDER_LINKADDR_HASH(&old->addr)) : 0xffff;
+  uint16_t new_ts = new != NULL ? get_eb_timeslot(THUNDER_LINKADDR_HASH(&new->addr)) : 0xffff;
+
+  if(new_ts == old_ts) {
+    return;
+  }
+
+  if(old_ts != 0xffff) {
+    /* Stop listening to the old time source's EBs */
+    if(old_ts == get_eb_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr))) {
+      /* This was the same timeslot as slot. Reset original link options */
+      tsch_schedule_add_link(sf_thunder, 
+        LINK_OPTION_TX, 
+        LINK_TYPE_ADVERTISING_ONLY,
+        &tsch_broadcast_address, 
+        old_ts, 
+        channel_offset);
+    } else {
+      /* Remove slot */
+      tsch_schedule_remove_link_by_timeslot(sf_eb, old_ts);
+    }
+  }
+  if(new_ts != 0xffff) {
+    uint8_t link_options = LINK_OPTION_RX;
+    if(new_ts == get_eb_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr))) {
+      /* This is also our timeslot, add necessary flags */
+      link_options |= LINK_OPTION_TX;
+    }
+    /* Listen to the time source's EBs */
+    tsch_schedule_add_link(sf_thunder, 
+      link_options,
+      LINK_TYPE_ADVERTISING_ONLY,
+      &tsch_broadcast_address, 
+      new_ts, 
+      channel_offset);
+  }
+}
+#endif //WITH_THUNDER_ADAPTIVE_EB_SLOT
 /*---------------------------------------------------------------------------*/
 void
 thunder_init(void)
@@ -129,6 +172,15 @@ thunder_init(void)
   /* Initialize Thunder  */
   PRINTF("Thunder: initializing\n");
 
+#ifdef WITH_THUNDER_ADAPTIVE_EB_SLOT
+  /* EB link: every neighbor uses its own to avoid contention */
+  tsch_schedule_add_link(sf_thunder, 
+    LINK_OPTION_TX,
+    LINK_TYPE_ADVERTISING_ONLY, 
+    &tsch_broadcast_address,
+    get_eb_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr)), 
+    channel_offset);
+#else //WITH_THUNDER_ADAPTIVE_EB_SLOT
   //EB Tx slots
   timeslot = get_eb_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr)); //after all unicast and broadcast slot
   tsch_schedule_add_link(sf_thunder, 
@@ -150,6 +202,7 @@ thunder_init(void)
        channel_offset);
     }
   }
+#endif //WITH_THUNDER_ADAPTIVE_EB_SLOT
 
   //Unicast Tx slots
   for(i = 1; i < THUNDER_NUM_NODE + 1; i++){

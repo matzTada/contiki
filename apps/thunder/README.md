@@ -22,8 +22,10 @@ Enable TSCH link selector (allows Orchestra to assign TSCH links to outgoing pac
 
 Set up the following callbacks:  
 
-`#define TSCH_CALLBACK_PACKET_READY thunder_callback_packet_ready
-`
+```
+#define TSCH_CALLBACK_PACKET_READY thunder_callback_packet_ready  
+#define TSCH_CALLBACK_NEW_TIME_SOURCE thunder_callback_new_time_source
+```
 
 To use Orchestra, fist add it to your makefile `APPS` with `APPS += thunder`.
  

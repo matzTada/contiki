@@ -48,6 +48,7 @@
 //#define WITH_DATA_SLOT //make timeslot dedicated for application traffic. must be used with SEPARATE_ORCHESTRA
 
 #define WITH_THUNDER //do not use Orchestra. Fixed TSCH schedule
+#define WITH_THUNDER_ADAPTIVE_EB_SLOT //make EB slot can be changed based on network
 
 #define WITH_POWERTRACE // for power trace
 #define WITH_STABLETIMER // for waiting application traffic until network stabilized
@@ -176,6 +177,10 @@
 #define TSCH_CONF_WITH_LINK_SELECTOR 1 /* requires per-packet link selection */
 /* Thunder callbacks */
 #define TSCH_CALLBACK_PACKET_READY thunder_callback_packet_ready //set timeslot and frame to packefbuf attributes
+
+#ifdef WITH_THUNDER_ADAPTIVE_EB_SLOT
+#define TSCH_CALLBACK_NEW_TIME_SOURCE thunder_callback_new_time_source //only for eb
+#endif //WITH_THUNDER_ADAPTIVE_EB_SLOT
 
 #endif //WITH_THUNDER
 /*******************************************************/
