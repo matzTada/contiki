@@ -257,9 +257,7 @@ receiver(struct simple_udp_connection *c,
     printf("LEAPFROG: receive beacon '%s'\n", data);
     
     //preparing own informaiton
-    #ifdef WITH_LEAPFROG_TSCH
     char my_id = node_id;
-    #endif //WITH_LEAPFROG_TSCH
     char my_pid = 0;
     uip_ipaddr_t * addr;
     addr = rpl_get_parent_ipaddr(default_instance->current_dag->preferred_parent);
