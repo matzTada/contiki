@@ -100,7 +100,7 @@ char leapfrog_possible_parent_num = 0;
 char leapfrog_possible_parent_id_array[LEAPFROG_NUM_NEIGHBOR_NODE];
 
 char leapfrog_data_counter = 0;
-char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
+char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE] = {LEAPFROG_DATA_COUNTER_MAX};
 
 extern rpl_instance_t * default_instance;
 static struct simple_udp_connection leapfrog_unicast_connection;
@@ -439,10 +439,16 @@ PROCESS_THREAD(node_process, ev, data)
   orchestra_init();
 #endif /* WITH_ORCHESTRA */
 
-
 #ifdef WITH_THUNDER //added by TadaMatz 1/Sep/2016
   thunder_init();
 #endif //WITH_THUNDER
+
+#ifdef WITH_LEAPFROG
+  int initialize_elimination_itr = 0;
+  for(initialize_elimination_itr = 0; initialize_elimination_itr < LEAPFROG_NUM_NODE; initialize_elimination_itr++){
+    leapfrog_elimination_id_array[initialize_elimination_itr] = LEAPFROG_DATA_COUNTER_MAX; //Do not forget the initialization
+  }
+#endif //WITH_LEAPFROG
 
 #ifdef WITH_POWERTRACE
   powertrace_start(CLOCK_SECOND * 15);
