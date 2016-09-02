@@ -487,7 +487,7 @@ PROCESS_THREAD(node_process, ev, data)
 PROCESS_THREAD(unicast_sender_process, ev, data)
 {
   static struct etimer data_periodic_timer;
-  static struct etimer data_send_timer;
+  //static struct etimer data_send_timer;
   uip_ipaddr_t *addr;
 
 
@@ -575,7 +575,7 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
 {
   static struct etimer lf_beacon_periodic_timer;
   static struct etimer lf_beacon_send_timer;
-  uip_ipaddr_t *addr;
+  //uip_ipaddr_t *addr;
 
   PROCESS_BEGIN();
 

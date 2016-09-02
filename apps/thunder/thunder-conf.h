@@ -45,7 +45,7 @@
 #ifdef THUNDER_CONF_LINKADDR_HASH
 #define THUNDER_LINKADDR_HASH                   THUNDER_CONF_LINKADDR_HASH
 #else /* THUNDER_CONF_LINKADDR_HASH */
-#define THUNDER_LINKADDR_HASH(addr)             ((addr != NULL) ? (addr)->u8[LINKADDR_SIZE - 1] : -1)
+#define THUNDER_LINKADDR_HASH(addr)             ((addr)->u8[LINKADDR_SIZE - 1])
 #endif /* THUNDER_CONF_LINKADDR_HASH */
 
 #endif /* __THUNDER_CONF_H__ */
