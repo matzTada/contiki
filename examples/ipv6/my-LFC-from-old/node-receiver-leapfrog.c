@@ -53,6 +53,7 @@
 #include "powertrace.h"
 #endif //WITH_POWERTRACE
 #ifdef WITH_THUNDER
+#include "net/rpl/rpl-private.h"
 #include "thunder.h"
 #endif //WITH_THUNDER
 
@@ -212,9 +213,9 @@ receiver(struct simple_udp_connection *c,
          uint16_t datalen)
 {
   printf("DATA: received from ");
-  //uip_debug_ipaddr_print(sender_addr);
-//  printf(" on port %d from port %d with length %d: '%s'\n", receiver_port, sender_port, datalen, data);
-  printf("ID:%d l:%d '%s'\n", sender_addr->u8[15], datalen, data); //make it shorter
+  uip_debug_ipaddr_print(sender_addr);
+  printf(" on port %d from port %d with length %d: '%s'\n", receiver_port, sender_port, datalen, data);
+  //printf("ID:%d l:%d '%s'\n", sender_addr->u8[15], datalen, data); //make it shorter
 
 #ifdef WITH_LEAPFROG //for beaconing
   if(data[0] == LEAPFROG_BEACON_HEADER){
@@ -515,9 +516,9 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
       /*-- linklocal rplnodes mcast --*/
       // uip_ipaddr_t *addr;
       uip_ipaddr_t temp_ipaddr;
-      // uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
+      uip_create_linklocal_rplnodes_mcast(&temp_ipaddr);  //uip_ip6addr(&temp_ipaddr, 0xff02,0,0,0,0,0,0,0x001a);
       //uip_create_linklocal_allnodes_mcast(&temp_ipaddr);  //refer to contiki/examples/ipv6/simple-udp-rpl/broadcast-example.c
-     uip_create_linklocal_allrouters_mcast(&temp_ipaddr); //refer to core/net/ip/uip.h#L2027. Usually, all nodes are Routers in TSCH network, at least in my understanding
+      //uip_create_linklocal_allrouters_mcast(&temp_ipaddr); //refer to core/net/ip/uip.h#L2027. Usually, all nodes are Routers in TSCH network, at least in my understanding
       // addr = &temp_ipaddr;
 
       /*--- sending ---*/ 
