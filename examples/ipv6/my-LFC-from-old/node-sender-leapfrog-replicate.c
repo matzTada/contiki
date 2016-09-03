@@ -46,6 +46,7 @@
 #include "net/rpl/rpl.h"
 #include "net/ipv6/uip-ds6-route.h"
 #include "net/mac/tsch/tsch.h"
+#include "net/rpl/rpl-private.h"
 #if WITH_ORCHESTRA
 #include "orchestra.h"
 #endif /* WITH_ORCHESTRA */
