@@ -51,8 +51,8 @@
 #include "net/ipv6/multicast/uip-mcast6.h"
 
 //added by TadaMatz 26/Aug/2016
-//#define DEBUG DEBUG_NONE
-#define DEBUG DEBUG_PRINT
+#define DEBUG DEBUG_NONE
+//#define DEBUG DEBUG_PRINT
 #include "net/ip/uip-debug.h"
 
 #include <limits.h>
