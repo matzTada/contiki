@@ -51,8 +51,13 @@
 #include "net/rpl/rpl.h"
 #include "net/ipv6/uip-ds6-route.h"
 #include "net/mac/tsch/tsch.h"
+#include "net/mac/tsch/tsch-schedule.h"
 #include "net/rpl/rpl-private.h"
 #include "simple-udp.h"
+
+#ifdef WITH_OVERHEARING
+#include "apps/thunder/thunder.h"
+#endif //WITH_OVERHEARING
 
 void leapfrog_receiver(struct simple_udp_connection *c,
          const uip_ipaddr_t *sender_addr,
