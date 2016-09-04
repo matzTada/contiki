@@ -53,4 +53,6 @@ void thunder_callback_packet_ready(void);
 void thunder_callback_new_time_source(const struct tsch_neighbor *old, const struct tsch_neighbor *new);
 #endif //WITH_THUNDER_ADAPTIVE_EB_SLOT
 
+void thunder_add_link(int src_id, int dst_id, uint8_t link_options);
+
 #endif /* __THUNDER_H__ */
