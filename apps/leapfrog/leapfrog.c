@@ -65,10 +65,10 @@ extern rpl_instance_t * default_instance;
 static struct simple_udp_connection leapfrog_unicast_connection;
 PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
 
-#ifdef WITH_LEAPFROG_TSCH
-// extern struct tsch_slotframe *sf_lfat; //leapfrog alt traffic
-linkaddr_t alt_parent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, 0}};
-#endif /*WITH_LEAPFROG_TSCH*/
+// #ifdef WITH_LEAPFROG_TSCH
+// // extern struct tsch_slotframe *sf_lfat; //leapfrog alt traffic
+// linkaddr_t alt_parent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, 0}};
+// #endif /*WITH_LEAPFROG_TSCH*/
 
 char leapfrog_layer = 0; //default for 0. sender should be 1
 
@@ -138,22 +138,22 @@ leapfrog_receiver(struct simple_udp_connection *c,
     if(leapfrog_grand_parent_id > 0 && temp_pid > 0 && leapfrog_grand_parent_id == temp_pid && leapfrog_parent_id != temp_sid){ //judge Alt Parent
       if(leapfrog_alt_parent_id != temp_sid){
         leapfrog_alt_parent_id = temp_sid; //get alt parent
-#ifdef WITH_LEAPFROG_TSCH //add unicast tx link to AP based on own(child) ID
-        linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
-        printf("LEAPFROG-TSCH: update alt tx normally -> AP %d\n", leapfrog_alt_parent_id);          
-        orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
-#endif /*WITH_LEAPFROG_TSCH*/
+// #ifdef WITH_LEAPFROG_TSCH //add unicast tx link to AP based on own(child) ID
+//         linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
+//         printf("LEAPFROG-TSCH: update alt tx normally -> AP %d\n", leapfrog_alt_parent_id);          
+//         orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
+// #endif /*WITH_LEAPFROG_TSCH*/
       }
     }else{ //get Alternate Parent by Possible Parent
       if(my_pid != temp_sid){
         for(temp_pps_itr = 0; temp_pps_itr < (int)temp_pps_num; temp_pps_itr++){ //do nothing if temp_pps_num = 0
           if(leapfrog_grand_parent_id == temp_pps_str[temp_pps_itr] - LEAPFROG_BEACON_OFFSET){
             leapfrog_alt_parent_id = temp_sid;
-#ifdef WITH_LEAPFROG_TSCH
-            linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
-            printf("LEAPFROG-TSCH: update alt tx by PP -> AP %d\n", leapfrog_alt_parent_id);
-            orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
-#endif //WITH_LEAPFROG_TSCH
+// #ifdef WITH_LEAPFROG_TSCH
+//             linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
+//             printf("LEAPFROG-TSCH: update alt tx by PP -> AP %d\n", leapfrog_alt_parent_id);
+//             orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
+// #endif //WITH_LEAPFROG_TSCH
             break;
           }
         }
@@ -169,16 +169,17 @@ leapfrog_receiver(struct simple_udp_connection *c,
           leapfrog_layer = temp_layer + 1;
         }
       }
-#ifdef WITH_LEAPFROG_TSCH
-      printf("LEAPFROG-TSCH: update rx <- C %d\n", temp_sid);
-      orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX); 
+// #ifdef WITH_LEAPFROG_TSCH
+//       printf("LEAPFROG-TSCH: update rx <- C %d\n", temp_sid);
+//       orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX); 
 #ifdef WITH_OVERHEARING  //if my child has alternate parent,
       if(temp_aid != 0){ //if sender has the Alt parent, store the promiscuous Rx slot to overhear the alt traffic
         printf("OVERHEAR: update pro-rx <- (alt)C %d\n", temp_sid);
-        orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the alt traffic
+        thunder_add_link(temp_sid, temp_aid, LINK_OPTION_RX | LINK_OPTION_OVERHEARING);
+        // orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the alt traffic
       }
 #endif //WITH_OVERHEARING
-#endif //WITH_LEAPFROG_TSCH
+// #endif //WITH_LEAPFROG_TSCH
     }   
 
     //judge I am sender's Alt Parent and prepare Rx link for alt child
@@ -190,32 +191,41 @@ leapfrog_receiver(struct simple_udp_connection *c,
           leapfrog_layer = temp_layer + 1;
         }
       }
-#ifdef WITH_LEAPFROG_TSCH //judge I am sender's Alt Parent
-      printf("LEAPFROG-TSCH: update rx <- (alt)C %d\n", temp_sid);
-      orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX);
-#ifdef WITH_OVERHEARING
+// #ifdef WITH_LEAPFROG_TSCH //judge I am sender's Alt Parent
+//       printf("LEAPFROG-TSCH: update rx <- (alt)C %d\n", temp_sid);
+//       orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX);
+#ifdef WITH_OVERHEARING //store the promiscuous Rx slot to overhear the preffered traffic
       printf("OVERHEAR: update pro-rx <- C %d\n", temp_sid);
-      orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the normal traffic
+      thunder_add_link(temp_sid, temp_pid, LINK_OPTION_RX | LINK_OPTION_OVERHEARING);
+      // orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX); //to overhear the normal traffic
 #endif //WITH_OVERHEARING
-#endif /*WITH_LEAPFROG_TSCH*/          
+// #endif /*WITH_LEAPFROG_TSCH*/          
     }   
 
     //judge Siblings
-    if(temp_pid > 0 && leapfrog_parent_id > 0 && temp_pid == leapfrog_parent_id){
+    if(temp_pid > 0 && temp_pid == leapfrog_parent_id){
       //then temp_sid = sibling id
+#ifdef WITH_OVERHEARING //if siblings, store timeslot for both preffered and alt traffic
       printf("OVERHEAR: update pro-rx <- sibling %d\n", temp_sid);
-#ifdef WITH_OVERHEARING
-      orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
-      orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+      thunder_add_link(temp_sid, temp_pid, LINK_OPTION_RX | LINK_OPTION_OVERHEARING);
+      if(temp_aid > 0){
+        thunder_add_link(temp_sid, temp_aid, LINK_OPTION_RX | LINK_OPTION_OVERHEARING);
+      }
+      // orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+      // orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
 #endif //WITH_OVERHEARIN
     }else if(temp_pid > 0 && leapfrog_possible_parent_num > 0){ //compare sender's parent and own possible parents
       for(temp_pps_itr = 0; temp_pps_itr < (int)leapfrog_possible_parent_num; temp_pps_itr++){
         if(temp_pid == leapfrog_possible_parent_id_array[temp_pps_itr]){
           //then temp_sid = sibling id
-          printf("OVERHEAR: update pro-rx <- sibling %d\n", temp_sid);
 #ifdef WITH_OVERHEARING
-          orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
-          orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+          printf("OVERHEAR: update pro-rx <- sibling %d\n", temp_sid);
+          thunder_add_link(temp_sid, temp_pid, LINK_OPTION_RX | LINK_OPTION_OVERHEARING);
+          if(temp_aid > 0){
+            thunder_add_link(temp_sid, temp_aid, LINK_OPTION_RX | LINK_OPTION_OVERHEARING);
+          }
+          // orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
+          // orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
 #endif //WITH_OVERHEARIN
           break;
         }

@@ -87,7 +87,7 @@ thunder_callback_packet_ready(void)
   }
 */
 
-  PRINTF("THUNDER: p r slot:");
+  PRINTF("THUNDER: p r->%d slot:", THUNDER_LINKADDR_HASH(dst_addr));
   /* Judge packet and assign specified link */ 
   if(packetbuf_attr(PACKETBUF_ATTR_FRAME_TYPE) == FRAME802154_BEACONFRAME) {   /* EBs should be sent in Broadcast slot. Because virtual neighbor EB addr is {0}*/
     timeslot = get_eb_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr));
@@ -279,3 +279,17 @@ thunder_init(void)
 
   PRINTF("Thunder: initialization done\n");
 }
+/*---------------------------------------------------------------------------*/
+void
+thunder_add_link(int src_id, int dst_id, uint8_t link_options){
+  uint16_t timeslot = 0xffff;
+  timeslot = get_node_timeslot(src_id, dst_id);
+
+  tsch_schedule_add_link(sf_thunder,
+    link_options,
+    LINK_TYPE_NORMAL,
+    &tsch_broadcast_address,
+    timeslot,
+    channel_offset);  
+}
+/*---------------------------------------------------------------------------*/

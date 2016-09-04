@@ -300,6 +300,15 @@ extern char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
 #endif /*WITH_LEAPFROG*/
 
 /*---------------------------------------------------------------------------*/
+/* Overhearing variable by TadaMatz mod 9/Sep, 29/July/2016 must be used with Leapfrog*/ 
+/*---------------------------------------------------------------------------*/
+#ifdef WITH_OVERHEARING
+//extern valuable are declared in tsch-slot-operation.c
+extern int is_overhearing_slot;
+extern int is_overheard;
+#endif //WITH_OVERHEARING
+
+/*---------------------------------------------------------------------------*/
 /* Functions                                                                 */
 /*---------------------------------------------------------------------------*/
 #if UIP_TCP
@@ -1205,6 +1214,17 @@ uip_process(uint8_t flag)
       goto send;
     }
   }
+
+//added by TadaMatz 4/Sep/2016
+#ifdef WITH_OVERHEARING
+  if(is_overhearing_slot == 1 
+     && is_overheard == 1
+     && uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len] != LEAPFROG_DATA_HEADER){
+    //if the packet is NOT Leapfrog data, discard. In the other word, only Leapfrog data can be processed in overhearing slot.
+    //PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
+    goto drop;
+  }
+#endif //WITH_OVERHEARING
 
 //added by TadaMatz 13/June/2016
   #ifdef WITH_LEAPFROG //for elimination of packet
