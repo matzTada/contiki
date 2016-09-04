@@ -1221,7 +1221,7 @@ uip_process(uint8_t flag)
      && is_overheard == 1
      && uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len] != LEAPFROG_DATA_HEADER){
     //if the packet is NOT Leapfrog data, discard. In the other word, only Leapfrog data can be processed in overhearing slot.
-    //PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
+    PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
     goto drop;
   }
 #endif //WITH_OVERHEARING
@@ -1262,7 +1262,7 @@ uip_process(uint8_t flag)
     }
 
     if(leapfrog_elimination_flag == 1){
-      PRINTA("LEAPFROG: Elimination discard data goto drop\n");
+      PRINTA("LEAPFROG: Elimination data drop\n");
       goto drop;
     }else{
       leapfrog_elimination_id_array[tmp_sid] = tmp_lf_pc;
