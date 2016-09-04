@@ -132,7 +132,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>2</z>
+    <z>4</z>
     <height>160</height>
     <location_x>402</location_x>
     <location_y>4</location_y>
@@ -156,12 +156,12 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter>receive|Sending beacon|Received a DIO|Received a DAO|Sending a multicast</filter>
+      <filter />
       <formatted_time />
       <coloring />
     </plugin_config>
     <width>678</width>
-    <z>1</z>
+    <z>0</z>
     <height>759</height>
     <location_x>658</location_x>
     <location_y>394</location_y>
@@ -176,10 +176,10 @@
       <showRadioRXTX />
       <showRadioHW />
       <showLEDs />
-      <zoomfactor>2000.0</zoomfactor>
+      <zoomfactor>10000.0</zoomfactor>
     </plugin_config>
     <width>925</width>
-    <z>3</z>
+    <z>2</z>
     <height>229</height>
     <location_x>407</location_x>
     <location_y>162</location_y>
@@ -187,11 +187,11 @@
   <plugin>
     org.contikios.cooja.plugins.Notes
     <plugin_config>
-      <notes>Enter notes here</notes>
+      <notes>^(?=.*ID:4)(?=.*DIO)(?=.*Received)|(?=.*ID:4)(?=.*DAO)</notes>
       <decorations>true</decorations>
     </plugin_config>
     <width>655</width>
-    <z>4</z>
+    <z>1</z>
     <height>160</height>
     <location_x>685</location_x>
     <location_y>0</location_y>
@@ -206,7 +206,7 @@
       <analyzers name="6lowpan-pcap" />
     </plugin_config>
     <width>649</width>
-    <z>0</z>
+    <z>3</z>
     <height>752</height>
     <location_x>6</location_x>
     <location_y>402</location_y>

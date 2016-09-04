@@ -344,6 +344,7 @@ tsch_rx_process_pending()
     struct input_packet *current_input = &input_array[input_index];
     frame802154_t frame;
     uint8_t ret = frame802154_parse(current_input->payload, current_input->len, &frame);
+PRINTA("frame802154_parse called ret:%d\n", ret); //added by TadaMatz for debug
     int is_data = ret && frame.fcf.frame_type == FRAME802154_DATAFRAME;
     int is_eb = ret
       && frame.fcf.frame_version == FRAME802154_IEEE802154E_2012
@@ -361,6 +362,7 @@ tsch_rx_process_pending()
 
     if(is_data) {
       /* Pass to upper layers */
+PRINTA("call packet_input()\n"); //added by TadaMatz for debug
       packet_input();
     } else if(is_eb) {
       eb_input(current_input);
