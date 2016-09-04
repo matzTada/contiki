@@ -113,7 +113,7 @@ PROCESS(leapfrog_beaconing_process, "Leapfrog beaconing process");
 linkaddr_t alt_parent_linkaddr = {{0xc1, 0x0c, 0, 0, 0, 0, 0, 0}};
 #endif /*WITH_LEAPFROG_TSCH*/
 
-char leapfrog_layer = 0; //default for 0. sender should be 1
+char leapfrog_layer = 1; //default for 0. sender should be 1
 
 #endif //WITH_LEAPFROG
 /* ----------------- leapfrog include and declaration end ----------------- */

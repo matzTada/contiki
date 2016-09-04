@@ -233,7 +233,7 @@ thunder_init(void)
   //Broadcast Tx slots
   timeslot = get_node_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr), THUNDER_LINKADDR_HASH(&linkaddr_node_addr)); //(src = &linkaddr_node_addr = own linkaddr, dst = neighbor)
   tsch_schedule_add_link(sf_thunder, 
-   LINK_OPTION_RX | LINK_OPTION_TX | LINK_OPTION_SHARED, 
+   LINK_OPTION_TX, 
    LINK_TYPE_NORMAL, 
    &tsch_broadcast_address,
    timeslot, 
@@ -244,7 +244,7 @@ thunder_init(void)
     if(THUNDER_LINKADDR_HASH(&linkaddr_node_addr) != i){ //when I am a sender, skip
       timeslot = get_node_timeslot(i, i); //(src = neighbor, dst = neighbor) i.e. Broadcast (1-1)*8+(1-1) for ID:1, (2-1)*8+(2-1) for ID:2, (3-1)*8+(3-1) for ID:3
       tsch_schedule_add_link(sf_thunder, 
-       LINK_OPTION_RX | LINK_OPTION_TX | LINK_OPTION_SHARED, 
+       LINK_OPTION_RX, 
        LINK_TYPE_NORMAL, 
        &tsch_broadcast_address,
        timeslot, 
@@ -256,7 +256,7 @@ thunder_init(void)
   //Leapfrog Beacon Tx slots
   timeslot = get_leapfrog_beacon_timeslot(THUNDER_LINKADDR_HASH(&linkaddr_node_addr)); //after all unicast and broadcast slot
   tsch_schedule_add_link(sf_thunder, 
-    LINK_OPTION_RX | LINK_OPTION_TX | LINK_OPTION_SHARED, 
+    LINK_OPTION_TX, 
     LINK_TYPE_NORMAL,
     &tsch_broadcast_address,
     timeslot,
@@ -268,7 +268,7 @@ thunder_init(void)
     if(THUNDER_LINKADDR_HASH(&linkaddr_node_addr) != i){ //when I am a sender, skip
       timeslot = get_leapfrog_beacon_timeslot(i);
       tsch_schedule_add_link(sf_thunder,
-       LINK_OPTION_RX | LINK_OPTION_TX | LINK_OPTION_SHARED,
+       LINK_OPTION_RX,
        LINK_TYPE_NORMAL,
        &tsch_broadcast_address,
        timeslot,
