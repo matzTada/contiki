@@ -238,13 +238,13 @@ receiver(struct simple_udp_connection *c,
   printf("ID:%d l:%d '%s'\n", sender_addr->u8[15], datalen, data); //make it shorter
 
 #ifdef WITH_LEAPFROG
-  leapfrog_receiver(c, //struct simple_udp_connection *c,
-         sender_addr, //const uip_ipaddr_t *sender_addr,
-         sender_port, //uint16_t sender_port,
-         receiver_addr, //const uip_ipaddr_t *receiver_addr,
-         receiver_port, //uint16_t receiver_port,
-         data, //const uint8_t *data,
-         datalen); //uint16_t datalen);
+  leapfrog_receiver(struct simple_udp_connection *c,
+         const uip_ipaddr_t *sender_addr,
+         uint16_t sender_port,
+         const uip_ipaddr_t *receiver_addr,
+         uint16_t receiver_port,
+         const uint8_t *data,
+         uint16_t datalen);
 #endif //WITH_LEAPFROG
 // #ifdef WITH_LEAPFROG //for beaconing
 //   if(data[0] == LEAPFROG_BEACON_HEADER){
@@ -478,13 +478,12 @@ PROCESS_THREAD(node_process, ev, data)
 
 #ifdef WITH_POWERTRACE
   powertrace_start(CLOCK_SECOND * 15);
-#endif //WITH_POWERTRACE
+#endif
 
 #ifdef WITH_LEAPFROG
   leapfrog_init();
 #endif //WITHLEAPFROG
 
-  leapfrog_layer = 1; //if sender, this is necessary.
   
   /* Print out routing tables every minute */
   etimer_set(&et, CLOCK_SECOND * 60);

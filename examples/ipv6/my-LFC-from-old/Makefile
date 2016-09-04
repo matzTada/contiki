@@ -12,6 +12,7 @@ APPS += orchestra
 APPS += servreg-hack #now not used. for simple-udp
 APPS += powertrace #for power trace
 APPS += thunder #for manual configuration of TSCH schedule
+APPS += leapfrog
 MODULES += core/net/mac/tsch
 
 ifeq ($(MAKE_WITH_ORCHESTRA),1)
