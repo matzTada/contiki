@@ -489,9 +489,9 @@ PROCESS_THREAD(node_process, ev, data)
 
 #ifdef WITH_LEAPFROG
   leapfrog_init();
+  leapfrog_layer = 1; //if sender, this is necessary.
 #endif //WITHLEAPFROG
 
-  leapfrog_layer = 1; //if sender, this is necessary.
   
   /* Print out routing tables every minute */
   etimer_set(&et, CLOCK_SECOND * 60);
