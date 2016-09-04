@@ -291,7 +291,8 @@ struct uip_icmp6_conn uip_icmp6_conns;
 /* Leap frog variable by TadaMatz 13/June/2016*/
 /*---------------------------------------------------------------------------*/
 #ifdef WITH_LEAPFROG
-//extern valuable are declared in node-[receiver/sender]-leapfrog.c
+//extern valuable are declared in apps/leapfrog/leapfrog.c
+#include "leapfrog.h"
 extern char leapfrog_parent_id;
 extern char leapfrog_grand_parent_id;
 extern char leapfrog_alt_parent_id;

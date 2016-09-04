@@ -453,12 +453,12 @@ PROCESS_THREAD(node_process, ev, data)
   thunder_init();
 #endif //WITH_THUNDER
 
-#ifdef WITH_LEAPFROG
-  int initialize_elimination_itr = 0;
-  for(initialize_elimination_itr = 0; initialize_elimination_itr < LEAPFROG_NUM_NODE; initialize_elimination_itr++){
-    leapfrog_elimination_id_array[initialize_elimination_itr] = LEAPFROG_DATA_COUNTER_MAX; //Do not forget the initialization
-  }
-#endif //WITH_LEAPFROG
+//#ifdef WITH_LEAPFROG
+//  int initialize_elimination_itr = 0;
+//  for(initialize_elimination_itr = 0; initialize_elimination_itr < LEAPFROG_NUM_NODE; initialize_elimination_itr++){
+//    leapfrog_elimination_id_array[initialize_elimination_itr] = LEAPFROG_DATA_COUNTER_MAX; //Do not forget the initialization
+//  }
+//#endif //WITH_LEAPFROG
 
 #ifdef WITH_POWERTRACE
   powertrace_start(CLOCK_SECOND * 10);

@@ -78,8 +78,9 @@
 #define UIP_ICMP_BUF     ((struct uip_icmp_hdr *)&uip_buf[uip_l2_l3_hdr_len])
 #define UIP_ICMP_PAYLOAD ((unsigned char *)&uip_buf[uip_l2_l3_icmp_hdr_len])
 /*---------------------------------------------------------------------------*/
-//added by TadaMatz 24/June/2016
+//added by TadaMatz modified 4/Sep, 24/June/2016
 #ifdef WITH_LEAPFROG
+#include "leapfrog.h"
 extern char leapfrog_possible_parent_num;
 extern char leapfrog_possible_parent_id_array[LEAPFROG_NUM_NEIGHBOR_NODE];
 #endif //WITH_LEAPFROG

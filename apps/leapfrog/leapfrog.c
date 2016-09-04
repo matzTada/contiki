@@ -39,12 +39,12 @@
 
 #include "contiki.h"
 #include "leapfrog.h"
-#include "simple-udp.h"
-#include "node-id.h"
-#include "net/rpl/rpl.h"
-#include "net/ipv6/uip-ds6-route.h"
-#include "net/mac/tsch/tsch.h"
-#include "net/rpl/rpl-private.h"
+//#include "simple-udp.h"
+//#include "node-id.h"
+//#include "net/rpl/rpl.h"
+//#include "net/ipv6/uip-ds6-route.h"
+//#include "net/mac/tsch/tsch.h"
+//#include "net/rpl/rpl-private.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -243,7 +243,7 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
 
   PROCESS_BEGIN();
 
-  simple_udp_register(&leapfrog_unicast_connection, LEAPFROG_UDP_PORT, NULL, LEAPFROG_UDP_PORT, receiver);
+  simple_udp_register(&leapfrog_unicast_connection, LEAPFROG_UDP_PORT, NULL, LEAPFROG_UDP_PORT, leapfrog_receiver);
 
   etimer_set(&lf_beacon_periodic_timer, LEAPFROG_SEND_INTERVAL);
   while(1) {
@@ -291,7 +291,7 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
         printf("'\n");
         message_number++;
         // simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, addr);
-        simple_udp_sendto(&unicast_connection, buf, strlen(buf) + 1, &temp_ipaddr);
+        simple_udp_sendto(&leapfrog_unicast_connection, buf, strlen(buf) + 1, &temp_ipaddr);
         //simple_udp_sendto(&unicast_connection, buf, cnt, addr);
 //      } else {
 //        printf("LEAPFROG: addr is null!!");
@@ -307,5 +307,10 @@ PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
 void
 leapfrog_init()
 {
+  int initialize_elimination_itr = 0;
+  for(initialize_elimination_itr = 0; initialize_elimination_itr < LEAPFROG_NUM_NODE; initialize_elimination_itr++){
+    leapfrog_elimination_id_array[initialize_elimination_itr] = LEAPFROG_DATA_COUNTER_MAX; //Do not forget the initialization
+  }
+
   process_start(&leapfrog_beaconing_process, NULL);
 }

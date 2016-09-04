@@ -40,13 +40,28 @@
 #ifndef LEAPFROG_H
 #define LEAPFROG_H
 
-#include "leafprog-conf.h"
+#include "leapfrog-conf.h"
 
-void leapfrog_start(clock_time_t perioc);
-void leapfrog_stop(void);
+#include "node-id.h"
+#include "lib/random.h"
+#include "sys/ctimer.h"
+#include "sys/etimer.h"
+#include "net/ip/uip.h"
+#include "net/ip/uip-debug.h"
+#include "net/rpl/rpl.h"
+#include "net/ipv6/uip-ds6-route.h"
+#include "net/mac/tsch/tsch.h"
+#include "net/rpl/rpl-private.h"
+#include "simple-udp.h"
 
-void leapfrog_sniff(leapfrog_onoff_t onoff);
+void leapfrog_receiver(struct simple_udp_connection *c,
+         const uip_ipaddr_t *sender_addr,
+         uint16_t sender_port,
+         const uip_ipaddr_t *receiver_addr,
+         uint16_t receiver_port,
+         const uint8_t *data,
+         uint16_t datalen);
 
-void leapfrog_print(char *str);
+void leapfrog_init(void);
 
 #endif /* LEAPFROG_H */

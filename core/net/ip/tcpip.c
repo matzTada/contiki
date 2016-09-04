@@ -92,9 +92,10 @@ static struct etimer periodic;
 extern struct etimer uip_reass_timer;
 #endif
 
-/* Leap frog variable by TadaMatz 31/May/2016*/
+/* Leap frog variable by TadaMatz modfied 4/Sep 31/May/2016*/
 #ifdef WITH_LEAPFROG
-//extern valuable are declared in node-[receiver/sender]-leapfrog.c
+//extern valuable are declared in apps/leapfrog/leapfrog.c
+#include "leapfrog.h"
 extern char leapfrog_parent_id;
 extern char leapfrog_grand_parent_id;
 extern char leapfrog_alt_parent_id;

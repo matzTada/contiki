@@ -94,6 +94,13 @@ PROCESS(unicast_sender_process, "Unicast sender example process");
 // AUTOSTART_PROCESSES(&unicast_sender_process);
 /* ----------------- simple-udp-rpl include and declaration end ----------------- */
 
+//for sender
+#ifdef WITH_LEAPFROG
+extern char leapfrog_data_counter;
+extern char leapfrog_elimination_id_array[LEAPFROG_NUM_NODE];
+extern char leapfrog_layer;
+#endif //WITH_LEAFPROG
+
 // /* ----------------- leapfrog include and declaration start ----------------- */
 // #ifdef WITH_LEAPFROG
 
@@ -469,12 +476,12 @@ PROCESS_THREAD(node_process, ev, data)
   thunder_init();
 #endif //WITH_THUNDER
 
-#ifdef WITH_LEAPFROG
-  int initialize_elimination_itr = 0;
-  for(initialize_elimination_itr = 0; initialize_elimination_itr < LEAPFROG_NUM_NODE; initialize_elimination_itr++){
-    leapfrog_elimination_id_array[initialize_elimination_itr] = LEAPFROG_DATA_COUNTER_MAX; //Do not forget the initialization
-  }
-#endif //WITH_LEAPFROG
+//#ifdef WITH_LEAPFROG
+//  int initialize_elimination_itr = 0;
+//  for(initialize_elimination_itr = 0; initialize_elimination_itr < LEAPFROG_NUM_NODE; initialize_elimination_itr++){
+//    leapfrog_elimination_id_array[initialize_elimination_itr] = LEAPFROG_DATA_COUNTER_MAX; //Do not forget the initialization
+//  }
+//#endif //WITH_LEAPFROG
 
 #ifdef WITH_POWERTRACE
   powertrace_start(CLOCK_SECOND * 15);
