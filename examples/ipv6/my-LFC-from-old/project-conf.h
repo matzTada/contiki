@@ -47,8 +47,10 @@
 //#define SEPARATE_ORCHESTRA //Schduling based on Orchestra idea. All slotframes have same slotframe lengths
 //#define WITH_DATA_SLOT //make timeslot dedicated for application traffic. must be used with SEPARATE_ORCHESTRA
 
-//#define WITH_THUNDER //do not use Orchestra. Fixed TSCH schedule
-//#define WITH_THUNDER_ADAPTIVE_EB_SLOT //make EB slot can be changed based on network
+#define WITH_THUNDER //do not use Orchestra. Fixed TSCH schedule
+#define WITH_THUNDER_ADAPTIVE_EB_SLOT //make EB slot can be changed based on network
+
+//#define WITH_ORCHESTRA 1 //if 1, enable Orchestra
 
 //#define WITH_POWERTRACE // for power trace
 //#define WITH_STABLETIMER // for waiting application traffic until network stabilized
@@ -79,7 +81,6 @@
 #endif /*WITH_LEAPFROG*/
 //==added
 
-#define WITH_ORCHESTRA 1 //if 1, enable Orchestra
 
 /* Set to run orchestra */
 #ifndef WITH_ORCHESTRA
