@@ -817,11 +817,11 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
           is_overheard = 0;
           if(received){
             if(linkaddr_cmp(&destination_address, &linkaddr_node_addr)){ //unicast (EB, data ...) in normal rx
-              PRINTA("OVERHEAR: uni ID:%d -> ID:%d\n", source_address.u8[7], destination_address.u8[7]);
+              //PRINTA("OVERHEAR: uni ID:%d -> ID:%d\n", source_address.u8[7], destination_address.u8[7]);
             }else if(linkaddr_cmp(&destination_address, &linkaddr_null)){ //broadcast 
-              PRINTA("OVERHEAR: bro ID:%d -> null\n", source_address.u8[7]);
+              //PRINTA("OVERHEAR: bro ID:%d -> null\n", source_address.u8[7]);
             }else{ //when dst linkaddr is NOT equal to own linkaddr Overhearing occures.
-              PRINTA("OVERHEAR: ohr ID:%d -> ID:%d\n", source_address.u8[7], destination_address.u8[7]);
+              //PRINTA("OVERHEAR: ohr ID:%d -> ID:%d\n", source_address.u8[7], destination_address.u8[7]);
               is_overheard = 1;
             }
 #else //WITH_OVERHEARING //added by TadaMatz 4/Sep/2016
