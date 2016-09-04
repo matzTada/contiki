@@ -214,9 +214,9 @@ receiver(struct simple_udp_connection *c,
          uint16_t datalen)
 {
   printf("DATA: received from ");
-  uip_debug_ipaddr_print(sender_addr);
-  printf(" on port %d from port %d with length %d: '%s'\n", receiver_port, sender_port, datalen, data);
-  //printf("ID:%d l:%d '%s'\n", sender_addr->u8[15], datalen, data); //make it shorter
+  //uip_debug_ipaddr_print(sender_addr);
+  //printf(" on port %d from port %d with length %d: '%s'\n", receiver_port, sender_port, datalen, data);
+  printf("ID:%d l:%d '%s'\n", sender_addr->u8[15], datalen, data); //make it shorter
 
 #ifdef WITH_LEAPFROG //for beaconing
   if(data[0] == LEAPFROG_BEACON_HEADER){
