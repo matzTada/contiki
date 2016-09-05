@@ -567,13 +567,14 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
 
 #ifdef WITH_LEAPFROG
         sprintf(buf, "%c%cHello Tada %04d", LEAPFROG_DATA_HEADER, leapfrog_data_counter + LEAPFROG_BEACON_OFFSET, message_number);
-        uip_ipaddr_t * my_addr;
-        my_addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
-        if(my_addr != NULL){
-          leapfrog_elimination_id_array[(int)addr->u8[15]] = leapfrog_data_counter;
-        }
+        //uip_ipaddr_t * my_addr;
+        //my_addr = &uip_ds6_if.addr_list[2].ipaddr; //get own ID. [2] seems to be default
+        //if(my_addr != NULL){
+        //  leapfrog_elimination_id_array[(int)addr->u8[15]] = leapfrog_data_counter;
+        //}
+        leapfrog_elimination_id_array[node_id - 1] = leapfrog_data_counter; //to do elimination
         leapfrog_data_counter++;
-        if(leapfrog_data_counter > LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0;
+        if(leapfrog_data_counter >= LEAPFROG_DATA_COUNTER_MAX) leapfrog_data_counter = 0; //leapfrog_data_counter does NOT reach LEAPFROG_DATA_COUNTER_MAX
 #else
         sprintf(buf, "NoHello Tada %04d", message_number);
 #endif
