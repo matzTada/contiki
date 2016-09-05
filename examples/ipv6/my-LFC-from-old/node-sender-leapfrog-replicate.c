@@ -526,7 +526,7 @@ PROCESS_THREAD(unicast_sender_process, ev, data)
   simple_udp_register(&unicast_connection, UDP_PORT, NULL, UDP_PORT, receiver);
   
   //slide timer added 31/Aug/2016 avoid collision with network print
-  etimer_set(&data_periodic_timer, DATA_SEND_INTERVAL / 2);
+  etimer_set(&data_periodic_timer, DATA_SEND_SLIDE_TIME);
   PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&data_periodic_timer));
 
   etimer_set(&data_periodic_timer, DATA_SEND_INTERVAL);

@@ -58,6 +58,7 @@
 //#define WITH_DATA_SLOT //make timeslot dedicated for application traffic. must be used with SEPARATE_ORCHESTRA
 
 //udp data
+#define DATA_SEND_SLIDE_TIME (30 * CLOCK_SECOND)
 #define DATA_SEND_INTERVAL   (60 * CLOCK_SECOND)
 //#define DATA_SEND_TIME   (random_rand() % (DATA_SEND_INTERVAL))
 #define DATA_SEND_TIME   (DATA_SEND_INTERVAL) //make it periodical
