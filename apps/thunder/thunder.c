@@ -41,7 +41,8 @@
 #include "net/ipv6/uip-icmp6.h"
 #include "net/rpl/rpl-private.h"
 
-#define DEBUG DEBUG_PRINT
+#define DEBUG DEBUG_NONE
+//#define DEBUG DEBUG_PRINT
 #include "net/ip/uip-debug.h"
 
 static uint16_t slotframe_handle = 0;
