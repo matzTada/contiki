@@ -40,12 +40,13 @@
 
 // #ifdef WITH_LEAPFROG
 #define LEAPFROG_UDP_PORT 5678
-#define LEAPFROG_SEND_INTERVAL   (20 * CLOCK_SECOND)
-#define LEAPFROG_SEND_TIME   (random_rand() % (LEAPFROG_SEND_INTERVAL))
+#define LEAPFROG_SEND_SLIDE_TIME (20 * CLOCK_SECOND)
+#define LEAPFROG_SEND_INTERVAL   (30 * CLOCK_SECOND)
+//#define LEAPFROG_SEND_TIME   (random_rand() % (LEAPFROG_SEND_INTERVAL))
 #define LEAPFROG_BEACON_HEADER 0xf1 //for in data packet
 #define LEAPFROG_DATA_HEADER 0xf2 //for sending data
 #define LEAPFROG_BEACON_OFFSET 48 //for avoiding NULL character in data packet
-#define LEAPFROG_NUM_NODE 8 //used for elimination
+#define LEAPFROG_NUM_NODE 16 //used for elimination
 #define LEAPFROG_NUM_NEIGHBOR_NODE 8 //used for possible parent
 #define LEAPFROG_DATA_COUNTER_MAX 50 //since fixed value of header counter has limited value
 #define LEAPFROG_DATA_COUNTER_WIDTH 25 //sender node sends data with sequential number, but it happens that the order to arrive dst can be inversed. This number shows how many packet should be discarded compared to current number.

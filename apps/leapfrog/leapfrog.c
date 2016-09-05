@@ -243,19 +243,23 @@ leapfrog_receiver(struct simple_udp_connection *c,
 PROCESS_THREAD(leapfrog_beaconing_process, ev, data)
 {
   static struct etimer lf_beacon_periodic_timer;
-  static struct etimer lf_beacon_send_timer;
+  //static struct etimer lf_beacon_send_timer;
 
   PROCESS_BEGIN();
 
   simple_udp_register(&leapfrog_unicast_connection, LEAPFROG_UDP_PORT, NULL, LEAPFROG_UDP_PORT, leapfrog_receiver);
 
+  //slide timer added 5/Sep/2016 to avoid collision with network print and application data
+  etimer_set(&lf_beacon_periodic_timer, LEAPFROG_SEND_SLIDE_TIME);
+  PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&lf_beacon_periodic_timer));
+
   etimer_set(&lf_beacon_periodic_timer, LEAPFROG_SEND_INTERVAL);
   while(1) {
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&lf_beacon_periodic_timer));
       etimer_reset(&lf_beacon_periodic_timer);
-      etimer_set(&lf_beacon_send_timer, LEAPFROG_SEND_TIME);
+      //etimer_set(&lf_beacon_send_timer, LEAPFROG_SEND_TIME);
   
-      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&lf_beacon_send_timer));
+      //PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&lf_beacon_send_timer));
       
     if(tsch_is_associated){
       /*--- target address decision ---*/
