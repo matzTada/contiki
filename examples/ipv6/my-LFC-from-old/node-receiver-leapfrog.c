@@ -461,7 +461,7 @@ PROCESS_THREAD(node_process, ev, data)
 //#endif //WITH_LEAPFROG
 
 #ifdef WITH_POWERTRACE
-  powertrace_start(CLOCK_SECOND * 10);
+  powertrace_start(POWERTRACE_INTERVAL);
 #endif //WITH_POWERTRACE
 
 #ifdef WITH_LEAPFROG
