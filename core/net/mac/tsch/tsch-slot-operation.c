@@ -924,6 +924,8 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
     /* Leaving promiscuous mode */
     NETSTACK_RADIO.get_value(RADIO_PARAM_RX_MODE, &radio_rx_mode);
     NETSTACK_RADIO.set_value(RADIO_PARAM_RX_MODE, radio_rx_mode | RADIO_RX_MODE_ADDRESS_FILTER);
+    is_overhearing_slot = 0;
+    is_overheard = 0;
   }
 #endif //WITH_OVERHEARING
 
