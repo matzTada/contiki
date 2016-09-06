@@ -80,7 +80,7 @@ leapfrog_receiver(struct simple_udp_connection *c,
          uint16_t datalen)
 {
 //#ifdef WITH_LEAPFROG //for beaconing
-  if(data[0] == LEAPFROG_BEACON_HEADER){
+  if(datalen > 0 && data[0] == LEAPFROG_BEACON_HEADER){
     char temp_sid = 0; //sender id of packet
     char temp_pid = 0; //sender's parent id
 //    char temp_gid = 0; //sender's grand parent id
@@ -98,7 +98,7 @@ leapfrog_receiver(struct simple_udp_connection *c,
     for(temp_pps_itr = 0; temp_pps_itr < (int)temp_pps_num; temp_pps_itr++){ //do nothing if temp_pps_num = 0
       temp_pps_str[temp_pps_itr] = data[10 + 1 + temp_pps_itr];
     }
-    temp_pps_str[temp_pps_itr] = '\0';
+    // temp_pps_str[temp_pps_itr] = '\0';
 
     //printf("LEAPFROG: receive beacon S%dP%dGP%dAP%d#%dPPs%s\n", temp_sid, temp_pid, temp_gid, temp_aid, temp_pps_num, temp_pps_str);
     // printf("LEAPFROG: receive beacon '%s'\n", data);
@@ -208,9 +208,9 @@ leapfrog_receiver(struct simple_udp_connection *c,
       // orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
       // orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
 #endif //WITH_OVERHEARIN
-    }else if(temp_pid > 0 && leapfrog_possible_parent_num > 0){ //compare sender's parent and own possible parents
-      for(temp_pps_itr = 0; temp_pps_itr < (int)leapfrog_possible_parent_num; temp_pps_itr++){
-        if(temp_pid == leapfrog_possible_parent_id_array[temp_pps_itr]){
+    }else if(temp_pid > 0 && temp_pps_num > 0){ //compare sender's possible parent and own parent
+      for(temp_pps_itr = 0; temp_pps_itr < (int)temp_pps_num; temp_pps_itr++){ //do nothing if temp_pps_num = 0
+        if(temp_pps_str[temp_pps_itr] - LEAPFROG_BEACON_OFFSET == leapfrog_parent_id){
           //then temp_sid = sibling id
 #ifdef WITH_OVERHEARING
           // printf("OVERHEAR: update pro-rx <- sibling %d\n", temp_sid);
@@ -221,6 +221,11 @@ leapfrog_receiver(struct simple_udp_connection *c,
           // orchestra_unicast_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
           // orchestra_leapfrog_add_uc_rx_link(temp_sid, LINK_OPTION_RX | LINK_OPTION_PROMISCUOUS_RX);
 #endif //WITH_OVERHEARIN
+// #ifdef WITH_LEAPFROG_TSCH
+//             linkaddr_copy(&alt_parent_linkaddr, packetbuf_addr(PACKETBUF_ADDR_SENDER));
+//             printf("LEAPFROG-TSCH: update alt tx by PP -> AP %d\n", leapfrog_alt_parent_id);
+//             orchestra_leapfrog_add_uc_tx_link(leapfrog_alt_parent_id);
+// #endif //WITH_LEAPFROG_TSCH
           break;
         }
       }
@@ -228,10 +233,10 @@ leapfrog_receiver(struct simple_udp_connection *c,
 
     //end of judging process by beacon.
     //print calculated information
-    for(temp_pps_itr = 0; temp_pps_itr < leapfrog_possible_parent_num; temp_pps_itr++){
-      temp_pps_str[temp_pps_itr] = leapfrog_possible_parent_id_array[temp_pps_itr] + LEAPFROG_BEACON_OFFSET;
-    }
-    temp_pps_str[temp_pps_itr] = '\0';
+    // for(temp_pps_itr = 0; temp_pps_itr < leapfrog_possible_parent_num; temp_pps_itr++){
+    //   temp_pps_str[temp_pps_itr] = leapfrog_possible_parent_id_array[temp_pps_itr] + LEAPFROG_BEACON_OFFSET;
+    // }
+    // temp_pps_str[temp_pps_itr] = '\0';
     // printf("LEAPFROG: own P%d GP%d AP%d PPs%d:%s L%d\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id, leapfrog_possible_parent_num, temp_pps_str, leapfrog_layer);
 
   } //if(data[0] == LEAPFROG_BEACON_HEADER)
