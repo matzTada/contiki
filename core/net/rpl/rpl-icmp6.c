@@ -363,7 +363,7 @@ dio_input(void)
     }
     //if it is not registered add sid to array
     if(is_already_registered == 0){
-      leapfrog_possible_parent_num++;
+      leapfrog_possible_parent_num += 1;
       if(leapfrog_possible_parent_num > LEAPFROG_NUM_NEIGHBOR_NODE){
         leapfrog_possible_parent_num = LEAPFROG_NUM_NEIGHBOR_NODE;
       }
@@ -382,7 +382,7 @@ dio_input(void)
         for(my_j = my_itr; my_j < (int)leapfrog_possible_parent_num - 1; my_j++){
           leapfrog_possible_parent_id_array[my_j] = leapfrog_possible_parent_id_array[my_j+1];
         }
-        leapfrog_possible_parent_num--;
+        leapfrog_possible_parent_num -= 1;
         break;
       }
     }
