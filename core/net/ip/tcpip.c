@@ -790,28 +790,30 @@ tcpip_ipv6_output(void)
       //PRINTA("in tcpip.c attempt to replication  uip_buf[] = '%c' '%c' '%c' '%c' '%c' '%c' '%c' '%c' '%c'\n", uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len - 4], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len - 3], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len - 2], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len - 1], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 2], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 3], uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 4]); 
       //judge whether the packet is leapfrog beacon packet or not. 
       //I am trying to solve not to use MAGIC_NUMBER
-      if((uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4] == LEAPFROG_DATA_HEADER) && (leapfrog_alt_parent_id > 0)){
-        //try send packet everytime to default route
-        //PRINTF("LEAPFROG: Replication to ID:%d\n", leapfrog_alt_parent_id);
-        uip_ipaddr_t temp_ipaddr; 
-        uip_ip6addr(&temp_ipaddr, 0xfe80, 0, 0, 0, 0xc30c, 0, 0, (uint8_t)leapfrog_alt_parent_id);
-        nexthop = &temp_ipaddr;
-        //nexthop = uip_ds6_defrt_choose();
-        if(nexthop != NULL){
-            // PRINTA("LEAPFROG: Replication to ID: %d\n", leapfrog_alt_parent_id);
-            //PRINT6ADDR(nexthop);
-            //PRINTF("\n");
-            nbr = uip_ds6_nbr_lookup(nexthop);
-            if(nbr != NULL){
-                 //PRINTF("LEAPFROG: call output\n");
-                 tcpip_output(uip_ds6_nbr_get_ll(nbr));
-            }else{
-                 PRINTF("LEAPFROG: nbr == NULL!!\n");
-            }
-        }else{
-            PRINTF("LEAPFROG: nexthop == NULL!!\n");
+      if(uip_len + uip_ext_len >= UIP_IPTCPH_LEN + UIP_LLH_LEN - 4){  //added 6/9/2016 check length before accessing uip_buf
+        if((uip_buf[UIP_IPTCPH_LEN + UIP_LLH_LEN - 4] == LEAPFROG_DATA_HEADER) && (leapfrog_alt_parent_id > 0)){
+          //try send packet everytime to default route
+          //PRINTF("LEAPFROG: Replication to ID:%d\n", leapfrog_alt_parent_id);
+          uip_ipaddr_t temp_ipaddr; 
+          uip_ip6addr(&temp_ipaddr, 0xfe80, 0, 0, 0, 0xc30c, 0, 0, (uint8_t)leapfrog_alt_parent_id);
+          nexthop = &temp_ipaddr;
+          //nexthop = uip_ds6_defrt_choose();
+          if(nexthop != NULL){
+              PRINTA("LEAPFROG: Replication to ID: %d\n", leapfrog_alt_parent_id);
+              //PRINT6ADDR(nexthop);
+              //PRINTF("\n");
+              nbr = uip_ds6_nbr_lookup(nexthop);
+              if(nbr != NULL){
+                   //PRINTF("LEAPFROG: call output\n");
+                   tcpip_output(uip_ds6_nbr_get_ll(nbr));
+              }else{
+                   PRINTF("LEAPFROG: nbr == NULL!!\n");
+              }
+          }else{
+              PRINTF("LEAPFROG: nexthop == NULL!!\n");
+          }
         }
-      }
+      }//added 6/9/2016 check length before accessing uip_buf
 
       // }else{
       //   //Forwarding processes is skipped because of elimination

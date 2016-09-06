@@ -1217,67 +1217,74 @@ uip_process(uint8_t flag)
 
 //added by TadaMatz 4/Sep/2016
 #ifdef WITH_OVERHEARING
-  if(is_overhearing_slot == 1 
-     && is_overheard == 1
-     && uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len] != LEAPFROG_DATA_HEADER){
-    //if the packet is NOT Leapfrog data, discard. In the other word, only Leapfrog data can be processed in overhearing slot.
-    // PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
-    goto drop;
+  if(is_overhearing_slot == 1 && is_overheard == 1){
+  	if(uip_len + uip_ext_len >= UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len){  //added 6/9/2016 check length before accessing uip_buf
+      if(uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len] != LEAPFROG_DATA_HEADER){
+        //if the packet is NOT Leapfrog data, discard. In the other word, only Leapfrog data can be processed in overhearing slot.
+        PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
+        goto drop;
+      }
+    }else{
+      PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
+      goto drop;
+    }
   }
 #endif //WITH_OVERHEARING
 
 //added by TadaMatz 13/June/2016
   #ifdef WITH_LEAPFROG //for elimination of packet
-  if(uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len] == LEAPFROG_DATA_HEADER){
-/*
-    PRINTF("LEAPFROG: uip_ext_len: %d\n", uip_ext_len);
-    PRINTF("LEAPFROG: uip_buf [%d]='%c' [%d]='%c'\n",
-  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
-  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
-  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1],
-  	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1]
-  	);
-*/
+  if(uip_len + uip_ext_len >= UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len){  //added 6/9/2016 check length before accessing uip_buf
+    if(uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len] == LEAPFROG_DATA_HEADER){
+  /*
+      PRINTF("LEAPFROG: uip_ext_len: %d\n", uip_ext_len);
+      PRINTF("LEAPFROG: uip_buf [%d]='%c' [%d]='%c'\n",
+    	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+    	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+    	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1],
+    	  uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1]
+    	);
+  */
 
-    int leapfrog_elimination_flag = 0;
-    //PRINTF("LEAPFROG: judge Leapfrog Data Packet in uip_process\n");
-    char tmp_lf_pc = uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1] - LEAPFROG_BEACON_OFFSET;
-    int tmp_sid = UIP_IP_BUF->srcipaddr.u8[15];
-    // if(tmp_sid <= 0 || LEAPFROG_NUM_NODE < tmp_sid){
-    //   PRINTA("LEAPFROG: wrong tmp_sid\n");
-    // }
-    char tmp_lf_an = leapfrog_elimination_id_array[tmp_sid - 1];
-/*
-    PRINTF("LEAPFROG: sID %d pc %d an %d uip_buf direct: [%d]:%c [%d]:%c\n",
-    tmp_sid,
-    tmp_lf_pc,
-    tmp_lf_an,
-    uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
-    uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
-    uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1],
-    uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1]);
-*/        
-    //start elimination judging process
-    //elimination judgling process old version
-    //if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
-    //  if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an) <= tmp_lf_pc) leapfrog_elimination_flag = 1;
-    //}else{
-    //  if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
-    //}
+      int leapfrog_elimination_flag = 0;
+      //PRINTF("LEAPFROG: judge Leapfrog Data Packet in uip_process\n");
+      char tmp_lf_pc = uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1] - LEAPFROG_BEACON_OFFSET;
+      int tmp_sid = UIP_IP_BUF->srcipaddr.u8[15];
+      // if(tmp_sid <= 0 || LEAPFROG_NUM_NODE < tmp_sid){
+      //   PRINTA("LEAPFROG: wrong tmp_sid\n");
+      // }
+      char tmp_lf_an = leapfrog_elimination_id_array[tmp_sid - 1];
+  /*
+      PRINTF("LEAPFROG: sID %d pc %d an %d uip_buf direct: [%d]:%c [%d]:%c\n",
+      tmp_sid,
+      tmp_lf_pc,
+      tmp_lf_an,
+      uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+      uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len],
+      uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1],
+      uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len + 1]);
+  */        
+      //start elimination judging process
+      //elimination judgling process old version
+      //if(tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH){
+      //  if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - tmp_lf_an) <= tmp_lf_pc) leapfrog_elimination_flag = 1;
+      //}else{
+      //  if(tmp_lf_an - LEAPFROG_DATA_COUNTER_WIDTH <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
+      //}
 
-    if(0 <= tmp_lf_an && tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH - 2){ //imagin if WIDTH = 5, MAX = 20
-      if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - 1 - tmp_lf_an) <= tmp_lf_pc) leapfrog_elimination_flag = 1;
-    }else if(LEAPFROG_DATA_COUNTER_WIDTH - 1 <= tmp_lf_an && tmp_lf_an <= LEAPFROG_DATA_COUNTER_MAX - 1){
-      if(tmp_lf_an - (LEAPFROG_DATA_COUNTER_WIDTH - 1) <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
+      if(0 <= tmp_lf_an && tmp_lf_an <= LEAPFROG_DATA_COUNTER_WIDTH - 2){ //imagin if WIDTH = 5, MAX = 20
+        if(tmp_lf_pc <= tmp_lf_an || LEAPFROG_DATA_COUNTER_MAX - (LEAPFROG_DATA_COUNTER_WIDTH - 1 - tmp_lf_an) <= tmp_lf_pc) leapfrog_elimination_flag = 1;
+      }else if(LEAPFROG_DATA_COUNTER_WIDTH - 1 <= tmp_lf_an && tmp_lf_an <= LEAPFROG_DATA_COUNTER_MAX - 1){
+        if(tmp_lf_an - (LEAPFROG_DATA_COUNTER_WIDTH - 1) <= tmp_lf_pc && tmp_lf_pc <= tmp_lf_an) leapfrog_elimination_flag = 1;
+      }
+
+      if(leapfrog_elimination_flag == 1){
+        PRINTA("LEAPFROG: Elimination data drop\n");
+        goto drop;
+      }else{
+        leapfrog_elimination_id_array[tmp_sid - 1] = tmp_lf_pc;
+      }
     }
-
-    if(leapfrog_elimination_flag == 1){
-      // PRINTA("LEAPFROG: Elimination data drop\n");
-      goto drop;
-    }else{
-      leapfrog_elimination_id_array[tmp_sid - 1] = tmp_lf_pc;
-    }
-  }
+  }  //added 6/9/2016 check length before accessing uip_buf
   #endif //WITH_LEAPFROG
 
   /*
