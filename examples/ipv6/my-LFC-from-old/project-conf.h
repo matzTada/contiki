@@ -46,8 +46,8 @@
 #define WITH_THUNDER //do not use Orchestra. Fixed TSCH schedule
 #define WITH_THUNDER_ADAPTIVE_EB_SLOT //make EB slot can be changed based on network
 
-//#define WITH_POWERTRACE // for power trace
-//#define WITH_STABLETIMER // for waiting application traffic until network stabilized
+#define WITH_POWERTRACE // for power trace
+#define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
 //#define WITH_ORCHESTRA 1 //if 1, enable Orchestra
 //#define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
