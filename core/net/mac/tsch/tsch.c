@@ -270,8 +270,8 @@ tsch_schedule_keepalive()
 static void
 eb_input(struct input_packet *current_input)
 {
-//modified by TadaMatz 2016/May/5 remove comment out of PRINTF("TSCH: EB received\n);"
-  PRINTF("TSCH: EB received\n");
+  //modified by TadaMatz 2016/May/5 remove comment out of PRINTF("TSCH: EB received\n);"
+  // PRINTF("TSCH: EB received\n");
   frame802154_t frame;
   /* Verify incoming EB (does its ASN match our Rx time?),
    * and update our join priority. */
@@ -767,8 +767,7 @@ PROCESS_THREAD(tsch_send_eb_process, ev, data)
           if(!(p = tsch_queue_add_packet(&tsch_eb_address, NULL, NULL))) {
             PRINTF("TSCH:! could not enqueue EB packet\n");
           } else {
-//modified by TadaMatz 2016/May/10
-	    // PRINTF("TSCH: enqueue EB packet %u %u\n", eb_len, hdr_len);
+	          // PRINTF("TSCH: enqueue EB packet %u %u\n", eb_len, hdr_len); //modified by TadaMatz 2016/May/10
             PRINTF("TSCH: enqueue EB packet %u %u %u\n", eb_len, hdr_len, tsch_packet_seqno);
             p->tsch_sync_ie_offset = tsch_sync_ie_offset;
             p->header_len = hdr_len;

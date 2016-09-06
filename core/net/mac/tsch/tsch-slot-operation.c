@@ -64,9 +64,6 @@
 //#define DEBUG DEBUG_PRINT //controll debug print file by file
 #include "net/ip/uip-debug.h"
 
-//added by TadaMatz 31/May/2016 to ON OFF debug of slot operatoin
-//#define DEBUG_TADAMATZ
-
 // #ifdef WITH_LEAPFROG_TSCH //added by TadaMatz 16/June/2016
 // extern char leapfrog_alt_parent_id;
 // extern linkaddr_t alt_parent_linkaddr;
@@ -346,17 +343,11 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
 #endif //WITH_LEAPFROG_TSCH end of added 16/June/2016
 */
 	p = tsch_queue_get_packet_for_nbr(n, link);
-#ifdef DEBUG_TADAMATZ
-	    //added by TadaMatz to see what happens in DIO sending
-      	if(p != NULL) PRINTF("np %u\n", n->addr.u8[7]);
-#endif
+      	// if(p != NULL) PRINTA("np %u\n", n->addr.u8[7]);      //added by TadaMatz to see what happens in DIO sending
 	    /* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
         if(p == NULL && n == n_broadcast) {
           p = tsch_queue_get_unicast_packet_for_any(&n, link);
-#ifdef DEBUG_TADAMATZ
-          //added by TadaMatz to see what happens in DIO sending
-	  if(p != NULL) PRINTF("ap %u\n", n->addr.u8[7]);
-#endif
+	        // if(p != NULL) PRINTA("ap %u\n", n->addr.u8[7]);          //added by TadaMatz to see what happens in DIO sending
         }
       }
     }
@@ -394,10 +385,10 @@ update_neighbor_state(struct tsch_neighbor *n, struct tsch_packet *p,
   } else {
     /* Failed transmission */
 //modified by TadaMatz 1/July/2016 not to resend if IGNORE_TSCH_RESEND
-#ifdef IGNORE_TSCH_RESEND
-    tsch_queue_remove_packet_from_queue(n);
-    in_queue = 0;
-#else //IGNORE_TSCH_RESEND
+// #ifdef IGNORE_TSCH_RESEND
+//     tsch_queue_remove_packet_from_queue(n);
+//     in_queue = 0;
+// #else //IGNORE_TSCH_RESEND
     if(p->transmissions >= TSCH_MAC_MAX_FRAME_RETRIES + 1) {
       /* Drop packet */
       tsch_queue_remove_packet_from_queue(n);
@@ -820,7 +811,7 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
               //PRINTA("OVERHEAR: uni ID:%d -> ID:%d\n", source_address.u8[7], destination_address.u8[7]);
             }else if(linkaddr_cmp(&destination_address, &linkaddr_null)){ //broadcast 
               //PRINTA("OVERHEAR: bro ID:%d -> null\n", source_address.u8[7]);
-            }else{ //when dst linkaddr is NOT equal to own linkaddr Overhearing occures.
+            }else if(linkaddr_cmp(&destination_address, &linkaddr_node_addr) <= 0 && linkaddr_cmp(&destination_address, &linkaddr_null) <= 0){ //when dst linkaddr is NOT equal to own linkaddr Overhearing occures.
               //PRINTA("OVERHEAR: ohr ID:%d -> ID:%d\n", source_address.u8[7], destination_address.u8[7]);
               is_overheard = 1;
             }
@@ -984,10 +975,7 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
          **/
         static struct pt slot_tx_pt;
         PT_SPAWN(&slot_operation_pt, &slot_tx_pt, tsch_tx_slot(&slot_tx_pt, t));
-	#ifdef DEBUG_TADAMATZ
-	      //added by TadaMatz 19/May/2016 to see packet sent or not
-	      PRINTF("so TS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
-	#endif /*DEBUG_TADAMATZ*/
+	      // PRINTA("so TS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset); //added by TadaMatz 19/May/2016 to see packet sent or not
       } else if((current_link->link_options & LINK_OPTION_RX)) {
         /* Listen */
 
@@ -1001,10 +989,7 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
 
         static struct pt slot_rx_pt;
         PT_SPAWN(&slot_operation_pt, &slot_rx_pt, tsch_rx_slot(&slot_rx_pt, t));
-	#ifdef DEBUG_TADAMATZ
-	      //added by TadaMatz 19/May/2016 to see packet sent or not
-	      PRINTF("so RS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);
-	#endif /*DEBUG_TADAMATZ*/
+	      // PRINTA("so RS %u %u %u\n", current_link->slotframe_handle, current_link->timeslot, current_link->channel_offset);       //added by TadaMatz 19/May/2016 to see packet sent or not
       }
       TSCH_DEBUG_SLOT_END();
 

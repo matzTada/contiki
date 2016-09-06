@@ -579,7 +579,9 @@ tcpip_ipv6_output(void)
         PRINTF("tcpip_ipv6_output: no route found, using default route\n");
         nexthop = uip_ds6_defrt_choose();
         //added by TadaMatz 23/June/2016
-        if(nexthop != NULL) PRINTA("LEAPFROG: default route ID:%d\n", nexthop->u8[15]);
+        // if(nexthop != NULL) {
+        //   PRINTA("LEAPFROG: default route ID:%d\n", nexthop->u8[15]);
+        // }
         if(nexthop == NULL) {
 #ifdef UIP_FALLBACK_INTERFACE
           PRINTF("FALLBACK: removing ext hdrs & setting proto %d %d\n",
@@ -796,7 +798,7 @@ tcpip_ipv6_output(void)
         nexthop = &temp_ipaddr;
         //nexthop = uip_ds6_defrt_choose();
         if(nexthop != NULL){
-            PRINTA("LEAPFROG: Replication to ID: %d\n", leapfrog_alt_parent_id);
+            // PRINTA("LEAPFROG: Replication to ID: %d\n", leapfrog_alt_parent_id);
             //PRINT6ADDR(nexthop);
             //PRINTF("\n");
             nbr = uip_ds6_nbr_lookup(nexthop);
