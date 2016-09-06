@@ -233,11 +233,11 @@ leapfrog_receiver(struct simple_udp_connection *c,
 
     //end of judging process by beacon.
     //print calculated information
-    // for(temp_pps_itr = 0; temp_pps_itr < leapfrog_possible_parent_num; temp_pps_itr++){
-    //   temp_pps_str[temp_pps_itr] = leapfrog_possible_parent_id_array[temp_pps_itr] + LEAPFROG_BEACON_OFFSET;
-    // }
-    // temp_pps_str[temp_pps_itr] = '\0';
-    // printf("LEAPFROG: own P%d GP%d AP%d PPs%d:%s L%d\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id, leapfrog_possible_parent_num, temp_pps_str, leapfrog_layer);
+    for(temp_pps_itr = 0; temp_pps_itr < leapfrog_possible_parent_num; temp_pps_itr++){
+       temp_pps_str[temp_pps_itr] = leapfrog_possible_parent_id_array[temp_pps_itr] + LEAPFROG_BEACON_OFFSET;
+    }
+    temp_pps_str[temp_pps_itr] = '\0';
+    printf("LEAPFROG: own P%d GP%d AP%d PPs%d:%s L%d\n", leapfrog_parent_id, leapfrog_grand_parent_id, leapfrog_alt_parent_id, leapfrog_possible_parent_num, temp_pps_str, leapfrog_layer);
 
   } //if(data[0] == LEAPFROG_BEACON_HEADER)
 //#endif /*WITH_LEAPFROG*/

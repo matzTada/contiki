@@ -403,7 +403,7 @@ update_neighbor_state(struct tsch_neighbor *n, struct tsch_packet *p,
         tsch_queue_backoff_inc(n);
       }
     }
-#endif //IGNORE_TSCH_RESEND
+//#endif //IGNORE_TSCH_RESEND
   }
 
   return in_queue;
