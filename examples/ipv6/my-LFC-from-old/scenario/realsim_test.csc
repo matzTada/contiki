@@ -107,7 +107,7 @@
       <viewport>3.6118582284019114 0.0 0.0 3.6118582284019114 108.75435038406056 -107.81321339576489</viewport>
     </plugin_config>
     <width>400</width>
-    <z>3</z>
+    <z>4</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -120,7 +120,7 @@
       <coloring />
     </plugin_config>
     <width>935</width>
-    <z>2</z>
+    <z>3</z>
     <height>240</height>
     <location_x>400</location_x>
     <location_y>160</location_y>
@@ -136,10 +136,10 @@
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
-    <z>5</z>
-    <height>166</height>
-    <location_x>0</location_x>
-    <location_y>987</location_y>
+    <z>2</z>
+    <height>146</height>
+    <location_x>9</location_x>
+    <location_y>1004</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Notes
@@ -148,7 +148,7 @@
       <decorations>true</decorations>
     </plugin_config>
     <width>655</width>
-    <z>4</z>
+    <z>5</z>
     <height>160</height>
     <location_x>680</location_x>
     <location_y>0</location_y>
@@ -160,7 +160,7 @@
       <active>false</active>
     </plugin_config>
     <width>600</width>
-    <z>1</z>
+    <z>0</z>
     <height>700</height>
     <location_x>702</location_x>
     <location_y>282</location_y>
@@ -168,11 +168,263 @@
   <plugin>
     de.fau.cooja.plugins.realsim.RealSimFile
     <plugin_config>
-      <Filename>/home/contiki/example/ipv6/my-LFC-from-old/scenario/realsim_test.realsimfile</Filename>
-      <Load>true</Load>
+      <Filename>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/realsim_test.realsimfile</Filename>
+      <Load>false</Load>
+      <SimEvent time="500">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventAddNode
+        <ID>1</ID>
+        <MoteType>z11</MoteType>
+      </SimEvent>
+      <SimEvent time="500">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventAddNode
+        <ID>2</ID>
+        <MoteType>z12</MoteType>
+      </SimEvent>
+      <SimEvent time="1000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>1.0</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="1000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>1.0</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="600000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>1.0</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="600000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>1.0</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="1200000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="1200000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="1800000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>0.8</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="1800000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>0.8</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="2400000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>0.7</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="2400000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>0.7</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="3000000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>0.6</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="3000000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>0.6</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="3600000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>0.5</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="3600000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>0.5</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="4200000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>0.4</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="4200000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>0.4</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="4800000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>0.3</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="4800000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>0.3</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="5400000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>0.2</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="5400000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>0.2</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="6000000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>0.1</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="6000000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>0.1</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
     </plugin_config>
     <width>396</width>
-    <z>0</z>
+    <z>1</z>
     <height>657</height>
     <location_x>298</location_x>
     <location_y>342</location_y>
