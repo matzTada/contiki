@@ -187,7 +187,7 @@ rpl_set_preferred_parent(rpl_dag_t *dag, rpl_parent_t *p)
       PRINTA("ID:%d", temp_ipaddr->u8[15]); //added by TadaMatz 7/9/2016
     } else {
       PRINTF("NULL");
-      PIRNTA("NULL"); //added by TadaMatz 7/9/2016
+      PRINTA("NULL"); //added by TadaMatz 7/9/2016
     }
     PRINTF(" used to be ");
     if(dag->preferred_parent != NULL) {
