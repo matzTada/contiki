@@ -31,6 +31,7 @@ flag5400 = 0;
 flag6000 = 0;
 flag6600 = 0;
 
+TIMEOUT(1508000, log.log("Simulation time expired Time " + time + " PDR " + (total_receive_count / total_send_count) + " #send " + total_send_count +  " #receive " + total_receive_count + " #replication " + total_replication_count + " #elimination " + total_elimination_count +  "\n")); /* milliseconds. print last msg at timeout */
 
 log.log("Simulation starts\n");
 
@@ -81,14 +82,51 @@ while(true){
       flag600 = 1; 
       log.log("start default" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
+    else if(flag1200 == 0){ if(time >= 900000000){
       flag1200 = 1;
       log.log("report link=90, PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
+      log.log("setedge 10" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
+    else if(flag1800 == 0){ if(time >= 1200000000){
       flag1800 = 1;
+      log.log("report link=10, PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
+      log.log("setedge 90" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
+    else if(flag2400 == 0){ if(time >= 1500000000){
       flag2400 = 1;
+      log.log("report link=90, PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
+      // log.log("setedge 60" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
+    // else if(flag3000 == 0){ if(time >= 2400000000){
+    //   flag3000 = 1; 
+    //   log.log("report link=60, PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
+    //   log.log("setedge 50" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
+    // }}
+    // else if(flag3600 == 0){ if(time >= 3000000000){
+    //   flag3600 = 1;
+    //   log.log("report link=50, PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
+    //   log.log("setedge 40" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
+    // }}
+    // else if(flag4200 == 0){ if(time >= 3300000000){
+    //   flag4200 = 1;
+    //   log.log("report link=40, PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
+    //   log.log("setedge 30" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
+    // }}
+    // else if(flag4800 == 0){ if(time >= 3600000000){
+    //   flag4800 = 1;
+    //   log.log("report link=30, PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
+    //   log.log("setedge 20" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
+    // }}
+    // else if(flag5400 == 0){ if(time >= 4200000000){
+    //   flag5400 = 1;
+    //   log.log("report link=20, PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
+    //   log.log("setedge 10" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
+    // }}
+    // else if(flag6000 == 0){ if(time >= 4800000000){
+    //   flag6000 = 1;
+      // log.log("report link=10, PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       // log.log("setedge 10" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
+    // }}
     // else if(flag6600 == 0){ if(time >= 6600000000){
     //   flag6600 = 1;
     //   log.log("report link=10, PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
