@@ -96,7 +96,7 @@
   <plugin>
     de.fau.cooja.plugins.realsim.RealSimFile
     <plugin_config>
-      <Filename>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/realsim_example.realsimfile</Filename>
+      <Filename>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/realsim_test/realsim_example.realsimfile</Filename>
       <Load>true</Load>
       <SimEvent time="6000">
         de.fau.cooja.plugins.realsim.RealSimFile$SimEventAddNode

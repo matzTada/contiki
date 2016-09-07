@@ -156,7 +156,7 @@
   <plugin>
     org.contikios.cooja.plugins.ScriptRunner
     <plugin_config>
-      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/realsim_test_script.js</scriptfile>
+      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/realsim_test/realsim_test_script.js</scriptfile>
       <active>false</active>
     </plugin_config>
     <width>600</width>
@@ -168,7 +168,7 @@
   <plugin>
     de.fau.cooja.plugins.realsim.RealSimFile
     <plugin_config>
-      <Filename>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/realsim_test.realsimfile</Filename>
+      <Filename>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/realsim_test/realsim_test.realsimfile</Filename>
       <Load>false</Load>
       <SimEvent time="500">
         de.fau.cooja.plugins.realsim.RealSimFile$SimEventAddNode
