@@ -9,7 +9,7 @@ do
   cd scenario/realsim
   pwd
   echo re-write csc file
-  python xml_re_writer_scenario_change.py ladder_LF_realsim.csc $scenario
+  python xml_re_writer_scenario_change.py ladder_NO-re4_realsim.csc $scenario
   echo return to upper directory
   cd ../..
   pwd #should be in project home
@@ -29,14 +29,14 @@ do
   cd ${scenario} 
   pwd #i.e. [project]/result/realsim/scenario
 
-  if [ -d leapfrog ]; then
+  if [ -d normal-re4 ]; then
     echo dir already exist. 
   else
-    echo make directory leapfrog
-    mkdir leapfrog
+    echo make directory normal-re4
+    mkdir normal-re4
   fi
   echo entering
-  cd leapfrog
+  cd normal-re4
   pwd #i.e. [project]/result/realsim/scenario/config(no, re2, re4, re6, re8, lf)
 
   for i in `seq 10`
@@ -51,7 +51,7 @@ do
     cd $i
     pwd
     echo execute simulation
-    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/realsim/ladder_LF_realsim.csc -contiki=$HOME/contiki/
+    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/realsim/ladder_NO-re4_realsim.csc -contiki=$HOME/contiki/
     echo return to upper directory
     cd ..
     pwd
