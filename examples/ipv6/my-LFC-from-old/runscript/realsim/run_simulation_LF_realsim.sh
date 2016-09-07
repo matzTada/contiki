@@ -8,7 +8,7 @@ do
   pwd
   echo re-write csc file
   python xml_re_writer.py ladder_LF_udgm.csc 100 $j
-  echo return tp upper directory
+  echo return to upper directory
   cd ../..
   pwd
 
