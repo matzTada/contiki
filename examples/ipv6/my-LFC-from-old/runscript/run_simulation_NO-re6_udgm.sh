@@ -4,16 +4,16 @@
 for j in 100
 do
   echo entering
-  cd scenario
+  cd scenario/udgm
   pwd
   echo re-write csc file
-  python xml_re_writer.py ladder_NO-re6.csc 100 $j
+  python xml_re_writer.py ladder_NO-re6_udgm.csc 100 $j
   echo return tp upper directory
-  cd ..
+  cd ../..
   pwd
 
   echo entering
-  cd ./result/normal-re6
+  cd ./result/udgm/normal-re6
   pwd
 
   if [ -d "100-${j}" ]; then
@@ -38,13 +38,13 @@ do
     cd $i
     pwd
     echo execute simulation
-    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/ladder_NO-re6.csc -contiki=$HOME/contiki/
+    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/ladder_NO-re6_udgm.csc -contiki=$HOME/contiki/
     echo return to upper directory
     cd ..
     pwd
   done
   echo return to upper directory
-  cd ../../.. 
+  cd ../../../..
   pwd
 done
 echo all simulation finished. good job.

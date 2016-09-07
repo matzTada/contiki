@@ -23,7 +23,7 @@
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z11</identifier>
       <description>Z1 Mote receiver</description>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/nodes_NO-re6/node-receiver-leapfrog.z1</firmware>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/nodes_NO-re2/node-receiver-leapfrog.z1</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -41,7 +41,7 @@
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z12</identifier>
       <description>Z1 Mote sender-replicate</description>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/nodes_NO-re6/node-sender-leapfrog-replicate.z1</firmware>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/nodes_NO-re2/node-sender-leapfrog-replicate.z1</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -274,7 +274,7 @@
   <plugin>
     org.contikios.cooja.plugins.ScriptRunner
     <plugin_config>
-      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/script.js</scriptfile>
+      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/udgm/script.js</scriptfile>
       <active>false</active>
     </plugin_config>
     <width>698</width>
