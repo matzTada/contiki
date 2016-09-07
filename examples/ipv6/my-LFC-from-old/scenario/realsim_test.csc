@@ -19,7 +19,7 @@
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z11</identifier>
       <description>Z1 Mote Type receiver</description>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/nodes_MOVE/node-receiver-leapfrog.z1</firmware>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/nodes_REALSIM/node-receiver-leapfrog.z1</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -37,7 +37,7 @@
       org.contikios.cooja.mspmote.Z1MoteType
       <identifier>z12</identifier>
       <description>Z1 Mote Type sender</description>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/nodes_MOVE/node-sender-leapfrog-replicate.z1</firmware>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/nodes_REALSIM/node-sender-leapfrog-replicate.z1</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -156,34 +156,7 @@
   <plugin>
     org.contikios.cooja.plugins.ScriptRunner
     <plugin_config>
-      <script>/*
- * Example Contiki test script (JavaScript).
- * A Contiki test script acts on mote output, such as via printf()'s.
- * The script may operate on the following variables:
- *  Mote mote, int id, String msg
- */
-
-/* Make test automatically fail (timeout) after 100 simulated seconds */
-//TIMEOUT(100000); /* milliseconds. no action at timeout */
-TIMEOUT(100000, log.log("last msg: " + msg + "\n")); /* milliseconds. print last msg at timeout */
-
-log.log("first mote output: '" + msg + "'\n");
-
-YIELD(); /* wait for another mote output */
-
-log.log("second mote output: '" + msg + "'\n");
-
-log.log("waiting for hello world output from mote 1\n");
-WAIT_UNTIL(id == 1 &amp;&amp; msg.equals("Hello, world"));
-
-write(mote, "Hello, mote\n"); /* Write to mote serial port */
-
-GENERATE_MSG(15000, "continue");
-YIELD_THEN_WAIT_UNTIL(msg.equals("continue"));
-
-log.log("ok, reporting success now\n");
-log.testOK(); /* Report test success and quit */
-//log.testFailed(); /* Report test failure and quit */</script>
+      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/realsim_test_script.js</scriptfile>
       <active>false</active>
     </plugin_config>
     <width>600</width>
@@ -195,7 +168,7 @@ log.testOK(); /* Report test success and quit */
   <plugin>
     de.fau.cooja.plugins.realsim.RealSimFile
     <plugin_config>
-      <Filename>/home/contiki/example/ipv6/my-LFC-from-old/scenario/test.realsimfile</Filename>
+      <Filename>/home/contiki/example/ipv6/my-LFC-from-old/scenario/realsim_test.realsimfile</Filename>
       <Load>true</Load>
     </plugin_config>
     <width>396</width>
