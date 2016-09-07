@@ -1221,11 +1221,11 @@ uip_process(uint8_t flag)
   	if(uip_len + uip_ext_len >= UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len){  //added 6/9/2016 check length before accessing uip_buf
       if(uip_buf[UIP_IPUDPH_LEN + UIP_LLH_LEN + uip_ext_len] != LEAPFROG_DATA_HEADER){
         //if the packet is NOT Leapfrog data, discard. In the other word, only Leapfrog data can be processed in overhearing slot.
-        PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
+        // PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
         goto drop;
       }
     }else{
-      PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
+      // PRINTA("OVERHEAR: overheard but not Leapfrog data drop\n");
       goto drop;
     }
   }
