@@ -180,10 +180,14 @@ rpl_set_preferred_parent(rpl_dag_t *dag, rpl_parent_t *p)
 {
   if(dag != NULL && dag->preferred_parent != p) {
     PRINTF("RPL: rpl_set_preferred_parent ");
+    PRINTA("RPL: rpl_set_preferred_parent "); //added by TadaMatz 7/9/2016
     if(p != NULL) {
       PRINT6ADDR(rpl_get_parent_ipaddr(p));
+      uip_ipaddr_t * temp_ipaddr = rpl_get_parent_ipaddr(p); //added by TadaMatz 7/9/2016
+      PRINTA("ID:%d", temp_ipaddr->u8[15]); //added by TadaMatz 7/9/2016
     } else {
       PRINTF("NULL");
+      PIRNTA("NULL"); //added by TadaMatz 7/9/2016
     }
     PRINTF(" used to be ");
     if(dag->preferred_parent != NULL) {
@@ -192,6 +196,7 @@ rpl_set_preferred_parent(rpl_dag_t *dag, rpl_parent_t *p)
       PRINTF("NULL");
     }
     PRINTF("\n");
+    PRINTA("\n"); //added by TadaMatz 7/9/2016
 
 #ifdef RPL_CALLBACK_PARENT_SWITCH
     RPL_CALLBACK_PARENT_SWITCH(dag->preferred_parent, p);

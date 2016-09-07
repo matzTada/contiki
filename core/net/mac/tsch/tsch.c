@@ -431,6 +431,7 @@ tsch_disassociate(void)
     tsch_is_associated = 0;
     process_post(&tsch_process, PROCESS_EVENT_POLL, NULL);
     PRINTF("TSCH: leaving the network\n");
+    PRINTA("TSCH: tsch_disassociate called\n"); //added by TadaMatz 7/Sep/2016
   }
 }
 /*---------------------------------------------------------------------------*/
@@ -592,6 +593,7 @@ tsch_associate(const struct input_packet *input_eb, rtimer_clock_t timestamp)
              ies.ie_tsch_slotframe_and_link.num_links);
       PRINTLLADDR((const uip_lladdr_t *)&frame.src_addr);
       PRINTF("\n");
+      PRINTA("TSCH: association done\n"); //added by TadaMatz 7/9/2016
 
       return 1;
     }
