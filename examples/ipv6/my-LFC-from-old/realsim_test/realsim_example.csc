@@ -9,7 +9,7 @@
   <project EXPORT="discard">[APPS_DIR]/realsim</project>
   <simulation>
     <title>My simulation</title>
-    <randomseed>123456</randomseed>
+    <randomseed>generated</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>org.contikios.cooja.radiomediums.DirectedGraphMedium</radiomedium>
     <events>
