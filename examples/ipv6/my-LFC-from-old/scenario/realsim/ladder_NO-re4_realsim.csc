@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<simconf>
+<?xml version="1.0" ?><simconf>
   <project EXPORT="discard">[APPS_DIR]/mrm</project>
   <project EXPORT="discard">[APPS_DIR]/mspsim</project>
   <project EXPORT="discard">[APPS_DIR]/avrora</project>
@@ -9,7 +8,7 @@
   <project EXPORT="discard">[APPS_DIR]/realsim</project>
   <simulation>
     <title>My simulation</title>
-    <randomseed>generated</randomseed>
+    <randomseed>10</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>org.contikios.cooja.radiomediums.DirectedGraphMedium</radiomedium>
     <events>
@@ -52,7 +51,7 @@
       <moteinterface>org.contikios.cooja.mspmote.interfaces.MspDebugOutput</moteinterface>
     </motetype>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>0.6309702065965581</x>
@@ -70,7 +69,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>-16.75088556545893</x>
@@ -88,7 +87,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>18.111321152999658</x>
@@ -106,7 +105,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>-16.933173389333973</x>
@@ -124,7 +123,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>19.548495064974883</x>
@@ -142,7 +141,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>-15.114583526068728</x>
@@ -160,7 +159,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>17.98905626444874</x>
@@ -178,7 +177,7 @@
       <motetype_identifier>z11</motetype_identifier>
     </mote>
     <mote>
-      <breakpoints />
+      <breakpoints/>
       <interface_config>
         org.contikios.cooja.interfaces.Position
         <x>-0.6489735377615098</x>
@@ -223,9 +222,9 @@
   <plugin>
     org.contikios.cooja.plugins.LogListener
     <plugin_config>
-      <filter />
-      <formatted_time />
-      <coloring />
+      <filter/>
+      <formatted_time/>
+      <coloring/>
     </plugin_config>
     <width>935</width>
     <z>4</z>
@@ -244,9 +243,9 @@
       <mote>5</mote>
       <mote>6</mote>
       <mote>7</mote>
-      <showRadioRXTX />
-      <showRadioHW />
-      <showLEDs />
+      <showRadioRXTX/>
+      <showRadioHW/>
+      <showLEDs/>
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
     <width>1335</width>
@@ -270,7 +269,7 @@
   <plugin>
     org.contikios.cooja.plugins.ScriptRunner
     <plugin_config>
-      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/realsim/scenario1.js</scriptfile>
+      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/realsim/scenario3.js</scriptfile>
       <active>false</active>
     </plugin_config>
     <width>600</width>
@@ -282,7 +281,7 @@
   <plugin>
     de.fau.cooja.plugins.realsim.RealSimFile
     <plugin_config>
-      <Filename>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/realsim/scenario1.realsimfile</Filename>
+      <Filename>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/realsim/scenario3.realsimfile</Filename>
       <Load>true</Load>
     </plugin_config>
     <width>396</width>
@@ -292,4 +291,3 @@
     <location_y>342</location_y>
   </plugin>
 </simconf>
-

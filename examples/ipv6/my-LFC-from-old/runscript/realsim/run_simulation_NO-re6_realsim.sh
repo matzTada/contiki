@@ -14,33 +14,45 @@ do
   cd ../..
   pwd #should be in project home
 
-  #entering result saving directory
-  echo entering
-  cd ./result/realsim
-  pwd
-
-  if [ -d ${scenario} ]; then
-    echo dir already exist. 
-  else
-    echo make directory ${scenario}
-    mkdir ${scenario}
-  fi
-  echo entering
-  cd ${scenario} 
-  pwd #i.e. [project]/result/realsim/scenario
-
-  if [ -d normal-re6 ]; then
-    echo dir already exist. 
-  else
-    echo make directory normal-re6
-    mkdir normal-re6
-  fi
-  echo entering
-  cd normal-re6
-  pwd #i.e. [project]/result/realsim/scenario/config(no, re2, re4, re6, re8, lf)
-
   for i in `seq 10`
   do
+
+    #changing random seed
+    echo entering
+    cd ./scenario/realsim
+    pwd
+    echo re-write csc file
+    python xml_re_writer_seed_decide.py ladder_NO-re6_realsim.csc $i
+    echo return to upper directory
+    cd ../..
+    pwd #should be in project home
+
+
+    #entering result saving directory
+    echo entering
+    cd ./result/realsim
+    pwd
+
+    if [ -d ${scenario} ]; then
+      echo dir already exist. 
+    else
+      echo make directory ${scenario}
+      mkdir ${scenario}
+    fi
+    echo entering
+    cd ${scenario} 
+    pwd #i.e. [project]/result/realsim/scenario
+
+    if [ -d normal-re6 ]; then
+      echo dir already exist. 
+    else
+      echo make directory leapfrog
+      mkdir normal-re6
+    fi
+    echo entering
+    cd normal-re6
+    pwd #i.e. [project]/result/realsim/scenario/config(no, re2, re4, re6, re8, lf)
+
     if [ -d $i ]; then
       echo dir already exist. remove $i
       rm -rf $i
@@ -49,15 +61,13 @@ do
     mkdir $i
     echo entering $i
     cd $i
-    pwd
+    pwd #i.e. [project]/result/realsim/scenario/config(no, re2, re4, re6, re8, lf)/i
     echo execute simulation
     java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/realsim/ladder_NO-re6_realsim.csc -contiki=$HOME/contiki/
     echo return to upper directory
-    cd ..
+    cd ../../../../.. #should be in project home
     pwd
   done
-  echo return to upper directory
-  cd ../../../.. #should be in project home
   pwd
 done
 echo all simulation finished. good job.
