@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simconf>
+  <project EXPORT="discard">[APPS_DIR]/mrm</project>
+  <project EXPORT="discard">[APPS_DIR]/mspsim</project>
+  <project EXPORT="discard">[APPS_DIR]/avrora</project>
+  <project EXPORT="discard">[APPS_DIR]/serial_socket</project>
+  <project EXPORT="discard">[APPS_DIR]/collect-view</project>
+  <project EXPORT="discard">[APPS_DIR]/powertracker</project>
+  <project EXPORT="discard">[APPS_DIR]/realsim</project>
+  <simulation>
+    <title>My simulation</title>
+    <randomseed>generated</randomseed>
+    <motedelay_us>1000000</motedelay_us>
+    <radiomedium>org.contikios.cooja.radiomediums.DirectedGraphMedium</radiomedium>
+    <events>
+      <logoutput>40000</logoutput>
+    </events>
+    <motetype>
+      org.contikios.cooja.mspmote.Z1MoteType
+      <identifier>z11</identifier>
+      <description>Z1 Mote Type receiver</description>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/nodes_NO/node-receiver-leapfrog.z1</firmware>
+      <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
+      <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
+      <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
+      <moteinterface>org.contikios.cooja.interfaces.Mote2MoteRelations</moteinterface>
+      <moteinterface>org.contikios.cooja.interfaces.MoteAttributes</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspClock</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspMoteID</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspButton</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.Msp802154Radio</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspDefaultSerial</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspLED</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspDebugOutput</moteinterface>
+    </motetype>
+    <motetype>
+      org.contikios.cooja.mspmote.Z1MoteType
+      <identifier>z12</identifier>
+      <description>Z1 Mote Type sender</description>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/nodes_NO/node-sender-leapfrog-replicate.z1</firmware>
+      <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
+      <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
+      <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
+      <moteinterface>org.contikios.cooja.interfaces.Mote2MoteRelations</moteinterface>
+      <moteinterface>org.contikios.cooja.interfaces.MoteAttributes</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspClock</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspMoteID</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspButton</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.Msp802154Radio</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspDefaultSerial</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspLED</moteinterface>
+      <moteinterface>org.contikios.cooja.mspmote.interfaces.MspDebugOutput</moteinterface>
+    </motetype>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>0.6309702065965581</x>
+        <y>71.83942531741528</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>1</id>
+      </interface_config>
+      <motetype_identifier>z11</motetype_identifier>
+    </mote>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>-16.75088556545893</x>
+        <y>102.87832663421864</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>2</id>
+      </interface_config>
+      <motetype_identifier>z11</motetype_identifier>
+    </mote>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>18.111321152999658</x>
+        <y>103.32923554232815</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>3</id>
+      </interface_config>
+      <motetype_identifier>z11</motetype_identifier>
+    </mote>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>-16.933173389333973</x>
+        <y>136.3175585981894</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>4</id>
+      </interface_config>
+      <motetype_identifier>z11</motetype_identifier>
+    </mote>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>19.548495064974883</x>
+        <y>133.42881230404834</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>5</id>
+      </interface_config>
+      <motetype_identifier>z11</motetype_identifier>
+    </mote>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>-15.114583526068728</x>
+        <y>166.26809651971598</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>6</id>
+      </interface_config>
+      <motetype_identifier>z11</motetype_identifier>
+    </mote>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>17.98905626444874</x>
+        <y>165.28284777784035</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>7</id>
+      </interface_config>
+      <motetype_identifier>z11</motetype_identifier>
+    </mote>
+    <mote>
+      <breakpoints />
+      <interface_config>
+        org.contikios.cooja.interfaces.Position
+        <x>-0.6489735377615098</x>
+        <y>193.6603611481745</y>
+        <z>0.0</z>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspClock
+        <deviation>1.0</deviation>
+      </interface_config>
+      <interface_config>
+        org.contikios.cooja.mspmote.interfaces.MspMoteID
+        <id>8</id>
+      </interface_config>
+      <motetype_identifier>z12</motetype_identifier>
+    </mote>
+  </simulation>
+  <plugin>
+    org.contikios.cooja.plugins.SimControl
+    <width>280</width>
+    <z>6</z>
+    <height>160</height>
+    <location_x>400</location_x>
+    <location_y>0</location_y>
+  </plugin>
+  <plugin>
+    org.contikios.cooja.plugins.Visualizer
+    <plugin_config>
+      <moterelations>true</moterelations>
+      <skin>org.contikios.cooja.plugins.skins.IDVisualizerSkin</skin>
+      <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
+      <skin>org.contikios.cooja.plugins.skins.DGRMVisualizerSkin</skin>
+      <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
+      <viewport>2.205198026608707 0.0 0.0 2.205198026608707 186.5115805470091 -120.21647681397864</viewport>
+    </plugin_config>
+    <width>400</width>
+    <z>2</z>
+    <height>400</height>
+    <location_x>1</location_x>
+    <location_y>1</location_y>
+  </plugin>
+  <plugin>
+    org.contikios.cooja.plugins.LogListener
+    <plugin_config>
+      <filter />
+      <formatted_time />
+      <coloring />
+    </plugin_config>
+    <width>935</width>
+    <z>4</z>
+    <height>240</height>
+    <location_x>400</location_x>
+    <location_y>160</location_y>
+  </plugin>
+  <plugin>
+    org.contikios.cooja.plugins.TimeLine
+    <plugin_config>
+      <mote>0</mote>
+      <mote>1</mote>
+      <mote>2</mote>
+      <mote>3</mote>
+      <mote>4</mote>
+      <mote>5</mote>
+      <mote>6</mote>
+      <mote>7</mote>
+      <showRadioRXTX />
+      <showRadioHW />
+      <showLEDs />
+      <zoomfactor>500.0</zoomfactor>
+    </plugin_config>
+    <width>1335</width>
+    <z>3</z>
+    <height>146</height>
+    <location_x>9</location_x>
+    <location_y>1004</location_y>
+  </plugin>
+  <plugin>
+    org.contikios.cooja.plugins.Notes
+    <plugin_config>
+      <notes>Enter notes here</notes>
+      <decorations>true</decorations>
+    </plugin_config>
+    <width>655</width>
+    <z>5</z>
+    <height>160</height>
+    <location_x>680</location_x>
+    <location_y>0</location_y>
+  </plugin>
+  <plugin>
+    org.contikios.cooja.plugins.ScriptRunner
+    <plugin_config>
+      <scriptfile>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/realsim/scenario2.js</scriptfile>
+      <active>false</active>
+    </plugin_config>
+    <width>600</width>
+    <z>0</z>
+    <height>700</height>
+    <location_x>702</location_x>
+    <location_y>282</location_y>
+  </plugin>
+  <plugin>
+    de.fau.cooja.plugins.realsim.RealSimFile
+    <plugin_config>
+      <Filename>[CONTIKI_DIR]/examples/ipv6/my-LFC-from-old/scenario/realsim/scenario2.realsimfile</Filename>
+      <Load>false</Load>
+      <SimEvent time="15000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>2</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="15100">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>1</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="15200">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>1</src>
+          <dst>3</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="15300">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>3</src>
+          <dst>1</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="15400">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>4</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="15600">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>4</src>
+          <dst>2</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="15700">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>3</src>
+          <dst>5</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="15800">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>5</src>
+          <dst>3</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="15900">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>4</src>
+          <dst>6</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="16000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>6</src>
+          <dst>4</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="16100">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>5</src>
+          <dst>7</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="16200">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>7</src>
+          <dst>5</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="16300">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>6</src>
+          <dst>8</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="16400">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>8</src>
+          <dst>6</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="16500">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>7</src>
+          <dst>8</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="16600">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>8</src>
+          <dst>7</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="16700">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>5</dst>
+          <ratio>0.7</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="16800">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>5</src>
+          <dst>2</dst>
+          <ratio>0.7</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="16900">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>3</src>
+          <dst>4</dst>
+          <ratio>0.7</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="17000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>4</src>
+          <dst>3</dst>
+          <ratio>0.7</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="17100">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>4</src>
+          <dst>7</dst>
+          <ratio>0.7</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="17200">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>7</src>
+          <dst>4</dst>
+          <ratio>0.7</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="17300">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>5</src>
+          <dst>6</dst>
+          <ratio>0.7</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="17400">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>6</src>
+          <dst>5</dst>
+          <ratio>0.7</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="17500">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>3</dst>
+          <ratio>0.5</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="17600">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>3</src>
+          <dst>2</dst>
+          <ratio>0.5</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="17700">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>4</src>
+          <dst>5</dst>
+          <ratio>0.5</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="17800">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>5</src>
+          <dst>4</dst>
+          <ratio>0.5</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="17900">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>6</src>
+          <dst>7</dst>
+          <ratio>0.5</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="18000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>7</src>
+          <dst>6</dst>
+          <ratio>0.5</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="600000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>4</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="600100">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>4</src>
+          <dst>2</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="900000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>4</dst>
+          <ratio>0.1</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="900100">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>4</src>
+          <dst>2</dst>
+          <ratio>0.1</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="1200000">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>2</src>
+          <dst>4</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+      <SimEvent time="1200100">
+        de.fau.cooja.plugins.realsim.RealSimFile$SimEventSetEdge
+        <RSE>
+          <src>4</src>
+          <dst>2</dst>
+          <ratio>0.9</ratio>
+          <rssi>-10.0</rssi>
+          <delay>0</delay>
+          <lqi>105</lqi>
+        </RSE>
+      </SimEvent>
+    </plugin_config>
+    <width>396</width>
+    <z>1</z>
+    <height>657</height>
+    <location_x>298</location_x>
+    <location_y>342</location_y>
+  </plugin>
+</simconf>
+
