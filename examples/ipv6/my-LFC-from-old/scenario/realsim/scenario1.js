@@ -31,7 +31,7 @@ flag5400 = 0;
 flag6000 = 0;
 flag6600 = 0;
 
-TIMEOUT(3008000, log.log("Simulation time expired Time " + time + " PDR " + (total_receive_count / total_send_count) + " #send " + total_send_count +  " #receive " + total_receive_count + " #replication " + total_replication_count + " #elimination " + total_elimination_count +  "\n")); /* milliseconds. print last msg at timeout */
+TIMEOUT(3308000, log.log("Simulation time expired Time " + time + " PDR " + (total_receive_count / total_send_count) + " #send " + total_send_count +  " #receive " + total_receive_count + " #replication " + total_replication_count + " #elimination " + total_elimination_count +  "\n")); /* milliseconds. print last msg at timeout */
 
 log.log("Simulation starts\n");
 
