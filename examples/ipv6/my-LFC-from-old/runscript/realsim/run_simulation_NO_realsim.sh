@@ -2,8 +2,6 @@
 #for realsim
 #should be run from prject home
 
-for scenario in scenario1 scenario2 scenario3
-do
   #changing scenario file
   #echo entering
   #cd scenario/realsim
@@ -14,9 +12,11 @@ do
   #cd ../..
   #pwd #should be in project home
 
-  for i in `seq 10`
+  for i in `seq 12 29`
   do
 
+for scenario in scenario1 scenario2 scenario3
+do
     #changing random seed
     #echo entering
     #cd ./scenario/realsim
@@ -64,7 +64,8 @@ do
     pwd #i.e. [project]/result/realsim/scenario/config(no, re2, re4, re6, re8, lf)/i
     echo execute simulation
     #java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/realsim/ladder_NO_realsim.csc -contiki=$HOME/contiki/
-    java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/realsim/ladder_NO_realsim_gui_${scenario}.csc -contiki=$HOME/contiki/
+    #java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/realsim/ladder_NO_realsim_gui_${scenario}.csc -contiki=$HOME/contiki/
+    timeout -sKILL 3600 java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/realsim/ladder_NO_realsim_gui_${scenario}.csc -contiki=$HOME/contiki/
     echo return to upper directory
     cd ../../../../.. #should be in project home
     pwd
