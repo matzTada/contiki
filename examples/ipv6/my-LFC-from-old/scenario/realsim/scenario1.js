@@ -80,7 +80,8 @@ while(true){
     }
     else if(flag600 == 0){ if(time >= 600000000){
       flag600 = 1; 
-      log.log("start default" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
+      log.log("start default" + "\n");
+      log.log("setedge 90" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
     else if(flag1200 == 0){ if(time >= 900000000){
       flag1200 = 1;
