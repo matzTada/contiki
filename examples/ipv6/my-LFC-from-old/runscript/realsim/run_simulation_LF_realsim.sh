@@ -12,7 +12,7 @@
   #cd ../..
   #pwd #should be in project home
 
-  for i in `seq 12 29`
+  for i in `seq 31 50`
   do
 
 for scenario in scenario1 scenario2 scenario3
