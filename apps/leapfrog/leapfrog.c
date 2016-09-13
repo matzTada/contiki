@@ -117,7 +117,7 @@ leapfrog_receiver(struct simple_udp_connection *c,
     if(leapfrog_parent_id != my_pid){ //new parent and reset P, GP, AP
       leapfrog_parent_id = my_pid;
       leapfrog_grand_parent_id = 0;
-      leapfrog_alt_parent_id = 0;
+      // leapfrog_alt_parent_id = 0;
       // printf("LEAPFROG: reset P GP AP\n");
     }
     //get Grand Parent
