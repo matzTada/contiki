@@ -34,7 +34,7 @@ flag13 = 0;
 flag14 = 0;
 flag15 = 0;
 
-TIMEOUT(2468000, log.log("Simulation time expired Time " + time + " PDR " + (total_receive_count / total_send_count) + " #send " + total_send_count +  " #receive " + total_receive_count + " #replication " + total_replication_count + " #elimination " + total_elimination_count +  "\n")); /* milliseconds. print last msg at timeout */
+TIMEOUT(4808000, log.log("Simulation time expired Time " + time + " PDR " + (total_receive_count / total_send_count) + " #send " + total_send_count +  " #receive " + total_receive_count + " #replication " + total_replication_count + " #elimination " + total_elimination_count +  "\n")); /* milliseconds. print last msg at timeout */
 
 log.log("Simulation starts\n");
 
@@ -83,67 +83,67 @@ while(true){
       flag2 = 1; 
       log.log(time + " setedge def" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag3 == 0){ if(time >= 1020000000){
+    else if(flag3 == 0){ if(time >= 1200000000){
       flag3 = 1;
       log.log(time + " report def PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge bad id:2" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag4 == 0){ if(time >= 1140000000){
+    else if(flag4 == 0){ if(time >= 1500000000){
       flag4 = 1;
       log.log(time + " report bad id:2 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge def id:2" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag5 == 0){ if(time >= 1260000000){
+    else if(flag5 == 0){ if(time >= 1800000000){
       flag5 = 1;
       log.log(time + " report def id:2 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge bad id:5" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag6 == 0){ if(time >= 1380000000){
+    else if(flag6 == 0){ if(time >= 2100000000){
       flag6 = 1; 
       log.log(time + " report bad id:5 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge def id:5" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag7 == 0){ if(time >= 1500000000){
+    else if(flag7 == 0){ if(time >= 2400000000){
       flag7 = 1;
       log.log(time + " report def id:5 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge bad id:6" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag8 == 0){ if(time >= 1620000000){
+    else if(flag8 == 0){ if(time >= 2700000000){
       flag8 = 1;
       log.log(time + " report bad id:6 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge def id:6" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag9 == 0){ if(time >= 1740000000){
+    else if(flag9 == 0){ if(time >= 3000000000){
       flag9 = 1;
       log.log(time + " report def id:6 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge bad id:3" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag10 == 0){ if(time >= 1860000000){
+    else if(flag10 == 0){ if(time >= 3300000000){
       flag10 = 1;
       log.log(time + " report bad id:3 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge def id:3" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag11 == 0){ if(time >= 1980000000){
+    else if(flag11 == 0){ if(time >= 3600000000){
       flag11 = 1;
       log.log(time + " report def id:3 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge bad id:4" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag12 == 0){ if(time >= 2100000000){
+    else if(flag12 == 0){ if(time >= 3900000000){
       flag12 = 1;
       log.log(time + " report bad id:4 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge def id:4" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag13 == 0){ if(time >= 2220000000){
+    else if(flag13 == 0){ if(time >= 4200000000){
       flag13 = 1;
       log.log(time + " report def id:4 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge bad id:7" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag14 == 0){ if(time >= 2340000000){
+    else if(flag14 == 0){ if(time >= 4500000000){
       flag14 = 1;
       log.log(time + " report bad id:7 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       log.log(time + " setedge def id:7" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;
     }}
-    else if(flag15 == 0){ if(time >= 2460000000){
+    else if(flag15 == 0){ if(time >= 4800000000){
       flag15 = 1;
       log.log(time + " report def id:7 PDR " + (receive_count/send_count) + " #s " + send_count + " #r " + receive_count + " #rep " + replication_count + " #eli " + elimination_count + "\n"); 
       // log.log(time + " setedge def id:2" + "\n"); send_count = 0; receive_count = 0; replication_count = 0; elimination_count = 0;

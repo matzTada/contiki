@@ -12,7 +12,7 @@
   #cd ../..
   #pwd #should be in project home
 
-  for i in `seq 1 50`
+  for i in `seq 1 100`
   do
 
 for scenario in scenario4 scenario5 scenario6
@@ -65,7 +65,7 @@ do
     echo execute simulation
     #java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/realsim/ladder_NO-re4_realsim.csc -contiki=$HOME/contiki/
     #java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/realsim/ladder_NO-re4_realsim_gui_${scenario}.csc -contiki=$HOME/contiki/
-    timeout -sKILL 3600 java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/realsim/ladder_NO-re4_realsim_gui_${scenario}.csc -contiki=$HOME/contiki/
+    timeout -sKILL 7200 java -jar $HOME/contiki/tools/cooja/dist/cooja.jar -nogui=$HOME/contiki/examples/ipv6/my-LFC-from-old/scenario/realsim/ladder_NO-re4_realsim_gui_${scenario}.csc -contiki=$HOME/contiki/
     echo return to upper directory
     cd ../../../../.. #should be in project home
     pwd
