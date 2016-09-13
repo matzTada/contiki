@@ -12,10 +12,10 @@
   #cd ../..
   #pwd #should be in project home
 
-  for i in `seq 31 50`
+  for i in `seq 1 50`
   do
 
-for scenario in scenario1 scenario2 scenario3
+for scenario in scenario4 scenario5 scenario6
 do
     #changing random seed
     #echo entering

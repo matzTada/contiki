@@ -46,8 +46,8 @@
 #define WITH_THUNDER //do not use Orchestra. Fixed TSCH schedule
 #define WITH_THUNDER_ADAPTIVE_EB_SLOT //make EB slot can be changed based on network
 
-//#define WITH_POWERTRACE // for power trace
-//#define WITH_STABLETIMER // for waiting application traffic until network stabilized
+#define WITH_POWERTRACE // for power trace
+#define WITH_STABLETIMER // for waiting application traffic until network stabilized
 
 //#define WITH_ORCHESTRA 1 //if 1, enable Orchestra
 //#define ORCHESTRA_CONF_UNICAST_SENDER_BASED 1
@@ -59,7 +59,7 @@
 
 //udp data
 #define DATA_SEND_SLIDE_TIME (30 * CLOCK_SECOND)
-#define DATA_SEND_INTERVAL   (60 * CLOCK_SECOND) //60 is nice for simulation
+#define DATA_SEND_INTERVAL   (10 * CLOCK_SECOND) //60 is nice for simulation
 //#define DATA_SEND_TIME   (random_rand() % (DATA_SEND_INTERVAL))
 //#define DATA_SEND_TIME   (DATA_SEND_INTERVAL) //make it periodical
 
@@ -68,7 +68,7 @@
 #endif //WITH_POWERTRACE
 
 #ifdef WITH_STABLETIMER
-#define STABLE_TIME (600 * CLOCK_SECOND) //1800 is nice for simulation
+#define STABLE_TIME (900 * CLOCK_SECOND) //1800 is nice for simulation
 #endif //WITH_STABLETIMER
 
 // #ifdef WITH_LEAPFROG
