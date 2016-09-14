@@ -37,11 +37,11 @@
 
 //modified by TadaMatz 1/July/2016
 //#define IGNORE_TSCH_RESEND //ignore TSCH resending in tsch-slot-operation
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 0//here can control the number of re-transmission in TSCH
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 8//here can control the number of re-transmission in TSCH
 
-#define WITH_LEAPFROG
+//#define WITH_LEAPFROG
 //#define WITH_LEAPFROG_BEACON_SLOT //Store timelots dedicated for Leapfrog beacon. This can be only used with Thunder as a scheduler
-#define WITH_OVERHEARING //Enable Overhearing feature inluding both timeslot and slot-operation. This can be only used with Thunder as a scheduler
+//#define WITH_OVERHEARING //Enable Overhearing feature inluding both timeslot and slot-operation. This can be only used with Thunder as a scheduler
 
 #define WITH_THUNDER //do not use Orchestra. Fixed TSCH schedule
 #define WITH_THUNDER_ADAPTIVE_EB_SLOT //make EB slot can be changed based on network
